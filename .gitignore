@@ -9,3 +9,8 @@ log/
 
 # SQLite databases
 *.sqlite3
+
+bin/
+build/
+include/
+lib/
