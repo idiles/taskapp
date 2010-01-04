@@ -1,17 +1,20 @@
-from django.db import models
+from datetime import datetime
 
+from django.db import models
 from django.contrib.auth.models import User
 
 class Task(models.Model):
     creator = models.ForeignKey(User)
     title = models.CharField(max_length=200)
-    created = models.DateTimeField()
+    created = models.DateTimeField(default=datetime.now)
     position = models.IntegerField()
-    completed = models.BooleanField()
+    completed = models.BooleanField(default=False)
 
+    def __unicode__(self):
+        return self.title + (' (completed)' if self.completed else '')
 
 class TaskInterval(models.Model):
     task = models.ForeignKey(Task)
     doer = models.ForeignKey(User)
-    started = models.DateTimeField()
-    stopped = models.DateTimeField()
+    started = models.DateTimeField(default=datetime.now)
+    duration = models.PositiveIntegerField(null=True)

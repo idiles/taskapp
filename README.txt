@@ -4,8 +4,8 @@ TAASKS
 The taasks are really important so be sure to read the text below before
 starting to work on it. Seriously.
 
-Installation
-============
+Installation and preparation
+============================
 
     $ mkdir -p /an/empty/folder
 
@@ -34,6 +34,15 @@ Create tables for the third party packages:
 Create the database schema using the database migrations (south):
 
     $ ../bin/python manage.py migrate
+
+
+Development guidelines
+======================
+
+- Use third party projects
+- Don't forget to
+
+    $ ../bin/python manage.py test
 
 
 Third party projects in use

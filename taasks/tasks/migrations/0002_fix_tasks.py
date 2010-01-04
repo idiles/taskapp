@@ -7,36 +7,29 @@ class Migration:
     
     def forwards(self, orm):
         
-        # Adding model 'Task'
-        db.create_table('tasks_task', (
-            ('id', orm['tasks.Task:id']),
-            ('creator', orm['tasks.Task:creator']),
-            ('title', orm['tasks.Task:title']),
-            ('created', orm['tasks.Task:created']),
-            ('position', orm['tasks.Task:position']),
-            ('completed', orm['tasks.Task:completed']),
-        ))
-        db.send_create_signal('tasks', ['Task'])
+        # Adding field 'TaskInterval.duration'
+        db.add_column('tasks_taskinterval', 'duration', orm['tasks.taskinterval:duration'])
         
-        # Adding model 'TaskInterval'
-        db.create_table('tasks_taskinterval', (
-            ('id', orm['tasks.TaskInterval:id']),
-            ('task', orm['tasks.TaskInterval:task']),
-            ('doer', orm['tasks.TaskInterval:doer']),
-            ('started', orm['tasks.TaskInterval:started']),
-            ('stopped', orm['tasks.TaskInterval:stopped']),
-        ))
-        db.send_create_signal('tasks', ['TaskInterval'])
+        # Deleting field 'TaskInterval.stopped'
+        db.delete_column('tasks_taskinterval', 'stopped')
+        
+        # Changing field 'Task.completed'
+        # (to signature: django.db.models.fields.BooleanField(blank=True))
+        db.alter_column('tasks_task', 'completed', orm['tasks.task:completed'])
         
     
     
     def backwards(self, orm):
         
-        # Deleting model 'Task'
-        db.delete_table('tasks_task')
+        # Deleting field 'TaskInterval.duration'
+        db.delete_column('tasks_taskinterval', 'duration')
         
-        # Deleting model 'TaskInterval'
-        db.delete_table('tasks_taskinterval')
+        # Adding field 'TaskInterval.stopped'
+        db.add_column('tasks_taskinterval', 'stopped', orm['tasks.taskinterval:stopped'])
+        
+        # Changing field 'Task.completed'
+        # (to signature: django.db.models.fields.BooleanField())
+        db.alter_column('tasks_task', 'completed', orm['tasks.task:completed'])
         
     
     
@@ -76,8 +69,8 @@ class Migration:
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
         'tasks.task': {
-            'completed': ('django.db.models.fields.BooleanField', [], {}),
-            'created': ('django.db.models.fields.DateTimeField', [], {}),
+            'completed': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'blank': 'True'}),
+            'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'creator': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'position': ('django.db.models.fields.IntegerField', [], {}),
@@ -85,9 +78,9 @@ class Migration:
         },
         'tasks.taskinterval': {
             'doer': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
+            'duration': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'started': ('django.db.models.fields.DateTimeField', [], {}),
-            'stopped': ('django.db.models.fields.DateTimeField', [], {}),
+            'started': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'task': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['tasks.Task']"})
         }
     }
