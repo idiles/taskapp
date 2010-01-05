@@ -39,7 +39,7 @@ Create the database schema using the database migrations (south):
 Development guidelines
 ======================
 
-- Use third party projects
+- Respect other people work and use third party projects
 - Don't forget to
 
     $ ../bin/python manage.py test
@@ -54,6 +54,38 @@ south
 http://south.aeracode.org
 
 We want to have a stable database model, track database changes in a
-decentralized way preserving our test data regardless of the changes.
+_decentralized_ way preserving our test data regardless of the changes.
 
 We think that south is currently the best-of-breed.
+
+
+Third party projects to consider
+================================
+
+django_compressor
+-----------------
+
+http://github.com/mintchaos/django_compressor
+
+The CSS and JS has to be compressed to be served in production. This tool should
+do it. If we could contribute a filter that would replace
+
+    {{ MEDIA_URL }}
+    with
+    /static     (or whatever)
+    
+    and
+
+    {% url my_named_url some_id='my_variable' %}
+    with
+    '/my/named/url/' + my_variable + '/included/as.string'
+
+we could not desire anything more.
+
+CleverCSS
+---------
+
+http://github.com/dziegler/clevercss
+
+This one's a companion for django_compressor. Maybe worth a try if the css
+becomes complex enough.

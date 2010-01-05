@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Tasks - {% endblock %}
+
+{% block css_links %}
+{% endblock %}
+
+{% block js_links %}
+<script src="{{ MEDIA_URL }}/js/tasks.js"></script>
+{% endblock %}
+
+{% block content %}
+<div id="main-task-input-container">
+  <div class="title">
+    Enter your task here (example: #idea Write an essay ^tomorrow)
+  </div>
+  <input id="main-task-input" 
+    type="text" name="task" value="" />
+  <button id="add-task-button">Add</button>
+</div>
+
+<div id="tasks">
+  {% for task in tasks %}
+    {% include "tasks/task.html" %}
+  {% endfor %}
+</div>
+
+<div id="empty-task-list">
+  You have no items.
+</div>
+
+<div id="templates">
+  <div id="task-template">{% include "tasks/task.html" %}</div>
+</div>
+{% endblock %}
