@@ -1,0 +1,68 @@
+Projects puslapis:
+    dešinėje pusėje rodyti projektų sąrašą
+    dešinėje pusėje rodyti nuorodą "Timeline"
+    o geriau Home puslapyje rodyti mano ir mano projektų (įskaitant komandos
+    narius) timeline.
+
+API versijos?
+taasks.com/api/1.0/projects/4234/tasks/31112
+
+paspaudus ant projektų nuorodos nueinama į projektų sąrašo puslapį:
+    taasks.com/projects/
+Iš ten galima patekti į norimo projekto užduotis
+    taasks.com/projects/999/tasks
+
+projekto puslapiai:
+    taasks.com/projects/1/tasks
+    taasks.com/projects/1/tasks/archive
+    taasks.com/projects/1/settings
+    taasks.com/projects/1/team
+    taasks.com/projects/1/timeline
+
+    taasks.com/projects/trash (bendras?)
+
+iškart rodyti ads langelį, tik viduje pirmus pusę metų bus vien tik
+    Taasks vidinė reklama, naujos savybės, pranešimai ir pan. Kaip geriau? Ar ad nuoroda tiesiogiai į objektą (pvz., pylonskit.idiles.com), ar sekti id (pvz., taasks.com/ads/123123 -> redirect)?
+
+Idėja ateičiai: prie projekto nustatymų galima nurodyti, kurie žmonės
+kasdien gaus projekto update messages (kas ką darė tą dieną).
+
+Footer:
+    Copyright
+    Goodies (widgets, apps, etc)
+    About (about the Taasks platform and why it is interesting)
+    Footeris vos matomas, apacioje ir netrukdo.
+
+Idėja pirmosioms Taasks reklamoms:
+
+    Taasks is a friendly task management tool for everyday use in projects
+    and personal life. Enjoy!
+
+    Thank you for using Taasks. We believe that Taasks will help you in your
+    daily life a lot.
+
+    Taasks combines some best ideas from other project
+    management systems, but takes a new revolutionary approach.
+
+    Taasks development team strives to make Taasks the best collaboration 
+    tool in the world. Thank you for being together.
+
+    Taasks is a social collaboration network. Find people and connect with
+    them any time, any place.
+
+    Did you know that...
+
+    Taasks is very light web application that is fun to use.
+
+    Invite your friends and colleagues to Taasks and work on projects
+    together.
+
+    Try out Taasks widget and desktop app for your Mac.
+
+Reklama rodoma ir prisijungusiems, ir tiesiog žiūrintiems profilius.
+
+Survey idėja:
+    Siųsti vartotojams prašymus įvertinti Taasks. Trumpai pažymėti
+    įvertinimus. Parašyti, ko labiausiai trūksta ir ko labiausiai nereikia.
+    Kai gražiai paprašysime, gal duos feedback.
+
