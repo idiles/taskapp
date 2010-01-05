@@ -34,12 +34,14 @@ Create tables for the third party packages:
 Create the database schema using the database migrations (south):
 
     $ ../bin/python manage.py migrate
+      Until South catches up with Django 1.2 please issue this command several
+      times until all the migrations are finished. Ignore the errors.
 
 
 Development guidelines
 ======================
 
-- Respect other people work and use third party projects
+- Respect other people' work and use third party projects
 - Don't forget to
 
     $ ../bin/python manage.py test
