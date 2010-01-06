@@ -17,11 +17,7 @@ Installation
 
     $ git pull ssh://dev/code/taasks.git taasks
 
-This will be removed as soon as Django officially releases 1.2:
-
-    $ bin/easy_install http://code.djangoproject.com/svn/django/trunk/
-
-This installs all the dependencies:
+This installs all the dependencies (including django):
 
     $ bin/python setup.py develop
 
