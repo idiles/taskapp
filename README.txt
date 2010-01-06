@@ -18,13 +18,11 @@ Installation and preparation
     $ git pull ssh://dev/code/taasks.git taasks
 
 This installs all the dependencies (including django):
-
     $ bin/python setup.py develop
 
     $ cd taasks
 
 Create tables for the third party packages:
-
     $ ../bin/python manage.py syncdb
       This also loads initial_data.xml. This data contains things like groups
       and group-permission relationships we rely on. However, the
@@ -32,25 +30,32 @@ Create tables for the third party packages:
       any time so this is a problem we need to address at some point.
       We prefer xml over json because it does not throw NotJSONSerializable
       errors. If you hate xml'ing, use
-
         $ ../bin/python manage.py dumpdata --format=xml --indent=2 > initial_data.xml
-
       to generate the current DB state and remove what's not needed.
 
 Create the database schema using the database migrations (south):
-
     $ ../bin/python manage.py migrate
       Until South catches up with Django 1.2 please issue this command several
       times until all the migrations are finished. Ignore the errors.
 
+(Optional) If you don't want to enter ../bin/python manage.py (or whatever)
+all the time you can do
+    $ echo "../bin/python manage.py \"\$@\"" > manage
+    $ chmod +x manage
+so later you can just
+    $ ./manage test tasks
+instead of
+    $ ../bin/python manage.py test tasks
 
 Development guidelines
 ======================
 
-- Respect other people' work and use third party projects
-- Don't forget to
+- Respect other people' work and use 3rd party projects
 
+- Don't forget to
     $ ../bin/python manage.py test
+      While we are working with unstable some 3rd party packages won't pass
+      tests. But we should test our packages nevertheless.
 
 
 Third party projects in use

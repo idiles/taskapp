@@ -10,8 +10,13 @@ log/
 # SQLite databases
 *.sqlite3
 
+# Local scripts
+manage
+
+# Various Python system folders
 bin/
 build/
 include/
 lib/
 Taasks.egg-info/
+
