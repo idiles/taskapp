@@ -1,25 +1,31 @@
 
 from south.db import db
 from django.db import models
-from base.models import *
+from tasks.models import *
 
 class Migration:
     
     def forwards(self, orm):
         
-        # Adding model 'UserProfile'
-        db.create_table('base_userprofile', (
-            ('user', orm['base.UserProfile:user']),
-            ('timezone', orm['base.UserProfile:timezone']),
-        ))
-        db.send_create_signal('base', ['UserProfile'])
+        # Changing field 'Task.creator'
+        # (to signature: django.db.models.fields.related.ForeignKey(to=orm['auth.User']))
+        db.alter_column('tasks_task', 'creator_id', orm['tasks.task:creator'])
+        
+        # Changing field 'TaskInterval.doer'
+        # (to signature: django.db.models.fields.related.ForeignKey(to=orm['auth.User']))
+        db.alter_column('tasks_taskinterval', 'doer_id', orm['tasks.taskinterval:doer'])
         
     
     
     def backwards(self, orm):
         
-        # Deleting model 'UserProfile'
-        db.delete_table('base_userprofile')
+        # Changing field 'Task.creator'
+        # (to signature: django.db.models.fields.related.ForeignKey(to=orm['base.ExtUser']))
+        db.alter_column('tasks_task', 'creator_id', orm['tasks.task:creator'])
+        
+        # Changing field 'TaskInterval.doer'
+        # (to signature: django.db.models.fields.related.ForeignKey(to=orm['base.ExtUser']))
+        db.alter_column('tasks_taskinterval', 'doer_id', orm['tasks.taskinterval:doer'])
         
     
     
@@ -51,17 +57,28 @@ class Migration:
             'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'blank': 'True'}),
             'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
         },
-        'base.userprofile': {
-            'timezone': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'primary_key': 'True'})
-        },
         'contenttypes.contenttype': {
             'Meta': {'unique_together': "(('app_label', 'model'),)", 'db_table': "'django_content_type'"},
             'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+        },
+        'tasks.task': {
+            'completed': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'blank': 'True'}),
+            'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'creator': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'position': ('django.db.models.fields.IntegerField', [], {}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '200'})
+        },
+        'tasks.taskinterval': {
+            'doer': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
+            'duration': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'started': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'task': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['tasks.Task']"})
         }
     }
     
-    complete_apps = ['base']
+    complete_apps = ['tasks']

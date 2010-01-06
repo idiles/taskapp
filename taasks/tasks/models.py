@@ -1,10 +1,10 @@
 from datetime import datetime
 
+from django.contrib.auth.models import User
 from django.db import models
-from taasks.base.models import ExtUser
 
 class Task(models.Model):
-    creator = models.ForeignKey(ExtUser)
+    creator = models.ForeignKey(User)
     title = models.CharField(max_length=200)
     created = models.DateTimeField(default=datetime.now)
     position = models.IntegerField()
@@ -15,6 +15,6 @@ class Task(models.Model):
 
 class TaskInterval(models.Model):
     task = models.ForeignKey(Task)
-    doer = models.ForeignKey(ExtUser)
+    doer = models.ForeignKey(User)
     started = models.DateTimeField(default=datetime.now)
     duration = models.PositiveIntegerField(null=True)

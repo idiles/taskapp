@@ -71,9 +71,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-AUTHENTICATION_BACKENDS = (
-    'base.utils.ModelBackend',
-)
+AUTH_PROFILE_MODULE = 'base.UserProfile'
 
 ROOT_URLCONF = 'taasks.urls'
 
