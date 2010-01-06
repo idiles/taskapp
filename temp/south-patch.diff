@@ -1,0 +1,15 @@
+9c9
+< from django.db import connection, transaction, models
+---
+> from django.db import connection, transaction, models, DEFAULT_DB_ALIAS
+714c714,715
+<                                 verbosity=verbosity, interactive=interactive)
+---
+>                                 verbosity=verbosity, interactive=interactive,
+>                                 db=DEFAULT_DB_ALIAS)
+718c719,721
+<                                                 verbosity=verbosity, interactive=interactive)
+---
+>                                                 verbosity=verbosity,
+>                                                 interactive=interactive,
+>                                                 db=DEFAULT_DB_ALIAS)

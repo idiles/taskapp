@@ -1,0 +1,1 @@
+patch lib/python2.6/site-packages/South-0.6.2-py2.6.egg/south/db/generic.py temp/south-patch.diff

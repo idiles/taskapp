@@ -18,11 +18,11 @@ setup(name='Taasks',
     namespace_packages=[],
     zip_safe=False,
     install_requires=[
-        'Django>=1.2-alpha-1',
+        'Django>1.1.1',
         'South>=0.6.2',
     ],
     dependency_links=[
-        'http://www.djangoproject.com/download/'
+        'http://media.djangoproject.com/releases/1.2/Django-1.2-alpha-1.tar.gz'
     ],
     entry_points="""
     """,

@@ -7,23 +7,28 @@ starting to work on it. Seriously.
 Installation and preparation
 ============================
 
-    $ mkdir -p /an/empty/folder
+    $ mkdir -p /project/parent/folders
 
-    $ cd /an/empty/folder
+    $ cd /project/parent/folders
+
+    $ git clone ssh://dev/code/taasks.git
+
+    $ cd taasks
 
     $ virtualenv .
       The project is being developed using python 2.6 though might work with
       other versions as well
 
-    $ git pull ssh://dev/code/taasks.git taasks
-
-This installs all the dependencies (including django):
+Install all the dependencies (including django):
     $ bin/python setup.py develop
+
+(Temporary) Until South catches up with Django 1.2 apply a patch:
+    $ ./temp/south-patch
 
     $ cd taasks
 
 Create tables for the third party packages:
-    $ ../bin/python manage.py syncdb
+    $ ../bin/python manage.py syncdb --noinput
       This also loads initial_data.xml. This data contains things like groups
       and group-permission relationships we rely on. However, the
       group-permission relationships are based on foreign keys which can change
@@ -37,6 +42,10 @@ Create the database schema using the database migrations (south):
     $ ../bin/python manage.py migrate
       Until South catches up with Django 1.2 please issue this command several
       times until all the migrations are finished. Ignore the errors.
+
+(Optional) If you need an admin user you can create it now using
+    $ ../bin/python manage.py createsuperuser
+      This will NOT work before the database is migrated
 
 (Optional) If you don't want to enter ../bin/python manage.py (or whatever)
 all the time you can do
