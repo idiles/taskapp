@@ -8,6 +8,9 @@ class UserProfile(models.Model):
 
     timezone = models.CharField(max_length=50, null=True)
 
+    def __unicode__(self):
+        return '%s (%s)' % (self.user.get_full_name(), self.user.email)
+
 def create_profile(signal, **kwargs):
     if kwargs.get('created'):
         user = kwargs.get('instance')
