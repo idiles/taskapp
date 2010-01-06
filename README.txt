@@ -7,9 +7,9 @@ starting to work on it. Seriously.
 Installation and preparation
 ============================
 
-    $ mkdir -p /project/parent/folders
+    $ mkdir -p /project/parent/folder
 
-    $ cd /project/parent/folders
+    $ cd /project/parent/folder
 
     $ git clone ssh://dev/code/taasks.git
 
@@ -43,14 +43,15 @@ Create the database schema using the database migrations (south):
       Until South catches up with Django 1.2 please issue this command several
       times until all the migrations are finished. Ignore the errors.
 
+    $ ../bin/python manage.py runserver
+
 (Optional) If you need an admin user you can create it now using
     $ ../bin/python manage.py createsuperuser
       This will NOT work before the database is migrated
 
 (Optional) If you don't want to enter ../bin/python manage.py (or whatever)
 all the time you can do
-    $ echo "../bin/python manage.py \"\$@\"" > manage
-    $ chmod +x manage
+    $ echo "../bin/python manage.py \"\$@\"" > manage && chmod +x manage
 so later you can just
     $ ./manage test tasks
 instead of
