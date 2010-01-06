@@ -13,13 +13,17 @@
 
   <div id="header">
     <ul id="menubar">
-      <li class="item"><a href="/">Home</a></li>
+      <li class="item"><a href="{% url home %}">Home</a></li>
+      {% if user.is_authenticated %}
       <!--li class="item"><%= link_to "Profile", :controller => 'profile' %></li-->
       <li class="item"><a href="{% url tasks:list %}">Tasks</a></li>
       <!--li class="item"><a href="/people">People</a></li>
       <li class="item"><%= link_to "Settings", 
         :controller => 'profile', :action => 'settings' %></li-->
-      <li class="item"><a href="/logout">Logout</a></li>
+      <li class="item"><a href="{% url logout %}">Logout</a></li>
+      {% else %}
+      <li class="item"><a href="{% url login %}">Login</a></li>
+      {% endif %}
     </ul>
   
     <div id="logo"></div>

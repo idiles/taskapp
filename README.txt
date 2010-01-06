@@ -26,6 +26,16 @@ This installs all the dependencies (including django):
 Create tables for the third party packages:
 
     $ ../bin/python manage.py syncdb
+      This also loads initial_data.xml. This data contains things like groups
+      and group-permission relationships we rely on. However, the
+      group-permission relationships are based on foreign keys which can change
+      any time so this is a problem we need to address at some point.
+      We prefer xml over json because it does not throw NotJSONSerializable
+      errors. If you hate xml'ing, use
+
+        $ ../bin/python manage.py dumpdata --format=xml --indent=2 > initial_data.xml
+
+      to generate the current DB state and remove what's not needed.
 
 Create the database schema using the database migrations (south):
 

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+  <object pk="1" model="auth.group">
+    <field type="CharField" name="name">Users</field>
+    <field to="auth.permission" name="permissions" rel="ManyToManyRel"><object pk="28"></object><object pk="29"></object><object pk="30"></object><object pk="31"></object><object pk="34"></object><object pk="32"></object><object pk="35"></object><object pk="33"></object><object pk="36"></object></field>
+  </object>
+</django-objects>

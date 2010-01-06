@@ -11,7 +11,14 @@ urlpatterns = patterns('',
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-) + patterns('taasks',
+
+    url(r'^$', 'django.views.generic.simple.redirect_to', dict(url='/tasks/'),
+        name='home'),
+
+    url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', dict(next_page='/'),
+        name='logout'),
+) + patterns('taasks',      # Include tasks app
     (r'^tasks/', include('tasks.urls', namespace='tasks')),
 )
 
