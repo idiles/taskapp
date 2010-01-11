@@ -45,7 +45,7 @@ Task.prototype = {
         args = {
             'title': text
         };
-        $.post('/tasks/create', args, function (json) {
+        $.post(url('{% url tasks:create %}'), args, function (json) {
             that.node.attr('id', json.id);
             that.node.find('.text').html(json.html);
             that.id = json.id;
@@ -59,15 +59,20 @@ Task.prototype = {
 
     save: function (text) {
         that = this;
-        $.ajax({
-            url: '/tasks/' + this.id,
-            data: { 'task[title]': text },
-            type: 'PUT',
-            dataType: 'json',
-            success: function (json) {
-                that.textNode.html(json.html);
-            }
-        });
+        $.post(url('{% url tasks:update 0 %}', {0: this.id}), {
+            title: text
+        }, function (json) {
+            that.textNode.html(json.html)
+        }, 'json');
+        //$.ajax({
+        //    url: '/tasks/' + this.id,
+        //    data: { 'task[title]': text },
+        //    type: 'PUT',
+        //    dataType: 'json',
+        //    success: function (json) {
+        //        that.textNode.html(json.html);
+        //    }
+        //});
     },
 
     start: function (notify) {

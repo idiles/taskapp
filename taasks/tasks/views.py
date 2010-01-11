@@ -13,7 +13,8 @@ def new(request):
 def create(request, format=None):
     if format is None:
         format = 'json'
-    return HttpResponse('{format: "%s"}' % format)
+    text = 'kitas'
+    return HttpResponse('{id: 1, html: "%s"}' % text)
 
 def show(request, task_id):
     return 'Rodom %s' % task_id
