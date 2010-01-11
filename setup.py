@@ -24,6 +24,8 @@ setup(name='Taasks',
     dependency_links=[
         'http://media.djangoproject.com/releases/1.2/Django-1.2-alpha-1.tar.gz'
     ],
+    test_suite='nose.collector',
+    tests_require=['nose'],
     entry_points="""
     """,
     )

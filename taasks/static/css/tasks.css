@@ -86,7 +86,7 @@ p:first-child {
   left: 0px;
   height: 25px;
   width: 150px;
-  background-image: url('/static/img/taasks-logo.png');
+  background-image: url('{{ MEDIA_URL }}/img/taasks-logo.png');
   background-repeat: no-repeat;
 }
 

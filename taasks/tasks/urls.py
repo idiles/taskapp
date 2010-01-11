@@ -1,21 +1,46 @@
 from django.conf.urls.defaults import *
 from django.contrib.auth.decorators import login_required, permission_required
 
+from utils.dispatch import by_method
+
 import views
 
 urlpatterns = patterns('',
-    url(r'^$', login_required(views.index), name='list'),
-    (r'^new$', permission_required('add_task')(views.new)),
-    url(r'^create$', permission_required('add_task')(views.create),
+    url(r'^$',
+        by_method(
+            # List all tasks
+            GET=login_required(views.index),
+            # Create a new task
+            POST=permission_required('add_task')(views.create)),
+        name='list'),
+
+    # View the task creation form
+    #url(r'^new$',
+    #    by_method(GET=permission_required('add_task')(views.new))),
+
+    # Create a new task
+    url(r'^create$',
+        by_method(POST=permission_required('add_task')(views.create)),
         name='create'),
-    (r'^(?P<task_id>\d+)/$', login_required(views.show)),
-    url(r'^(?P<task_id>\d+)/edit$',
-        permission_required('change_task')(views.edit),
-        name='edit'),
+
+    url(r'^(?P<task_id>\d+)/$',
+        by_method(
+            # Show a task
+            #GET=login_required(views.show),
+            # Modify a task
+            PUT=permission_required('change_task')(views.update),
+            # Delete a task
+            DELETE=permission_required('delete_task')(views.delete))
+        ),
+
+    # Show a task modification form
+    #url(r'^(?P<task_id>\d+)/edit$',
+    #    permission_required('change_task')(views.edit)),
+
     url(r'^(?P<task_id>\d+)/update$',
-        permission_required('change_task')(views.update),
+        by_method(POST=permission_required('change_task')(views.update)),
         name='update'),
     url(r'^(?P<task_id>\d+)/delete$',
-        permission_required('delete_task')(views.delete),
+        by_method(POST=permission_required('delete_task')(views.delete)),
         name='delete'),
 )
