@@ -32,7 +32,7 @@ Task.toggleTaskListEmpty = function (show) {
     if (!visible && show) {
         emptyTaskList.fadeIn();
     } else if (visible && !show) {
-        emptyTaskList.fadeOut();
+        emptyTaskList.hide();
     }
 };
 
