@@ -32,11 +32,11 @@ Let's create our mock handlers
     Http404: The requested resource for DELETE does not exist
 
     """
-    def decorator(request):
+    def decorator(request, *args, **kwargs):
         handler = handlers.get(request.method)
         if handler is None:
             raise Http404('The requested resource for %s does not exist' % \
                 request.method)
         else:
-            return handler(request)
+            return handler(request, *args, **kwargs)
     return decorator

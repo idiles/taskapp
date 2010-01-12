@@ -37,10 +37,23 @@ urlpatterns = patterns('',
     #url(r'^(?P<task_id>\d+)/edit$',
     #    permission_required('change_task')(views.edit)),
 
+    # Update a task
     url(r'^(?P<task_id>\d+)/update$',
         by_method(POST=permission_required('change_task')(views.update)),
         name='update'),
+
+    # Delete a task
     url(r'^(?P<task_id>\d+)/delete$',
         by_method(POST=permission_required('delete_task')(views.delete)),
         name='delete'),
+
+    # Start a task
+    url(r'^(?P<task_id>\d+)/start$',
+        by_method(POST=login_required(views.start)),
+        name='start'),
+
+    # Stop a task
+    url(r'^(?P<task_id>\d+)/stop$',
+        by_method(POST=login_required(views.stop)),
+        name='stop'),
 )

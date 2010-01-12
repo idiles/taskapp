@@ -212,15 +212,6 @@ p:first-child {
   color: #fff;
 }
 
-.task-completed .text {
-  text-decoration: line-through;
-  color: #ccc;
-}
-
-.task-completed .indicator {
-  color: #569026 !important;
-}
-
 .task-active {
 /*  background-color: #f3efd5;*/
 }
@@ -244,6 +235,15 @@ p:first-child {
 .task.task-active .stop-button,
 .task.task-completed .undone-button {
     display: inline;
+}
+
+.task-completed .text {
+  text-decoration: line-through;
+  color: #ccc;
+}
+
+.task-completed .indicator {
+  color: #569026 !important;
 }
 
 .task span.task-tag {

@@ -25,7 +25,7 @@
   {% endfor %}
 </div>
 
-<div id="empty-task-list">
+<div id="empty-task-list" {% if tasks %}style="display:none"{% endif %}>
   You have no items.
 </div>
 
