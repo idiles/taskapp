@@ -14,9 +14,9 @@ log/
 manage
 
 # Various Python system folders
-bin/
-build/
-include/
-lib/
-Taasks.egg-info/
+/bin/
+/build/
+/include/
+/lib/
+/Taasks.egg-info/
 
