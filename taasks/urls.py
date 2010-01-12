@@ -24,8 +24,14 @@ urlpatterns = patterns('',
 
 if settings.DEBUG:
     urlpatterns += patterns('',
+        # Custom JS and CSS file handler
+        (r'^%s/(?P<path>(js|css)/.*)$' % settings.MEDIA_SLUG,
+            'base.views.serve_static', dict(document_root=settings.MEDIA_ROOT)),
+
+        # Static file handler
         (r'^%s/(?P<path>.*)$' % settings.MEDIA_SLUG,
             'django.views.static.serve',
             dict(document_root=settings.MEDIA_ROOT)),
+
     )
 

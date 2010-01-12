@@ -26,7 +26,12 @@ Task.init = function (node) {
     new Task(node);
 };
 
+// Show/hide the empty-task-list message depending on 'show' parameter. If not
+// provided then it is computed automatically
 Task.toggleTaskListEmpty = function (show) {
+    if (show === undefined) {
+        show = $('#tasks').children().length === 0;
+    }
     var emptyTaskList = $('#empty-task-list'),
         visible = emptyTaskList.is(':visible');
     if (!visible && show) {
@@ -45,7 +50,7 @@ Task.prototype = {
         args = {
             'title': text
         };
-        $.post('/tasks/create', args, function (json) {
+        $.post(url('{% url tasks:create %}'), args, function (json) {
             that.node.attr('id', json.id);
             that.node.find('.text').html(json.html);
             that.id = json.id;
@@ -59,15 +64,11 @@ Task.prototype = {
 
     save: function (text) {
         that = this;
-        $.ajax({
-            url: '/tasks/' + this.id,
-            data: { 'task[title]': text },
-            type: 'PUT',
-            dataType: 'json',
-            success: function (json) {
-                that.textNode.html(json.html);
-            }
-        });
+        $.post(url('{% url tasks:update 0 %}', {0: this.id}), {
+            title: text
+        }, function (json) {
+            that.textNode.html(json.html)
+        }, 'json');
     },
 
     start: function (notify) {
@@ -81,7 +82,7 @@ Task.prototype = {
 
         this.indicatorNode.click();
         if (notify) {
-            $.post('/tasks/' + this.id + '/start');
+            $.post(url('{% url tasks:start 0 %}', {0: this.id}));
         }
     },
 
@@ -91,7 +92,7 @@ Task.prototype = {
 
         this.indicatorNode.click();
         if (notify) {
-            $.post('/tasks/' + this.id + '/stop');
+            $.post(url('{% url tasks:stop 0 %}', {0: this.id}));
         }
     },
 
@@ -122,17 +123,18 @@ Task.prototype = {
     },
 
     remove: function (notify) {
-        this.node.fadeOut();
+        var node = this.node;
+        node.fadeOut('', function () {
+            node.remove();
+            Task.toggleTaskListEmpty();
+        });
         if (notify) {
-            $.ajax({
-                url: '/tasks/' + this.id, 
-                type: 'DELETE',
-                success: function () {
-                    // Optional
-                    //setTimeout(function () {
-                    //    task.remove();
-                    //}, 2000);
-                }
+            $.post(url('{% url tasks:delete 0 %}', {0: this.id}), {},
+                    function () {
+                // Optional
+                //setTimeout(function () {
+                //    task.remove();
+                //}, 2000);
             });
         }
     },
@@ -259,7 +261,6 @@ $(document).ready(function () {
     tasks.each(function () {
         Task.init(this);
     });
-    Task.toggleTaskListEmpty(!tasks.length);
     
     $('#tasks:not(.archive)').sortable({
         placeholder: 'drop-highlight',
