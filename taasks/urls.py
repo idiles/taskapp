@@ -18,7 +18,8 @@ urlpatterns = patterns('',
     url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', dict(next_page='/'),
         name='logout'),
-) + patterns('taasks',      # Include tasks app
+        
+    # Include tasks app
     (r'^tasks/', include('tasks.urls', namespace='tasks')),
 )
 

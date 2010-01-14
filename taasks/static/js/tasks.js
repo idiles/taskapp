@@ -129,7 +129,7 @@ Task.prototype = {
             Task.toggleTaskListEmpty();
         });
         if (notify) {
-            $.post(url('{% url tasks:delete 0 %}', {0: this.id}), {},
+            $.post(url('{% url tasks:remove 0 %}', {0: this.id}), {},
                     function () {
                 // Optional
                 //setTimeout(function () {

@@ -1,5 +1,6 @@
 # Can ignore specific files
 .DS_Store
+.Python
 
 # Use wildcards as well
 *~
