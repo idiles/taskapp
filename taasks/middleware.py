@@ -17,14 +17,14 @@ class AJAXSimpleExceptionResponse:
                 return HttpResponseServerError(response)
 
 
-class ConsoleExceptionMiddleware:
-    def process_exception(self, request, exception):
-        import traceback
-        import sys
-        exc_info = sys.exc_info()
-        print '*' * 80
-        print '\n'.join(traceback.format_exception(*(exc_info or sys.exc_info())))
-        print '*' * 80
+# class ConsoleExceptionMiddleware:
+#     def process_exception(self, request, exception):
+#         import traceback
+#         import sys
+#         exc_info = sys.exc_info()
+#         print '*' * 80
+#         print '\n'.join(traceback.format_exception(*(exc_info or sys.exc_info())))
+#         print '*' * 80
 
 
 class WsgiLogErrors(object):

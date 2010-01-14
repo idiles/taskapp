@@ -129,13 +129,7 @@ Task.prototype = {
             Task.toggleTaskListEmpty();
         });
         if (notify) {
-            $.post(url('{% url tasks:remove 0 %}', {0: this.id}), {},
-                    function () {
-                // Optional
-                //setTimeout(function () {
-                //    task.remove();
-                //}, 2000);
-            });
+            $.post(url('{% url tasks:remove 0 %}', {0: this.id}), {});
         }
     },
 

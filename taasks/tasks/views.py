@@ -1,13 +1,11 @@
-#from django.core import serializers
+from simplejson import dumps
+
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.utils.simplejson import dumps
 from django.shortcuts import render_to_response, get_object_or_404
 from django.views.generic.simple import direct_to_template
 from django.db.models import Max
-
-from models import Task
-
 
 from forms import TaskForm
 from models import Task, TaskInterval
@@ -35,8 +33,11 @@ def create(request, format=None):
             title=title,
             position=position)
         task.save()
+        
+    resp = dict(format=format, id=task.id)
+    resp_json = dumps(resp)
     
-    return HttpResponse('{format: "%s"}' % format)
+    return HttpResponse(resp_json)
     
 
 def update(request, task_id):
@@ -48,8 +49,8 @@ def update(request, task_id):
 
 
 def remove(request, task_id):
-    return 'Trinam', task_id
     task = get_object_or_404(Task, pk=task_id)
+    task.status = task.STATUS_REMOVED
     task.delete()
     return HttpResponse('', status=204)     # No content
 
