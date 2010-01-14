@@ -1,4 +1,4 @@
-<div class="task{% if task.started %} task-active{% endif %}{% if task.completed %} task-completed{% endif %}" {% if task %}id="task-{{ task.id }}"{% endif %}>
+<div class="task{% if task.started %} task-active{% endif %}{% if task.is_done %} task-done{% endif %}" {% if task %}id="task-{{ task.id }}"{% endif %}>
   <div class="indicator">•</div>
   <div class="view">
     <div class="text">{{ task }}</div>
@@ -8,9 +8,11 @@
     <div class="controls">
       <span class="control-button start-button">start</span>
       <span class="control-button stop-button">stop</span>
+      
       <!-- What does it mean that the task is done? What happens to the others currently working on it? -->
-      <!--span class="control-button done-button">done</span>
-      <span class="control-button undone-button">undone</span-->
+      <span class="control-button done-button">done</span>
+      <span class="control-button undone-button">undone</span>
+      
       <span class="control-button remove-button">remove</span>
     </div>
   </div>

@@ -5,7 +5,7 @@ from django.db import models
 
 class Task(models.Model):
     STATUS_NEW = 1
-    STATUS_COMPLETED = 2
+    STATUS_DONE = 2
     STATUS_REMOVED = 3
     
     creator = models.ForeignKey(User)
@@ -15,7 +15,7 @@ class Task(models.Model):
     status = models.IntegerField(default=STATUS_NEW)
 
     def __unicode__(self):
-        return self.title + (' (completed)' if self.completed else '')
+        return self.title
 
     def start(self, doer):
         # Stop the started tasks first
@@ -41,11 +41,11 @@ class Task(models.Model):
             interval.save()
             
     @property
-    def completed(self):
-        return self.status == self.STATUS_COMPLETED
+    def is_done(self):
+        return self.status == self.STATUS_DONE
         
     @property
-    def removed(self):
+    def is_removed(self):
         return self.status == self.STATUS_REMOVED
         
 

@@ -97,28 +97,18 @@ Task.prototype = {
     },
 
     done: function (notify) {
-        this.node.addClass('task-completed');
+        this.node.addClass('task-done');
+        // this.indicatorNode.click();
         if (notify) {
-            $.ajax({
-                url: '/tasks/' + this.id,
-                data: { 'task[completed]': 1 },
-                type: 'PUT',
-                success: function () {
-                }
-            });
+            $.post(url('{% url tasks:done 0 %}', {0: this.id}));
         }
     },
 
     undone: function (notify) {
-        this.node.removeClass('task-completed');
+        this.node.removeClass('task-done');
+        // this.indicatorNode.click();
         if (notify) {
-            $.ajax({
-                url: '/tasks/' + this.id,
-                data: { 'task[completed]': 0 },
-                type: 'PUT',
-                success: function () {
-                }
-            });
+            $.post(url('{% url tasks:undone 0 %}', {0: this.id}));
         }
     },
 

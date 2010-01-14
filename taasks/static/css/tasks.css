@@ -221,28 +221,28 @@ p:first-child {
 }
 
 .task-active .start-button,
-.task-completed .start-button {
+.task-done .start-button {
     display: none;
 }
 
 .task .stop-button,
-.task-completed .stop-button,
-.task-completed .done-button,
+.task-done .stop-button,
+.task-done .done-button,
 .task .undone-button {
     display: none;
 }
 
 .task.task-active .stop-button,
-.task.task-completed .undone-button {
+.task.task-done .undone-button {
     display: inline;
 }
 
-.task-completed .text {
+.task-done .text {
   text-decoration: line-through;
   color: #ccc;
 }
 
-.task-completed .indicator {
+.task-done .indicator {
   color: #569026 !important;
 }
 

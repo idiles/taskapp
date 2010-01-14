@@ -53,6 +53,20 @@ def remove(request, task_id):
     task.status = task.STATUS_REMOVED
     task.delete()
     return HttpResponse('', status=204)     # No content
+    
+    
+def mark_done(request, task_id):
+    task = get_object_or_404(Task, pk=task_id)
+    task.status = task.STATUS_DONE
+    task.save()
+    return HttpResponse('', status=204)     # No content
+    
+    
+def mark_undone(request, task_id):
+    task = get_object_or_404(Task, pk=task_id)
+    task.status = task.STATUS_NEW
+    task.save()
+    return HttpResponse('', status=204)     # No content
 
 
 def start(request, task_id):
