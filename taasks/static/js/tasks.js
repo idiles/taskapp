@@ -122,6 +122,15 @@ Task.prototype = {
             $.post(url('{% url tasks:remove 0 %}', {0: this.id}), {});
         }
     },
+    
+    restore: function () {
+        var node = this.node;
+        node.fadeOut('', function () {
+            node.remove();
+            Task.toggleTaskListEmpty();
+        });
+        $.post(url('{% url tasks:restore 0 %}', {0: this.id}), {});
+    },
 
     addCallbacks: function () {
         var that = this,
@@ -148,6 +157,9 @@ Task.prototype = {
         }
 
         this.textNode.click(function (event) {
+            if (that.node.hasClass('task-removed')) {
+                return;
+            }
             var text = that.textNode;
             // Hide the div
             text.hide();
@@ -201,6 +213,10 @@ Task.prototype = {
 
         this.node.find('span.remove-button').click(function (event) {
             that.remove(true);
+        });
+        
+        this.node.find('button.restore-button').click(function (event) {
+            that.restore();
         });
     }
 };
@@ -281,9 +297,6 @@ $(document).ready(function () {
                 display: ''
             });
         }
-    });
-    
-    $('#archive-button').click(function () {
     });
 });
 

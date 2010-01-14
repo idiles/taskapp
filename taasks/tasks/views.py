@@ -1,9 +1,10 @@
-from simplejson import dumps
+# from simplejson import dumps
 
 from django.http import HttpResponse
 from django.template import RequestContext
+from django.core.urlresolvers import reverse
 from django.utils.simplejson import dumps
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.views.generic.simple import direct_to_template
 from django.db.models import Max
 
@@ -11,12 +12,14 @@ from forms import TaskForm
 from models import Task, TaskInterval
 
 def index(request):
-    tasks = Task.objects.all()
+    tasks = Task.objects.exclude(status=Task.STATUS_REMOVED)
+    
     # We can't call a methods with parameters (request.user) in django templates
     # so do the counts here
     for task in tasks:
         task.started = TaskInterval.objects.filter(task=task, doer=request.user,
             duration=None).count() > 0
+            
     return direct_to_template(request, 'tasks/index.html', dict(
         tasks=tasks))
 
@@ -51,7 +54,14 @@ def update(request, task_id):
 def remove(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
     task.status = task.STATUS_REMOVED
-    task.delete()
+    task.save()
+    return HttpResponse('', status=204)     # No content
+    
+    
+def restore(request, task_id):
+    task = get_object_or_404(Task, pk=task_id)
+    task.status = task.STATUS_NEW
+    task.save()
     return HttpResponse('', status=204)     # No content
     
     
@@ -80,3 +90,16 @@ def stop(request, task_id):
     task.stop(doer=request.user)
     return HttpResponse('', status=204)     # No content
     
+    
+def trash(request):
+    if request.method == 'POST' and 'empty' in request.POST:
+        Task.objects.filter(creator=request.user, 
+            status=Task.STATUS_REMOVED).delete()
+        return redirect(reverse('tasks:list'))
+    
+    tasks = Task.objects.filter(creator=request.user,
+        status=Task.STATUS_REMOVED)
+        
+    return direct_to_template(request, 'tasks/trash.html', dict(
+        tasks=tasks))
+        

@@ -1,9 +1,14 @@
-<div class="task{% if task.started %} task-active{% endif %}{% if task.is_done %} task-done{% endif %}" {% if task %}id="task-{{ task.id }}"{% endif %}>
+<div class="task{% if task.started %} task-active{% endif %}{% if task.is_done %} task-done{% endif %}{% if task.is_removed %} task-removed{% endif %}" {% if task %}id="task-{{ task.id }}"{% endif %}>
+  {% if not task.is_removed %}
   <div class="indicator">•</div>
+  {% else %}
+  <button class="restore-button">Restore</button>
+  {% endif %}
   <div class="view">
     <div class="text">{{ task }}</div>
     <input type="text" value="{{ task }}" class="task-input" />
   </div>
+  {% if not task.is_removed %}
   <div class="edit-view">
     <div class="controls">
       <span class="control-button start-button">start</span>
@@ -16,4 +21,5 @@
       <span class="control-button remove-button">remove</span>
     </div>
   </div>
+  {% endif %}
 </div>

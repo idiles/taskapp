@@ -25,10 +25,16 @@ urlpatterns = patterns('tasks.views',
     # Remove task (move to trash)
     url(r'^(?P<task_id>\d+)/remove$', 'remove', name='remove'),
     
+    # Restore task (move back from trash)
+    url(r'^(?P<task_id>\d+)/restore$', 'restore', name='restore'),
+    
     # Start time tracker
     url(r'^(?P<task_id>\d+)/start$', 'start', name='start'),
     
     # Stop time tracker
     url(r'^(?P<task_id>\d+)/stop$', 'stop', name='stop'),
+    
+    # View trash
+    url(r'^trash$', 'trash', name='trash'),
 
 )
