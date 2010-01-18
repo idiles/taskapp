@@ -63,6 +63,8 @@ SECRET_KEY = 'rl^gdyom0o+e)vde4h^6@=n53ckp7ce5#crv%xkm-p#(f$%p$4'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
+AUTH_PROFILE_MODULE = 'account.userprofile'
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -100,4 +102,5 @@ INSTALLED_APPS = (
     'south',
     'base',
     'tasks',
+    'account'
 )

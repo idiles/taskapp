@@ -1,5 +1,3 @@
-# from simplejson import dumps
-
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
@@ -12,7 +10,7 @@ from forms import TaskForm
 from models import Task, TaskInterval
 
 def index(request):
-    tasks = Task.objects.exclude(status=Task.STATUS_REMOVED)
+    tasks = Task.objects.exclude(removed=True)
     
     # We can't call a methods with parameters (request.user) in django templates
     # so do the counts here
@@ -53,28 +51,28 @@ def update(request, task_id):
 
 def remove(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
-    task.status = task.STATUS_REMOVED
+    task.removed = True
     task.save()
     return HttpResponse('', status=204)     # No content
     
     
 def restore(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
-    task.status = task.STATUS_NEW
+    task.removed = False
     task.save()
     return HttpResponse('', status=204)     # No content
     
     
 def mark_done(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
-    task.status = task.STATUS_DONE
+    task.completed = True
     task.save()
     return HttpResponse('', status=204)     # No content
     
     
 def mark_undone(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
-    task.status = task.STATUS_NEW
+    task.completed = False
     task.save()
     return HttpResponse('', status=204)     # No content
 
@@ -94,11 +92,11 @@ def stop(request, task_id):
 def trash(request):
     if request.method == 'POST' and 'empty' in request.POST:
         Task.objects.filter(creator=request.user, 
-            status=Task.STATUS_REMOVED).delete()
+            removed=True).delete()
         return redirect(reverse('tasks:list'))
     
     tasks = Task.objects.filter(creator=request.user,
-        status=Task.STATUS_REMOVED)
+        removed=True)
         
     return direct_to_template(request, 'tasks/trash.html', dict(
         tasks=tasks))
