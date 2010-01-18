@@ -1,12 +1,10 @@
 from django.conf.urls.defaults import *
 from django.contrib.auth.decorators import login_required, permission_required
 
-from utils.dispatch import by_method
-
 import views
 
 urlpatterns = patterns('tasks.views',
-    url(r'^$', 'index', name='list'),
+    url(r'^$', login_required(views.index), name='list'),
 
     # Create task
     url(r'^create$', 'create', name='create'),
