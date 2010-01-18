@@ -25,7 +25,7 @@ class Migration:
         db.delete_column('tasks_taskinterval', 'duration')
         
         # Adding field 'TaskInterval.stopped'
-        db.add_column('tasks_taskinterval', 'stopped', orm['tasks.taskinterval:stopped'])
+        db.add_column('tasks_taskinterval', 'stopped', models.fields.DateTimeField(null=True))
         
         # Changing field 'Task.completed'
         # (to signature: django.db.models.fields.BooleanField())
