@@ -1,6 +1,7 @@
 from south.db import db
 from django.db import models
-from account.models import *
+
+from account.models import UserProfile
 
 class Migration:
     
@@ -52,6 +53,7 @@ class Migration:
             'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
         },
         'account.userprofile': {
+            'full_name': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True'}),
             'timezone': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'primary_key': 'True'})
         },

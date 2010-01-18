@@ -81,8 +81,6 @@ MIDDLEWARE_CLASSES = (
     'middleware.WsgiLogErrors'
 )
 
-AUTH_PROFILE_MODULE = 'base.UserProfile'
-
 ROOT_URLCONF = 'taasks.urls'
 
 TEMPLATE_DIRS = (
@@ -100,7 +98,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'south',
+    'account',
     'base',
     'tasks',
-    'account'
 )
