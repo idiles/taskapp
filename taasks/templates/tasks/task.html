@@ -1,5 +1,5 @@
-<div class="task{% if task.started %} task-active{% endif %}{% if task.is_done %} task-done{% endif %}{% if task.is_removed %} task-removed{% endif %}" {% if task %}id="task-{{ task.id }}"{% endif %}>
-  {% if not task.is_removed %}
+<div class="task{% if task.started %} task-active{% endif %}{% if task.completed %} task-done{% endif %}{% if task.removed %} task-removed{% endif %}" {% if task %}id="task-{{ task.id }}"{% endif %}>
+  {% if not task.removed %}
   <div class="indicator">•</div>
   {% else %}
   <button class="restore-button">Restore</button>
@@ -8,7 +8,7 @@
     <div class="text">{{ task }}</div>
     <input type="text" value="{{ task }}" class="task-input" />
   </div>
-  {% if not task.is_removed %}
+  {% if not task.removed %}
   <div class="edit-view">
     <div class="controls">
       <span class="control-button start-button">start</span>

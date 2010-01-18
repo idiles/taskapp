@@ -7,23 +7,15 @@ class Migration:
     
     def forwards(self, orm):
         
-        # Adding field 'Task.status'
-        db.add_column('tasks_task', 'status', orm['tasks.task:status'])
+        # Adding field 'Task.removed'
+        db.add_column('tasks_task', 'removed', orm['tasks.task:removed'])
         
-        # Deleting field 'Task.completed'
-        db.delete_column('tasks_task', 'completed')
-        
-    
     
     def backwards(self, orm):
         
-        # Deleting field 'Task.status'
-        db.delete_column('tasks_task', 'status')
+        # Deleting field 'Task.removed'
+        db.delete_column('tasks_task', 'removed')
         
-        # Adding field 'Task.completed'
-        db.add_column('tasks_task', 'completed', orm['tasks.task:completed'])
-        
-    
     
     models = {
         'auth.group': {
@@ -65,7 +57,8 @@ class Migration:
             'creator': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'position': ('django.db.models.fields.IntegerField', [], {}),
-            'status': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
+            'completed': ('django.db.models.fields.BooleanField', [], {'default': False}),
+            'removed': ('django.db.models.fields.BooleanField', [], {'default': False}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         'tasks.taskinterval': {

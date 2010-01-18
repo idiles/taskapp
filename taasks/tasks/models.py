@@ -12,7 +12,8 @@ class Task(models.Model):
     title = models.CharField(max_length=200)
     created = models.DateTimeField(default=datetime.now)
     position = models.IntegerField()
-    status = models.IntegerField(default=STATUS_NEW)
+    completed = models.BooleanField(default=False)
+    removed = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.title
@@ -39,14 +40,6 @@ class Task(models.Model):
         for interval in started_intervals:
             interval.stop(now)
             interval.save()
-            
-    @property
-    def is_done(self):
-        return self.status == self.STATUS_DONE
-        
-    @property
-    def is_removed(self):
-        return self.status == self.STATUS_REMOVED
         
 
 class TaskInterval(models.Model):
