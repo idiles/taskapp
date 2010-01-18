@@ -1,25 +1,26 @@
-
 from south.db import db
 from django.db import models
-from base.models import *
+
+from account.models import UserProfile
 
 class Migration:
     
     def forwards(self, orm):
         
         # Adding model 'UserProfile'
-        db.create_table('base_userprofile', (
-            ('user', orm['base.UserProfile:user']),
-            ('timezone', orm['base.UserProfile:timezone']),
+        db.create_table('account_userprofile', (
+            ('user', orm['account.UserProfile:user']),
+            ('full_name', orm['account.UserProfile:full_name']),
+            ('timezone', orm['account.UserProfile:timezone']),
         ))
-        db.send_create_signal('base', ['UserProfile'])
+        db.send_create_signal('account', ['UserProfile'])
         
     
     
     def backwards(self, orm):
         
         # Deleting model 'UserProfile'
-        db.delete_table('base_userprofile')
+        db.delete_table('account_userprofile')
         
     
     
@@ -51,7 +52,8 @@ class Migration:
             'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'blank': 'True'}),
             'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
         },
-        'base.userprofile': {
+        'account.userprofile': {
+            'full_name': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True'}),
             'timezone': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'primary_key': 'True'})
         },
@@ -64,4 +66,4 @@ class Migration:
         }
     }
     
-    complete_apps = ['base']
+    complete_apps = ['account']

@@ -1,15 +1,13 @@
 from django.contrib.auth.models import User
+from django.contrib import admin
 from django.db import models
 
 class UserProfile(models.Model):
-    """User profile with various additional settings.
-    """
     user = models.ForeignKey(User, primary_key=True)
-
+    full_name = models.CharField(max_length=100)
     timezone = models.CharField(max_length=50, null=True)
-
-    def __unicode__(self):
-        return '%s (%s)' % (self.user.get_full_name(), self.user.email)
+    
+admin.site.register(UserProfile)
 
 def create_profile(signal, **kwargs):
     if kwargs.get('created'):

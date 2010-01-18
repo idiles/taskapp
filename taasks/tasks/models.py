@@ -4,10 +4,6 @@ from django.contrib.auth.models import User
 from django.db import models
 
 class Task(models.Model):
-    STATUS_NEW = 1
-    STATUS_DONE = 2
-    STATUS_REMOVED = 3
-    
     creator = models.ForeignKey(User)
     title = models.CharField(max_length=200)
     created = models.DateTimeField(default=datetime.now)

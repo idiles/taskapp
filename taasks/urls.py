@@ -21,6 +21,9 @@ urlpatterns = patterns('',
         
     # Include tasks app
     (r'^tasks/', include('tasks.urls', namespace='tasks')),
+    
+    # Include accounts app
+    (r'^account/', include('account.urls', namespace='account')),
 )
 
 if settings.DEBUG:
@@ -35,4 +38,4 @@ if settings.DEBUG:
             dict(document_root=settings.MEDIA_ROOT)),
 
     )
-
+    
