@@ -13,16 +13,14 @@
 
   <div id="header">
     <ul id="menubar">
-      <li class="item"><a href="{% url home %}">Home</a></li>
       {% if user.is_authenticated %}
-      <li class="item">{{ request.user.get_profile.full_name }}</li>
-      <!--li class="item"><%= link_to "Profile", :controller => 'profile' %></li-->
+      <li class="item">{{ user.get_profile.full_name }}</li>
+      
       <li class="item"><a href="{% url tasks:list %}">Tasks</a></li>
-      <!--li class="item"><a href="/people">People</a></li>
-      <li class="item"><%= link_to "Settings", 
-        :controller => 'profile', :action => 'settings' %></li-->
+      
       <li class="item"><a href="{% url logout %}">Logout</a></li>
       {% else %}
+      <li class="item"><a href="{% url account:create %}">Sign Up</a></li>
       <li class="item"><a href="{% url login %}">Login</a></li>
       {% endif %}
     </ul>
@@ -37,10 +35,6 @@
           {% block content %}{% endblock %}
         </td>
         <td id="side-pane">
-          <!--% if @connections %>
-            <%= render(:partial => 'connections', :person => 'test')  %>
-          <% end %-->
-          
           {% if tasks %}
           <div id="timer">
             <div class="title" style="margin-bottom: 5px">Hours today</div>
@@ -50,17 +44,9 @@
           
           <ul>
             {% if tasks %}
-            <!--li><%= link_to "Archive", 
-              :controller => :tasks, 
-              :action => :archive %></li-->
             <li><a href="{% url tasks:trash %}">Trash</a></li>
             <hr />
             {% endif %}
-            <!-- <li><a href="#">Personal messages (2)</a></li> 
-            <hr />
-            <li><a href="#">Invite people</a></li>
-            -->
-            
           </ul>
           
           <a href="/goodies/mac" id="ad">

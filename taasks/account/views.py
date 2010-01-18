@@ -7,20 +7,20 @@ from django.views.generic.simple import direct_to_template
 
 from forms import RegistrationForm
 
-def register(request):
+def create(request):
     form = RegistrationForm()
     
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(reverse('account:registered'))
+            return redirect(reverse('account:confirm'))
         
-    return direct_to_template(request, 'account/register.html', 
+    return direct_to_template(request, 'account/create.html', 
         dict(form=form))
     
     
-def registered(request):
-    return direct_to_template(request, 'account/registered.html', 
+def confirm(request):
+    return direct_to_template(request, 'account/confirm.html', 
         dict())
         
