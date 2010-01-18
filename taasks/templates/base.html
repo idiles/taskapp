@@ -15,6 +15,7 @@
     <ul id="menubar">
       <li class="item"><a href="{% url home %}">Home</a></li>
       {% if user.is_authenticated %}
+      <li class="item">{{ request.user.get_profile.full_name }}</li>
       <!--li class="item"><%= link_to "Profile", :controller => 'profile' %></li-->
       <li class="item"><a href="{% url tasks:list %}">Tasks</a></li>
       <!--li class="item"><a href="/people">People</a></li>
