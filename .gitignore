@@ -8,6 +8,9 @@
 *.swp
 log/
 
+# Uploaded files
+taasks/static/pictures/
+
 # SQLite databases
 *.sqlite3
 

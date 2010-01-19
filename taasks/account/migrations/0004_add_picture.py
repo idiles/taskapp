@@ -7,15 +7,15 @@ class Migration:
     
     def forwards(self, orm):
         
-        # Adding field 'UserProfile.photo'
-        db.add_column('account_userprofile', 'photo', orm['account.userprofile:photo'])
+        # Adding field 'UserProfile.picture'
+        db.add_column('account_userprofile', 'picture', orm['account.userprofile:picture'])
         
     
     
     def backwards(self, orm):
         
-        # Deleting field 'UserProfile.photo'
-        db.delete_column('account_userprofile', 'photo')
+        # Deleting field 'UserProfile.picture'
+        db.delete_column('account_userprofile', 'picture')
         
     
     
@@ -25,7 +25,7 @@ class Migration:
             'experience': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'location': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True'}),
-            'photo': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True'}),
+            'picture': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True'}),
             'timezone': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'primary_key': 'True'}),
             'website': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'})

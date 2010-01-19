@@ -6,14 +6,11 @@ from django.db import models
 
 class UserProfile(models.Model):
     
-    def make_photo_upload_path(instance, filename):
-        import pdb; pdb.set_trace()
-        ext = os.splitpath(filename)[1]
-        path = 'photos/%s%s' % (instance.user.id, ext)
-        print path
+    def make_picture_upload_path(instance, filename):
+        ext = os.path.splitext(filename)[1]
+        path = 'pictures/%s%s' % (instance.user.id, ext)
         return path
         
-    
     user = models.ForeignKey(User, primary_key=True)
     name = models.CharField(max_length=100, null=True)
     location = models.CharField(max_length=100, blank=True, null=True)
@@ -21,7 +18,24 @@ class UserProfile(models.Model):
     about = models.CharField(max_length=100, blank=True, null=True)
     experience = models.TextField(blank=True, null=True)
     timezone = models.CharField(max_length=50, blank=True, null=True)
-    photo = models.ImageField(upload_to=make_photo_upload_path, null=True)
+    picture = models.ImageField(upload_to=make_picture_upload_path, null=True)
+    
+    def get_picture_url(self, size):
+        if self.picture:
+            url = self.picture.url
+            parts = os.path.splitext(url)
+            url = '%s%s%s' % (parts[0], size, parts[1])
+            return url
+        else:
+            return '/img/avatar-%s.jpg' % size
+    
+    @property
+    def small_picture_url(self):
+        return self.get_picture_url('s')
+        
+    @property
+    def medium_picture_url(self):
+        return self.get_picture_url('m')
     
 admin.site.register(UserProfile)
 

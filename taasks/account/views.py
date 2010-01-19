@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.views.generic.simple import direct_to_template
 from django.contrib.auth.models import User
 
-from forms import RegistrationForm, ProfileSettingsForm
+from forms import RegistrationForm, ProfileSettingsForm, ProfilePictureForm
 
 def create(request):
     form = RegistrationForm()
@@ -51,4 +51,23 @@ def settings(request):
     
     return direct_to_template(request, 'account/settings.html', 
         dict(form=form))
+        
+        
+def picture(request):
+    profile = request.user.get_profile()
+    form = ProfilePictureForm(profile)
+    
+    if request.method == 'POST':
+        if 'delete' in request.POST:
+            profile.picture.delete()
+            profile.save()
+            return redirect(reverse('account:picture'))
+        else:
+            form = ProfilePictureForm(profile, request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                return redirect(reverse('account:picture'))
+    
+    return direct_to_template(request, 'account/picture.html', 
+        dict(profile=profile, form=form))
         

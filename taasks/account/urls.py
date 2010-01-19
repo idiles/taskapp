@@ -13,4 +13,5 @@ urlpatterns = patterns('account.views',
     # url(r'^profile$', 'profile', name='profile'),
     
     url(r'^settings$', 'settings', name='settings'),
+    url(r'^picture$', 'picture', name='picture'),
 )
