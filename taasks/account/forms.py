@@ -14,7 +14,7 @@ from models import UserProfile
 
 
 class RegistrationForm(forms.Form):
-    full_name = forms.CharField(max_length=50,
+    name = forms.CharField(max_length=50,
         label=_(u'Full name'),
         help_text=_(u'Enter your full name'))
     username = forms.CharField(max_length=20,
@@ -27,7 +27,7 @@ class RegistrationForm(forms.Form):
     def clean_username(self):
         username = self.cleaned_data['username']
         if User.objects.filter(username=username).count():
-            raise forms.ValidationError(_(u'Not unique!'))
+            raise forms.ValidationError(_(u'Username is already taken'))
         return username
     
     def save(self):
@@ -36,7 +36,7 @@ class RegistrationForm(forms.Form):
         user.set_password(self.cleaned_data['password'])
         user.save()
         profile = user.get_profile()
-        profile.full_name = self.cleaned_data['full_name']
+        profile.name = self.cleaned_data['name']
         profile.save()
         return user
         
@@ -44,7 +44,7 @@ class RegistrationForm(forms.Form):
 class ProfileSettingsForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['full_name', 'location', 'website', 'about', 'experience']
+        fields = ['name', 'location', 'website', 'about', 'experience']
     
     website = forms.URLField(label=_(u'Website'),
         required=False)
@@ -53,4 +53,10 @@ class ProfileSettingsForm(forms.ModelForm):
         label=_(u'About'),
         widget=forms.Textarea(attrs=dict(rows=4)),
         required=False)
+        
+    # def clean_username(self):
+    #     username = self.cleaned_data['username']
+    #     if User.objects.filter(username=username).count():
+    #         raise forms.ValidationError(_(u'Username is already taken'))
+    #     return username
         

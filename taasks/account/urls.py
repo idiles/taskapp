@@ -10,5 +10,7 @@ urlpatterns = patterns('account.views',
     
     # url(r'^confirm$', 'confirm', name='confirm'),
     
+    # url(r'^profile$', 'profile', name='profile'),
+    
     url(r'^settings$', 'settings', name='settings'),
 )

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}{{ profile.user.username }}{% endblock %}
+
+{% block css_links %}
+{% endblock %}
+
+{% block js_links %}
+<script src="{{ MEDIA_URL }}/js/account.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<h1>{{ profile.user.username }}</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <td>{{ profile.name }}</td>
+  </tr>
+  <tr>
+    <th>Location</th>
+    <td>{{ profile.location }}</td>
+  </tr>
+  <tr>
+    <th>Website</th>
+    <td><a href="{{ profile.website }}" target="new">{{ profile.website }}</a></td>
+  </tr>
+  <tr>
+    <th>About</th>
+    <td>{{ profile.about }}</td>
+  </tr>
+</table>
+
+<h2>Experience</h2>
+<div>
+  {{ profile.experience }}
+</div>
+
+{% endblock %}

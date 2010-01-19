@@ -24,6 +24,8 @@ urlpatterns = patterns('',
     
     # Include accounts app
     (r'^account/', include('account.urls', namespace='account')),
+    
+    url(r'^(?P<username>\w+)$', 'account.views.profile', name='account:profile'),
 )
 
 if settings.DEBUG:

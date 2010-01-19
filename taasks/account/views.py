@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.utils.simplejson import dumps
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.views.generic.simple import direct_to_template
+from django.contrib.auth.models import User
 
 from forms import RegistrationForm, ProfileSettingsForm
 
@@ -29,6 +30,13 @@ def thankyou(request):
 # def confirm(request):
 #     return direct_to_template(request, 'account/confirm.html', 
 #         dict())
+
+
+def profile(request, username):
+    user = get_object_or_404(User, username=username)
+    profile = user.get_profile()
+    return direct_to_template(request, 'account/profile.html', 
+        dict(profile=profile))
 
 
 def settings(request):
