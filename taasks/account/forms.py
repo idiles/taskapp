@@ -10,6 +10,9 @@ from django.utils.translation import ugettext as _
 from django.forms.forms import BoundField
 from django.contrib.auth.models import User
 
+from models import UserProfile
+
+
 class RegistrationForm(forms.Form):
     full_name = forms.CharField(max_length=50,
         label=_(u'Full name'),
@@ -36,4 +39,18 @@ class RegistrationForm(forms.Form):
         profile.full_name = self.cleaned_data['full_name']
         profile.save()
         return user
+        
+        
+class ProfileSettingsForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['full_name', 'location', 'website', 'about', 'experience']
+    
+    website = forms.URLField(label=_(u'Website'),
+        required=False)
+        
+    about = forms.CharField(max_length=50,
+        label=_(u'About'),
+        widget=forms.Textarea(attrs=dict(rows=4)),
+        required=False)
         
