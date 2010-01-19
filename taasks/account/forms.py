@@ -15,7 +15,7 @@ from models import UserProfile
 
 class RegistrationForm(forms.Form):
     name = forms.CharField(max_length=50,
-        label=_(u'Full name'),
+        label=_(u'Name'),
         help_text=_(u'Enter your full name'))
     username = forms.CharField(max_length=20,
         label=_(u'Username'),
@@ -41,22 +41,51 @@ class RegistrationForm(forms.Form):
         return user
         
         
-class ProfileSettingsForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ['name', 'location', 'website', 'about', 'experience']
+class ProfileSettingsForm(forms.Form):
+    name = forms.CharField(max_length=50,
+        label=_(u'Name'))
+        
+    username = forms.CharField(max_length=20,
+        label=_(u'Username'))
     
     website = forms.URLField(label=_(u'Website'),
         required=False)
         
-    about = forms.CharField(max_length=50,
+    about = forms.CharField(
         label=_(u'About'),
         widget=forms.Textarea(attrs=dict(rows=4)),
         required=False)
         
-    # def clean_username(self):
-    #     username = self.cleaned_data['username']
-    #     if User.objects.filter(username=username).count():
-    #         raise forms.ValidationError(_(u'Username is already taken'))
-    #     return username
+    experience = forms.CharField(
+        label=_(u'Experience'),
+        widget=forms.Textarea(attrs=dict(rows=10)),
+        required=False)
+        
+    def __init__(self, profile, *args, **kwargs):
+        super(ProfileSettingsForm, self).__init__(*args, **kwargs)
+        self.profile = profile
+        self.initial['name'] = profile.name
+        self.initial['username'] = profile.user.username
+        self.initial['website'] = profile.website
+        self.initial['about'] = profile.about
+        self.initial['experience'] = profile.experience
+        
+    def save(self):
+        self.profile.name = self.cleaned_data['name']
+        self.profile.user.username = self.cleaned_data['username']
+        self.profile.website = self.cleaned_data['website']
+        self.profile.about = self.cleaned_data['about']
+        self.profile.experience = self.cleaned_data['experience']
+        
+        self.profile.user.save()
+        self.profile.save()
+        
+        return self.profile
+        
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if username != self.profile.user.username \
+                and User.objects.filter(username=username).count():
+            raise forms.ValidationError(_(u'Username is already taken'))
+        return username
         

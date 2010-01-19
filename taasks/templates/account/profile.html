@@ -18,23 +18,31 @@
     <th>Name</th>
     <td>{{ profile.name }}</td>
   </tr>
+  {% if profile.location %}
   <tr>
     <th>Location</th>
     <td>{{ profile.location }}</td>
   </tr>
+  {% endif %}
+  {% if profile.website %}
   <tr>
     <th>Website</th>
     <td><a href="{{ profile.website }}" target="new">{{ profile.website }}</a></td>
   </tr>
+  {% endif %}
+  {% if profile.about %}
   <tr>
     <th>About</th>
     <td>{{ profile.about }}</td>
   </tr>
+  {% endif %}
 </table>
 
+{% if profile.experience %}
 <h2>Experience</h2>
 <div>
   {{ profile.experience }}
 </div>
+{% endif %}
 
 {% endblock %}

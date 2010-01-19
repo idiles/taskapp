@@ -41,10 +41,10 @@ def profile(request, username):
 
 def settings(request):
     profile = request.user.get_profile()
-    form = ProfileSettingsForm(instance=profile)
+    form = ProfileSettingsForm(profile=profile)
     
     if request.method == 'POST':
-        form = ProfileSettingsForm(request.POST, instance=profile)
+        form = ProfileSettingsForm(profile, request.POST)
         if form.is_valid():
             form.save()
             return redirect(reverse('account:settings'))
