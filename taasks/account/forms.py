@@ -11,8 +11,12 @@ from django.forms.forms import BoundField
 from django.contrib.auth.models import User
 
 class RegistrationForm(forms.Form):
-    full_name = forms.CharField(max_length=50)
-    username = forms.CharField(max_length=20)
+    full_name = forms.CharField(max_length=50,
+        label=_(u'Full name'),
+        help_text=_(u'Enter your full name'))
+    username = forms.CharField(max_length=20,
+        label=_(u'Username'),
+        help_text=_(u'http://taasks.com/USERNAME'))
     password = forms.CharField(min_length=6, max_length=20,
         widget=forms.PasswordInput)
     email = forms.EmailField(max_length=100)
