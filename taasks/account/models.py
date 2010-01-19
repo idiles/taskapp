@@ -4,7 +4,7 @@ from django.db import models
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, primary_key=True)
-    full_name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     location = models.CharField(max_length=100, blank=True, null=True)
     website = models.CharField(max_length=100, blank=True, null=True)
     about = models.CharField(max_length=100, blank=True, null=True)
