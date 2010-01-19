@@ -14,13 +14,18 @@ def create(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(reverse('account:confirm'))
-        
+            return redirect(reverse('account:thankyou'))
+    
     return direct_to_template(request, 'account/create.html', 
         dict(form=form))
     
     
-def confirm(request):
-    return direct_to_template(request, 'account/confirm.html', 
+def thankyou(request):
+    return direct_to_template(request, 'account/thankyou.html', 
         dict())
-        
+
+
+# Do we need email confirmation in the first release?
+# def confirm(request):
+#     return direct_to_template(request, 'account/confirm.html', 
+#         dict())

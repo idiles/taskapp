@@ -6,5 +6,6 @@ import views
 urlpatterns = patterns('account.views',
     # Registration
     url(r'^create$', 'create', name='create'),
-    url(r'^confirm$', 'confirm', name='confirm'),
+    url(r'^thankyou$', 'thankyou', name='thankyou'),
+    # url(r'^confirm$', 'confirm', name='confirm'),
 )
