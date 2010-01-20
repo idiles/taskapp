@@ -56,9 +56,27 @@ class Task(models.Model):
                         '<span class="due-date">^%s</span>' % due_date, 
                         title)
                     break
+                    
+        TAG_RE = r'\#\w+\d*'
+        matches = re.findall(TAG_RE, title)
+        if matches:
+            tag = matches[0][1:]
+            title = re.sub(TAG_RE, 
+                '<span class="tag">#%s</span>' % tag, 
+                title)
 
         return title
-            
+        
+    @property
+    def tags(self):
+        """Exctract all tags from the task title."""
+        TAG_RE = r'\#\w+\d*'
+        matches = re.findall(TAG_RE, title)
+        tags = []
+        for m in matches:
+            tags.append(m[1:])
+        return tags
+        
             
 class TaskRegexp(object):
     """Helper class to extract date from task text."""

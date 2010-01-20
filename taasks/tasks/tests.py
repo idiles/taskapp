@@ -23,7 +23,8 @@ class TaskTest(TestCase):
             due_date=due_date)
             
         self.failUnlessEqual(task.html, 
-            '#bug Fix everything <span class="due-date">^%s</span>!' \
+            '<span class="tag">#bug</span> Fix everything '
+            '<span class="due-date">^%s</span>!' \
                 % today.strftime(task.DATE_FORMAT))
 
 
