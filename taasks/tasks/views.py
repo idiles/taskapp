@@ -1,3 +1,5 @@
+import re
+
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
@@ -28,6 +30,9 @@ def create(request, format=None):
     
     if request.method == 'POST':
         title = request.POST['title']
+        
+        # date_re = re.search('\^\w+')
+        
         position = (Task.objects.aggregate(Max('position'))['position__max'] \
             or 0) + 1
         task = Task(creator=request.user,
