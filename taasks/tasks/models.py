@@ -3,6 +3,7 @@ import re
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Max, Sum
 
 class Task(models.Model):
     creator = models.ForeignKey(User)
@@ -40,6 +41,12 @@ class Task(models.Model):
         for interval in started_intervals:
             interval.stop(now)
             interval.save()
+            
+    def duration(self, user):
+        """Return time spent on this task in hours."""
+        duration = TaskInterval.get_hours(user, task=self)
+        print duration
+        return '%.2f' % duration
             
     @property
     def html(self):
@@ -186,3 +193,26 @@ class TaskInterval(models.Model):
         if now is None:
             now = datetime.now()
         self.duration = (now - self.started).seconds
+    
+    @staticmethod
+    def get_hours(user, start=None, task=None):
+        query_filter = dict(doer=user)
+        
+        if start is not None:
+            query_filter['started__gte'] = start
+        
+        if task is not None:
+            query_filter['task'] = task
+            
+        duration = TaskInterval.objects.filter(**query_filter).aggregate(
+            Sum('duration'))['duration__sum'] or 0
+            
+        query_filter['duration'] = None
+        running = TaskInterval.objects.filter(**query_filter)
+        if running.count():
+            now = datetime.now()
+            duration += (now - running[0].started).seconds    
+        duration = duration / 3600.  # In hours
+        
+        return duration
+        

@@ -38,9 +38,10 @@
           {% block content %}{% endblock %}
         </td>
         <td id="side-pane">
+          {% if user.is_authenticated %}
           <div id="timer">
             <div class="title" style="margin-bottom: 5px">Hours today</div>
-            <span class="time">0.00</span>
+            <span class="time">{{ timer.hours_today }}</span>
           </div>
           
           <ul>
@@ -55,6 +56,7 @@
             <span class="text">Try out Taasks widget and desktop app for your Mac.</span>
             <span class="link">view &rarr;</span>
           </a>
+          {% endif %}
         </td>
       </tr>
     </tbody>

@@ -1,3 +1,4 @@
+{% load tasks %}
 <div class="task{% if task.started %} task-active{% endif %}{% if task.completed %} task-done{% endif %}{% if task.removed %} task-removed{% endif %}" {% if task %}id="task-{{ task.id }}"{% endif %}>
   {% if not task.removed %}
   <div class="indicator">•</div>
@@ -10,6 +11,9 @@
   </div>
   {% if not task.removed %}
   <div class="edit-view">
+    <div class="timer">
+      {% task_duration %}
+    </div>
     <div class="controls">
       <span class="control-button start-button">start</span>
       <span class="control-button stop-button">stop</span>
