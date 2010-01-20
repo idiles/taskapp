@@ -59,11 +59,9 @@ class Task(models.Model):
                     
         TAG_RE = r'\#\w+\d*'
         matches = re.findall(TAG_RE, title)
-        if matches:
-            tag = matches[0][1:]
-            title = re.sub(TAG_RE, 
-                '<span class="tag">#%s</span>' % tag, 
-                title)
+        for m in matches:
+            tag = m[1:]
+            title = title.replace(m, '<span class="tag">#%s</span>' % tag)
 
         return title
         
