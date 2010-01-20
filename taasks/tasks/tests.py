@@ -17,7 +17,7 @@ class TaskTest(TestCase):
         tre = TaskRegexp()
         title = '#bug Fix everything ^today!'
         today = datetime.now().date()
-        due_date = tre.get_date(title)['date']
+        due_date = tre.get_date(title)
         
         task = Task(title=title,
             due_date=due_date)
@@ -34,14 +34,14 @@ class TaskRegexpTest(TestCase):
 
         today = datetime.now().date()
         tomorrow = today + timedelta(days=1)
-        self.failUnlessEqual(tre.get_date('Do something crazy ^today')['date'], today)
-        self.failUnlessEqual(tre.get_date('Sleep well ^tomorrow')['date'], tomorrow)
+        self.failUnlessEqual(tre.get_date('Do something crazy ^today'), today)
+        self.failUnlessEqual(tre.get_date('Sleep well ^tomorrow'), tomorrow)
 
-        due_date = tre.get_date('Meet friends ^Jun23 or ^Jan24.')['date']
+        due_date = tre.get_date('Meet friends ^Jun23 or ^Jan24.')
         self.failUnlessEqual((due_date.month, due_date.day), (6, 23))
         self.failUnlessEqual(due_date.year, today.year)
 
-        due_date = tre.get_date('Upgrade the server ^2010-04-28')['date']
+        due_date = tre.get_date('Upgrade the server ^2010-04-28')
         self.failUnlessEqual((due_date.year, due_date.month, due_date.day),
             (2010, 4, 28))
         

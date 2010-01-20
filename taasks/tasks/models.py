@@ -91,7 +91,6 @@ class TaskRegexp(object):
             - ^2010-05-01
             - ^05/01/2010
         """
-        result = dict(date=None, text=text, html=None)
         today = datetime.now().date()
         
         # Today, tomorrow
@@ -99,26 +98,26 @@ class TaskRegexp(object):
         if matches:
             day = matches[0][1:]
             if day == 'today':
-                result['date'] = today
+                return today
             elif day == 'tomorrow':
-                result['date'] = today + timedelta(days=1)
-                return result
+                date = today + timedelta(days=1)
+                return date
                 
         # Full date (Y-M-D)
         matches = re.findall(self.DATE_FULL_ISO_RE, text)
         if matches:
             value = matches[0][1:]
             year, month, day = map(int, value.split('-'))
-            result['date'] = datetime(year, month, day)
-            return result
+            date = datetime(year, month, day)
+            return date
             
         # Full date (M/D/Y)
         matches = re.findall(self.DATE_FULL_RE, text)
         if matches:
             value = matches[0][1:]
             month, day, year = map(int, value.split('-'))
-            result['date'] = datetime(year, month, day)
-            return result
+            date = datetime(year, month, day)
+            return date
                 
         # Month and day (e.g. Jun10, dec1)
         matches = re.findall(self.DATE_MONTH_DAY_RE, text)
@@ -126,11 +125,9 @@ class TaskRegexp(object):
             value = matches[0][1:].lower()
             month = self.MONTHS[value[:3]]
             day = int(value[3:])
-            result['date'] = datetime(today.year, month, day)
-            return result
+            date = datetime(today.year, month, day)
+            return date
             
-        return result
-        
 
 class TaskInterval(models.Model):
     task = models.ForeignKey(Task)

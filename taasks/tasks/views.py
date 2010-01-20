@@ -32,7 +32,7 @@ def create(request, format=None):
         title = request.POST['title']
         
         tre = TaskRegexp()
-        due_date = tre.get_date(title)['date']
+        due_date = tre.get_date(title)
         
         position = (Task.objects.aggregate(Max('position'))['position__max'] \
             or 0) + 1
@@ -54,7 +54,7 @@ def update(request, task_id):
     if form.is_valid():
         task = form.save()
         tre = TaskRegexp()
-        due_date = tre.get_date(task.title)['date']
+        due_date = tre.get_date(task.title)
         task.due_date = due_date
         task.save()
         return HttpResponse(dumps(dict(html=task.html)))
