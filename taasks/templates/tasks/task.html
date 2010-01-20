@@ -5,8 +5,8 @@
   <button class="restore-button">Restore</button>
   {% endif %}
   <div class="view">
-    <div class="text">{{ task }}</div>
-    <input type="text" value="{{ task }}" class="task-input" />
+    <div class="text">{{ task.html|safe }}</div>
+    <input type="text" value="{{ task.title }}" class="task-input" />
   </div>
   {% if not task.removed %}
   <div class="edit-view">

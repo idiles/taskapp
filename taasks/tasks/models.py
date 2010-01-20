@@ -11,7 +11,9 @@ class Task(models.Model):
     position = models.IntegerField()
     completed = models.BooleanField(default=False)
     removed = models.BooleanField(default=False)
-    due_date = models.DateField(null=True)
+    due_date = models.DateField(blank=True, null=True)
+    
+    DATE_FORMAT = '%Y-%m-%d'
 
     def __unicode__(self):
         return self.title
@@ -39,6 +41,24 @@ class Task(models.Model):
             interval.stop(now)
             interval.save()
             
+    @property
+    def html(self):
+        """HTML view."""
+        tre = TaskRegexp()
+        title = self.title
+        if self.due_date:
+            due_date = self.due_date.strftime(self.DATE_FORMAT)
+            
+            for regexp in [tre.DATE_FULL_ISO_RE, tre.DATE_FULL_RE, 
+                    tre.DATE_MONTH_DAY_RE, tre.DATE_DAY_RE]:
+                if re.findall(regexp, title):
+                    title = re.sub(regexp, 
+                        '<span class="due-date">^%s</span>' % due_date, 
+                        title)
+                    break
+
+        return title
+            
             
 class TaskRegexp(object):
     """Helper class to extract date from task text."""
@@ -58,49 +78,58 @@ class TaskRegexp(object):
         'dec': 12
     }
     
+    DATE_DAY_RE = r'\^\w+'
+    DATE_FULL_ISO_RE = r'\^\d{4}-\d{2}-\d{2}'
+    DATE_FULL_RE = r'\^\d{2}/\d{2}/\d{4}'
+    DATE_MONTH_DAY_RE = r'\^\w+\d+'
+    
     def get_date(self, text):
         """Date starts with ^. Examples:
         
-            - ^today
+            - ^today, ^tomorrow
             - ^oct10
             - ^2010-05-01
             - ^05/01/2010
         """
+        result = dict(date=None, text=text, html=None)
         today = datetime.now().date()
         
         # Today, tomorrow
-        matches = re.findall(r'\^\w+', text)
+        matches = re.findall(self.DATE_DAY_RE, text)
         if matches:
             day = matches[0][1:]
             if day == 'today':
-                return today
+                result['date'] = today
             elif day == 'tomorrow':
-                return today + timedelta(days=1)
+                result['date'] = today + timedelta(days=1)
+                return result
                 
         # Full date (Y-M-D)
-        matches = re.findall(r'\^\d{4}-\d{2}-\d{2}', text)
+        matches = re.findall(self.DATE_FULL_ISO_RE, text)
         if matches:
             value = matches[0][1:]
             year, month, day = map(int, value.split('-'))
-            date = datetime(year, month, day)
-            return date
+            result['date'] = datetime(year, month, day)
+            return result
             
         # Full date (M/D/Y)
-        matches = re.findall(r'\^\d{2}/\d{2}/\d{4}', text)
+        matches = re.findall(self.DATE_FULL_RE, text)
         if matches:
             value = matches[0][1:]
             month, day, year = map(int, value.split('-'))
-            date = datetime(year, month, day)
-            return date
+            result['date'] = datetime(year, month, day)
+            return result
                 
         # Month and day (e.g. Jun10, dec1)
-        matches = re.findall(r'\^\w+\d+', text)
+        matches = re.findall(self.DATE_MONTH_DAY_RE, text)
         if matches:
             value = matches[0][1:].lower()
             month = self.MONTHS[value[:3]]
             day = int(value[3:])
-            date = datetime(today.year, month, day)
-            return date
+            result['date'] = datetime(today.year, month, day)
+            return result
+            
+        return result
         
 
 class TaskInterval(models.Model):

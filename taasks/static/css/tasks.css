@@ -262,7 +262,7 @@ p:first-child {
   cursor: pointer;
 }
 
-.task span.task-duedate {
+.task span.due-date {
   color: green;
   font-size: 11px;
   cursor: pointer;

@@ -9,7 +9,7 @@ from django.views.generic.simple import direct_to_template
 from django.db.models import Max
 
 from forms import TaskForm
-from models import Task, TaskInterval
+from models import Task, TaskInterval, TaskRegexp
 
 def index(request):
     tasks = Task.objects.exclude(removed=True)
@@ -31,16 +31,18 @@ def create(request, format=None):
     if request.method == 'POST':
         title = request.POST['title']
         
-        # date_re = re.search('\^\w+')
+        tre = TaskRegexp()
+        due_date = tre.get_date(title)['date']
         
         position = (Task.objects.aggregate(Max('position'))['position__max'] \
             or 0) + 1
         task = Task(creator=request.user,
             title=title,
-            position=position)
+            position=position,
+            due_date=due_date)
         task.save()
         
-    resp = dict(format=format, id=task.id)
+    resp = dict(format=format, id=task.id, html=task.html)
     resp_json = dumps(resp)
     
     return HttpResponse(resp_json)
@@ -51,7 +53,11 @@ def update(request, task_id):
     form = TaskForm(request.POST, instance=task)
     if form.is_valid():
         task = form.save()
-        return HttpResponse(dumps(dict(html=task.title)))
+        tre = TaskRegexp()
+        due_date = tre.get_date(task.title)['date']
+        task.due_date = due_date
+        task.save()
+        return HttpResponse(dumps(dict(html=task.html)))
 
 
 def remove(request, task_id):
