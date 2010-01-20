@@ -256,6 +256,10 @@ p:first-child {
   cursor: pointer;
 }
 
+.task span.estimate {
+  color: orange;
+}
+
 .task span.task-person {
   color: #555;
   font-size: 11px;

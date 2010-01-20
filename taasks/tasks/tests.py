@@ -26,6 +26,10 @@ class TaskTest(TestCase):
             '<span class="tag">#bug</span> Fix everything '
             '<span class="due-date">^%s</span>!' \
                 % today.strftime(task.DATE_FORMAT))
+                
+    def test_estimation(self):
+        task = Task(title='Write functional tests ~3')
+        self.failUnlessEqual(task.estimate, 3)
 
 
 class TaskRegexpTest(TestCase):

@@ -62,6 +62,12 @@ class Task(models.Model):
         for m in matches:
             tag = m[1:]
             title = title.replace(m, '<span class="tag">#%s</span>' % tag)
+            
+        ESTIMATE_RE = r'~\d+'
+        matches = re.findall(ESTIMATE_RE, title)
+        if matches:
+            estimate = matches[0][1:]
+            title = title.replace(matches[0], '<span class="estimate">~%s</span>' % estimate)
 
         return title
         
@@ -69,12 +75,21 @@ class Task(models.Model):
     def tags(self):
         """Exctract all tags from the task title."""
         TAG_RE = r'\#\w+\d*'
-        matches = re.findall(TAG_RE, title)
+        matches = re.findall(TAG_RE, self.title)
         tags = []
         for m in matches:
             tags.append(m[1:])
         return tags
         
+    @property
+    def estimate(self):
+        """Exctract estimate in hours from the task title."""
+        ESTIMATE_RE = r'~\d+'
+        matches = re.findall(ESTIMATE_RE, self.title)
+        if matches:
+            estimate = int(matches[0][1:])
+            return estimate
+            
             
 class TaskRegexp(object):
     """Helper class to extract date from task text."""
