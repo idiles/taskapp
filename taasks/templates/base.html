@@ -14,10 +14,11 @@
   <div id="header">
     <ul id="menubar">
       {% if user.is_authenticated %}
-      <li class="item">{{ user.get_profile.name }}</li>
+      <!-- <li class="item">{{ user.get_profile.name }}</li> -->
+      <li class="item"><a href="/">Home</a></li>
       
       <li class="item"><a href="/{{ user.username }}">Profile</a></li>
-      <li class="item"><a href="{% url tasks:list %}">Tasks</a></li>
+      <li class="item"><a href="{% url tasks:list %}">Projects</a></li>
       <li class="item"><a href="{% url account:settings %}">Settings</a></li>
       
       <li class="item"><a href="{% url logout %}">Logout</a></li>
