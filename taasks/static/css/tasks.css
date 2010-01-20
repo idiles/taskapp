@@ -260,10 +260,15 @@ p:first-child {
   color: orange;
 }
 
-.task span.task-person {
-  color: #555;
-  font-size: 11px;
+.task span.responsible-user {
+  color: blue;
+/*  font-size: 11px;*/
   cursor: pointer;
+}
+
+.task span.invalid-data {
+  color: red;
+  cursor: default;
 }
 
 .task span.due-date {

@@ -56,18 +56,34 @@ class Task(models.Model):
                         '<span class="due-date">^%s</span>' % due_date, 
                         title)
                     break
-                    
+             
+        # Tags       
         TAG_RE = r'\#\w+\d*'
         matches = re.findall(TAG_RE, title)
         for m in matches:
             tag = m[1:]
             title = title.replace(m, '<span class="tag">#%s</span>' % tag)
             
+        # Estimate
         ESTIMATE_RE = r'~\d+'
         matches = re.findall(ESTIMATE_RE, title)
         if matches:
             estimate = matches[0][1:]
-            title = title.replace(matches[0], '<span class="estimate">~%s</span>' % estimate)
+            title = title.replace(matches[0], 
+                '<span class="estimate">~%s</span>' % estimate)
+
+        # Users
+        USER_RE = r'@\w+\d*'
+        matches = re.findall(USER_RE, title)
+        if matches:
+            username = matches[0][1:]
+            css_class = ''
+            if User.objects.filter(username=username).count() == 0:
+                css_class = ' invalid-data'
+                
+            title = title.replace(matches[0], 
+                '<span class="responsible-user%(css)s">@%(u)s</span>' \
+                    % dict(u=username, css=css_class))
 
         return title
         
