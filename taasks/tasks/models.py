@@ -10,6 +10,7 @@ class Task(models.Model):
     position = models.IntegerField()
     completed = models.BooleanField(default=False)
     removed = models.BooleanField(default=False)
+    due_date = models.DateField(null=True)
 
     def __unicode__(self):
         return self.title
