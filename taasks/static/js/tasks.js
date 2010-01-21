@@ -218,6 +218,12 @@ Task.prototype = {
         this.node.find('button.restore-button').click(function (event) {
             that.restore();
         });
+        
+        if (this.node.hasClass('task-active')) {
+            if (! $('#timer').hasClass('timer-running')) {
+                $('#timer').addClass('timer-running');
+            }
+        }
     }
 };
 

@@ -204,17 +204,36 @@ p:first-child {
   margin-right: 10px;
 }
 
+/* ============================= */
+/* = Buttons and control links = */
+/* ============================= */
+
 .control-button {
   font-size: 12px;
   margin-right: 5px;
   color: #222;
   cursor: pointer;
+  padding: 2px 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
 }
 
 .control-button:hover {
   background-color: #333;
   color: #fff;
 }
+
+a.action {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 2px;
+  text-decoration: none;
+}
+
+a.action:hover {
+  text-decoration: none;
+}
+
 
 .task-active {
 /*  background-color: #f3efd5;*/
@@ -252,17 +271,18 @@ p:first-child {
 
 .task span.tag {
   color: brown;
-/*  font-size: 11px;*/
+  font-size: 11px;
   cursor: pointer;
 }
 
 .task span.estimate {
+  font-size: 11px;
   color: orange;
 }
 
 .task span.responsible-user {
   color: blue;
-/*  font-size: 11px;*/
+  font-size: 11px;
   cursor: pointer;
 }
 
@@ -273,8 +293,13 @@ p:first-child {
 
 .task span.due-date {
   color: green;
-/*  font-size: 11px;*/
+  font-size: 11px;
   cursor: pointer;
+}
+
+.task .timer {
+  font-size: 11px;
+  margin-bottom: 10px;
 }
 
 #tasks {
@@ -325,6 +350,7 @@ div.task button.restore-button {
   margin-top: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #ddd;
+  position: relative;
 }
 
 .timer-running .time {
@@ -337,6 +363,22 @@ div.task button.restore-button {
 }
 
 #timer .buttons {
+}
+
+#timer .title {
+  position: absolute;
+  top: 14px;
+  font-size: 14px;
+  margin-left: 5px;
+}
+
+#timer .status {
+  display: none;
+
+}
+
+.timer-running .status {
+  display: inline !important;
 }
 
 hr {
