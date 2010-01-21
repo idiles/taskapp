@@ -13,31 +13,36 @@
 
 <h1>{{ profile.name }} ({{ profile.user.username }})</h1>
 
-<img src="/static{{ profile.small_picture_url }}" alt="" />
-
 <table>
-  <tr>
-    <th>Name</th>
-    <td>{{ profile.name }}</td>
-  </tr>
-  {% if profile.location %}
-  <tr>
-    <th>Location</th>
-    <td>{{ profile.location }}</td>
-  </tr>
-  {% endif %}
-  {% if profile.website %}
-  <tr>
-    <th>Website</th>
-    <td><a href="{{ profile.website }}" target="new">{{ profile.website }}</a></td>
-  </tr>
-  {% endif %}
-  {% if profile.about %}
-  <tr>
-    <th>About</th>
-    <td>{{ profile.about }}</td>
-  </tr>
-  {% endif %}
+<tr>
+  <td><img src="/static{{ profile.small_picture_url }}" alt="" /></td>
+  <td>
+    <table>
+      <tr>
+        <th>Name</th>
+        <td>{{ profile.name }}</td>
+      </tr>
+      {% if profile.location %}
+      <tr>
+        <th>Location</th>
+        <td>{{ profile.location }}</td>
+      </tr>
+      {% endif %}
+      {% if profile.website %}
+      <tr>
+        <th>Website</th>
+        <td><a href="{{ profile.website }}" target="new">{{ profile.website }}</a></td>
+      </tr>
+      {% endif %}
+      {% if profile.about %}
+      <tr>
+        <th>About</th>
+        <td>{{ profile.about }}</td>
+      </tr>
+      {% endif %}
+    </table>
+  </td>
+</tr>
 </table>
 
 {% if profile.experience %}

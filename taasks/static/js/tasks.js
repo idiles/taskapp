@@ -132,7 +132,10 @@ Task.prototype = {
             node.remove();
             Task.toggleTaskListEmpty();
         });
-        $.post(url('{% url tasks:restore 0 %}', {0: this.id}), {});
+        $.post(url('{% url tasks:restore 0 %}', {0: this.id}), {},
+            function () {
+                StatusMessage.show('Task is now back on the list');
+            });
     },
 
     addCallbacks: function () {
