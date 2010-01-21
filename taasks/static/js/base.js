@@ -1,3 +1,16 @@
+var StatusMessage = {
+    show: function (html) {
+        var el = $('#notification');
+        if (html) {
+            el.html(html);
+        }
+        el.slideDown();
+        setTimeout(function () {
+            el.slideUp();
+        }, 5000);
+    }
+};
+
 (function () {
     // Define a global namespace
     if (window.T === undefined) {
@@ -16,4 +29,13 @@
         }
         return real_url;
     }
+    
+    $(document).ready(function () {
+        // alert('esu');
+        var messages = $('#notification-container').html();
+        // alert('"' + messages + '"');
+        if (messages) {
+            StatusMessage.show(messages);
+        }
+    });
 })();

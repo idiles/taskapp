@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ profile.user.username }}{% endblock %}
+{% block title %}{{ profile.name }} ({{ profile.user.username }}){% endblock %}
 
 {% block css_links %}
 {% endblock %}
@@ -11,7 +11,7 @@
 
 {% block content %}
 
-<h1>{{ profile.user.username }}</h1>
+<h1>{{ profile.name }} ({{ profile.user.username }})</h1>
 
 <img src="/static{{ profile.small_picture_url }}" alt="" />
 

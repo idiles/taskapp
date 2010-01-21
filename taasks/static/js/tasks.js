@@ -83,6 +83,7 @@ Task.prototype = {
         this.indicatorNode.click();
         if (notify) {
             $.post(url('{% url tasks:start 0 %}', {0: this.id}));
+            StatusMessage.show('Time tracker is now running');
         }
     },
 
@@ -93,6 +94,7 @@ Task.prototype = {
         this.indicatorNode.click();
         if (notify) {
             $.post(url('{% url tasks:stop 0 %}', {0: this.id}));
+            StatusMessage.show('Time tracker has been stopped');
         }
     },
 
@@ -120,6 +122,7 @@ Task.prototype = {
         });
         if (notify) {
             $.post(url('{% url tasks:remove 0 %}', {0: this.id}), {});
+            StatusMessage.show('Task has been moved to Trash');
         }
     },
     
@@ -224,19 +227,6 @@ Task.prototype = {
                 $('#timer').addClass('timer-running');
             }
         }
-    }
-};
-
-var StatusMessage = {
-    show: function (text) {
-        var el = $('#status-message');
-        if (text) {
-            el.text(text);
-        }
-        el.slideDown();
-        setTimeout(function () {
-            el.slideUp();
-        }, 5000);
     }
 };
 

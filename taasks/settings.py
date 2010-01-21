@@ -78,7 +78,16 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django_notify.middleware.NotificationsMiddleware',
     'middleware.WsgiLogErrors'
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.auth',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.request',
+    'django.core.context_processors.media',
+    'django_notify.context_processors.notifications',
 )
 
 ROOT_URLCONF = 'taasks.urls'

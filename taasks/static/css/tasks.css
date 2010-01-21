@@ -19,7 +19,7 @@ div#wrapper_column {
     width: 860px;
 }
 
-#status-message {
+#notification {
     display: none;
     position: fixed;
     top: 0px;
@@ -29,7 +29,11 @@ div#wrapper_column {
     text-align: center;
     width: 100%;
     background-color: #fdefcc;
-    font-size: 16px;
+    font-size: 14px;
+}
+
+#notification-container {
+  display: none;
 }
 
 #header {
@@ -270,7 +274,9 @@ a.action:hover {
 }
 
 .task span.tag {
-  color: brown;
+  color: #000;
+  background-color: #FFEC8B;
+  padding: 2px 5px;
   font-size: 11px;
   cursor: pointer;
 }
@@ -281,7 +287,7 @@ a.action:hover {
 }
 
 .task span.responsible-user {
-  color: blue;
+  color: #4F94CD;
   font-size: 11px;
   cursor: pointer;
 }

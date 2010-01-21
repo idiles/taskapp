@@ -20,7 +20,7 @@ setup(name='Taasks',
     install_requires=[
         'Django>1.1.1',
         'South>=0.6.2',
-        'simplejson>=2.0.9',
+        'django-notify>=1.1.2',
     ],
     dependency_links=[
         'http://media.djangoproject.com/releases/1.2/Django-1.2-alpha-1.tar.gz'

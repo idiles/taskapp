@@ -5,6 +5,7 @@ from django.utils.simplejson import dumps
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.views.generic.simple import direct_to_template
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext as _
 
 from forms import RegistrationForm, ProfileSettingsForm, ProfilePictureForm
 
@@ -47,6 +48,7 @@ def settings(request):
         form = ProfileSettingsForm(profile, request.POST)
         if form.is_valid():
             form.save()
+            request.notifications.add(_(u'Your settings have been updated'))
             return redirect(reverse('account:settings'))
     
     return direct_to_template(request, 'account/settings.html', 
@@ -61,11 +63,13 @@ def picture(request):
         if 'delete' in request.POST:
             profile.picture.delete()
             profile.save()
+            request.notifications.add(_(u'Your account picture has been removed'))
             return redirect(reverse('account:picture'))
         else:
             form = ProfilePictureForm(profile, request.POST, request.FILES)
             if form.is_valid():
                 form.save()
+                request.notifications.add(_(u'Your account picture has been updated'))
                 return redirect(reverse('account:picture'))
     
     return direct_to_template(request, 'account/picture.html', 
