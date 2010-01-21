@@ -39,6 +39,8 @@
         </td>
         <td id="side-pane">
           {% if user.is_authenticated %}
+          
+          {% if timer %}
           <div id="timer">
             <!-- <div class="title" style="margin-bottom: 5px">Hours today</div> -->
             <span class="time">{{ timer.hours_today }}</span>
@@ -47,6 +49,7 @@
             </span>
             
           </div>
+          {% endif %}
           
           <ul>
 
