@@ -103,14 +103,21 @@ Task.prototype = {
         // this.indicatorNode.click();
         if (notify) {
             $.post(url('{% url tasks:done 0 %}', {0: this.id}));
+            $('#archive-form').fadeIn();
         }
     },
 
     undone: function (notify) {
         this.node.removeClass('task-done');
+        var task = this.node;
         // this.indicatorNode.click();
         if (notify) {
-            $.post(url('{% url tasks:undone 0 %}', {0: this.id}));
+            $.post(url('{% url tasks:undone 0 %}', {0: this.id}), {},
+                function () {
+                    if (task.hasClass('task-archived')) {
+                        window.location.reload(true);
+                    }
+                });
         }
     },
 
@@ -134,7 +141,7 @@ Task.prototype = {
         });
         $.post(url('{% url tasks:restore 0 %}', {0: this.id}), {},
             function () {
-                StatusMessage.show('Task is now back on the list');
+                StatusMessage.show('Task has been restored');
             });
     },
 
@@ -259,6 +266,9 @@ $(document).ready(function () {
     tasks = $('#tasks > div.task');
     tasks.each(function () {
         Task.init(this);
+        if ($(this).hasClass('task-done')) {
+            $('#archive-form').show();
+        }
     });
     
     $('#tasks:not(.archive)').sortable({

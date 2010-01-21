@@ -1,5 +1,5 @@
 {% load tasks %}
-<div class="task{% if task.started %} task-active{% endif %}{% if task.completed %} task-done{% endif %}{% if task.removed %} task-removed{% endif %}" {% if task %}id="task-{{ task.id }}"{% endif %}>
+<div class="task{% if task.started %} task-active{% endif %}{% if task.completed %} task-done{% endif %}{% if task.archived %} task-archived{% endif %}{% if task.removed %} task-removed{% endif %}" {% if task %}id="task-{{ task.id }}"{% endif %}>
   {% if not task.removed %}
   <div class="indicator">•</div>
   {% else %}

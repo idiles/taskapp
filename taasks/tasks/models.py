@@ -46,7 +46,6 @@ class Task(models.Model):
     def duration(self, user):
         """Return time spent on this task in hours."""
         duration = TaskInterval.get_hours(user, task=self)
-        print duration
         return '%.2f' % duration
             
     @property
@@ -55,6 +54,10 @@ class Task(models.Model):
         tre = TaskRegexp()
         title = self.title
         if self.due_date:
+            # FIXME XXX TODO: Something wrong here!!!
+            # DATE field is turned to Unicode. Is this SQLite problem or mine?
+            if isinstance(self.due_date, unicode):
+                self.due_date = datetime.strptime(self.due_date, self.DATE_FORMAT)
             due_date = self.due_date.strftime(self.DATE_FORMAT)
             
             for regexp in [tre.DATE_FULL_ISO_RE, tre.DATE_FULL_RE, 
@@ -92,6 +95,9 @@ class Task(models.Model):
             title = title.replace(matches[0], 
                 '<span class="responsible-user%(css)s">@%(u)s</span>' \
                     % dict(u=username, css=css_class))
+                    
+        # print title
+        # print 2, self.due_date, type(self.due_date)
 
         return title
         
