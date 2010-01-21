@@ -287,7 +287,10 @@ a.action:hover {
 }
 
 .task span.responsible-user {
-  color: #4F94CD;
+/*  color: #4F94CD;*/
+  color: #fff;
+  background-color: #33A1C9;
+  padding: 2px 5px;
   font-size: 11px;
   cursor: pointer;
 }
@@ -298,8 +301,10 @@ a.action:hover {
 }
 
 .task span.due-date {
-  color: green;
+  color: #fff;
+  background-color: #698B69;
   font-size: 11px;
+  padding: 2px 5px;
   cursor: pointer;
 }
 
