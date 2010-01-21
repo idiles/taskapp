@@ -208,6 +208,22 @@ Task.prototype = {
                 $('#tasks').sortable('disable');
             }
         });
+        
+        // TODO: Clicking will not work for new tasks until page is 
+        // reloaded. This code should be fixed.
+        this.node.find('span.tag').click(function (event) {
+           var tag = $(this).text();
+           tag = tag.substr(1, tag.length);
+           window.location = '{% url tasks:list %}?tag=' + tag;
+           event.stopPropagation();
+        });
+        
+        this.node.find('span.due-date').click(function (event) {
+           var due = $(this).text();
+           due = due.substr(1, due.length);
+           window.location = '{% url tasks:list %}?due=' + due;
+           event.stopPropagation();
+        });
 
         this.node.find('span.done-button').click(function (event) {
             that.stop();

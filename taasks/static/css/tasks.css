@@ -232,6 +232,7 @@ a.action {
   border: 1px solid #ccc;
   padding: 2px 8px;
   text-decoration: none;
+  font-size: 11px;
 }
 
 a.action:hover {
@@ -301,11 +302,29 @@ a.action:hover {
 }
 
 .task span.due-date {
-  color: #fff;
-  background-color: #698B69;
+  color: #000;
+  background-color: #C1FFC1;
   font-size: 11px;
   padding: 2px 5px;
   cursor: pointer;
+}
+
+#tasks_filter {
+  margin: 20px 0px 0px 0px;
+  font-size: 12px;
+  background-color: #FFFACD;
+  padding: 5px 15px;
+}
+
+#tasks_filter a.action {
+  margin-left: 20px;
+}
+
+#tasks_filter .tag,
+#tasks_filter .due-date,
+#tasks_filter .responsible-user,
+{
+  cursor: default;
 }
 
 .task .timer {

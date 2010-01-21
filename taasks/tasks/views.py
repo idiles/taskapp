@@ -23,8 +23,22 @@ def index(request):
             counter += 1
         request.notifications.add(_(u'%d tasks has been archived') % counter)
         return redirect(reverse('tasks:list'))
+        
+    query_filter = dict(creator=request.user)
+    tasks_filter = dict()
+        
+    if 'tag' in request.GET:
+        tag = request.GET['tag']
+        query_filter['title__icontains'] = '#%s' % tag
+        tasks_filter['class'] = 'tag'
+        tasks_filter['value'] = '#%s' % tag
+    if 'due' in request.GET:
+        due = request.GET['due']
+        query_filter['due_date'] = '%s' % due
+        tasks_filter['class'] = 'due-date'
+        tasks_filter['value'] = '#%s' % due
     
-    tasks = Task.objects.filter(creator=request.user).exclude(
+    tasks = Task.objects.filter(**query_filter).exclude(
         removed=True).exclude(archived=True)
         
     # We can't call a methods with parameters (request.user) in django templates
@@ -41,7 +55,7 @@ def index(request):
     timer['hours_today'] = '%.2f' % duration
             
     return direct_to_template(request, 'tasks/index.html', dict(
-        tasks=tasks, timer=timer))
+        tasks=tasks, tasks_filter=tasks_filter, timer=timer))
 
 
 def create(request, format=None):
