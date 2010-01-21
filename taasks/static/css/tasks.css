@@ -230,7 +230,7 @@ p:first-child {
 a.action {
   background-color: #fff;
   border: 1px solid #ccc;
-  padding: 2px;
+  padding: 2px 8px;
   text-decoration: none;
 }
 

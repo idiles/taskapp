@@ -11,6 +11,7 @@ class Task(models.Model):
     created = models.DateTimeField(default=datetime.now)
     position = models.IntegerField()
     completed = models.BooleanField(default=False)
+    archived = models.BooleanField(default=False)
     removed = models.BooleanField(default=False)
     due_date = models.DateField(blank=True, null=True)
     
