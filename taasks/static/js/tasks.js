@@ -51,8 +51,9 @@ Task.prototype = {
             'title': text
         };
         $.post(url('{% url tasks:create %}'), args, function (json) {
-            that.node.attr('id', json.id);
+            that.node.attr('id', 'task-' + json.id);
             that.node.find('.text').html(json.html);
+            that.node.find('span.time').text(json.time);
             that.id = json.id;
         }, 'json');
 
@@ -83,6 +84,7 @@ Task.prototype = {
         this.indicatorNode.click();
         if (notify) {
             $.post(url('{% url tasks:start 0 %}', {0: this.id}));
+            TimeTracker.start();
             StatusMessage.show('Time tracker is now running');
         }
     },
@@ -94,6 +96,7 @@ Task.prototype = {
         this.indicatorNode.click();
         if (notify) {
             $.post(url('{% url tasks:stop 0 %}', {0: this.id}));
+            TimeTracker.stop();
             StatusMessage.show('Time tracker has been stopped');
         }
     },
@@ -123,14 +126,16 @@ Task.prototype = {
 
     remove: function (notify) {
         var node = this.node;
+        
         node.fadeOut('', function () {
             node.remove();
             Task.toggleTaskListEmpty();
         });
+        
         if (notify) {
             $.post(url('{% url tasks:remove 0 %}', {0: this.id}), {});
             StatusMessage.show('Task has been moved to Trash');
-        }
+        } 
     },
     
     restore: function () {
@@ -252,9 +257,46 @@ Task.prototype = {
             if (! $('#timer').hasClass('timer-running')) {
                 $('#timer').addClass('timer-running');
             }
+            if (! TimeTracker.active) {
+                TimeTracker.start();
+            }
         }
     }
 };
+
+
+var TimeTracker = {
+    active: false,
+    
+    start: function () {
+        TimeTracker.active = true;
+        TimeTracker.update();
+    },
+    
+    stop: function () {
+        TimeTracker.active = false;
+    },
+    
+    update: function () {
+        $.ajax({
+            url: '{% url tasks:time %}', 
+            cache: false,
+            dataType: 'json', 
+            success: function (json) {
+                $('#timer span.time').text(json.today);
+                for (var i = 0; i < json.tasks.length; i++) {
+                    var task = json.tasks[i];
+                    $('#task-' + task.id + ' span.time').text(task.time);
+                }
+            }
+        });
+        
+        if (TimeTracker.active) {
+            setTimeout(TimeTracker.update, 20000);
+        }
+    }
+};
+
 
 $(document).ready(function () {
     var addTaskButton = $('#add-task-button'),

@@ -76,7 +76,7 @@ def create(request, format=None):
             due_date=due_date)
         task.save()
         
-        resp = dict(format=format, id=task.id, html=task.html)
+        resp = dict(format=format, id=task.id, time='0.00', html=task.html)
         resp_json = dumps(resp)
     
         return HttpResponse(resp_json)
@@ -100,6 +100,10 @@ def remove(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
     task.removed = True
     task.save()
+    for item in TaskInterval.objects.filter(doer=request.user,
+        duration=None):
+        item.stop()
+        item.save()
     return HttpResponse('', status=204)     # No content
     
     
@@ -137,6 +141,22 @@ def stop(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
     task.stop(doer=request.user)
     return HttpResponse('', status=204)     # No content
+    
+    
+def get_time_tracker_data(request):
+    today = datetime.now().date()
+    duration = TaskInterval.get_hours(request.user, today)
+    
+    response = dict(today='%.2f' % duration)
+    response['tasks'] = []
+    
+    for item in TaskInterval.objects.filter(doer=request.user,
+        duration=None):
+        task_time = TaskInterval.get_hours(request.user,
+            task=item.task)
+        response['tasks'].append(dict(id=item.task.id, time='%.2f' % task_time))
+    
+    return HttpResponse(dumps(response))
     
     
 def trash(request):

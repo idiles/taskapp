@@ -96,9 +96,6 @@ class Task(models.Model):
                 '<span class="responsible-user%(css)s">@%(u)s</span>' \
                     % dict(u=username, css=css_class))
                     
-        # print title
-        # print 2, self.due_date, type(self.due_date)
-
         return title
         
     @property

@@ -15,6 +15,6 @@ class TaskDurationNode(template.Node):
     def render(self, context):
         task = context.get('task')
         user = context.get('user')
-        duration = TaskInterval.get_hours(task=task, user=user)
+        duration = TaskInterval.get_hours(user=user, task=task)
         return '%.2f' % duration
         

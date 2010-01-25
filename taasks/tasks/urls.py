@@ -32,6 +32,9 @@ urlpatterns = patterns('tasks.views',
     # Stop time tracker
     url(r'^(?P<task_id>\d+)/stop$', 'stop', name='stop'),
     
+    # Get time tracker data
+    url(r'^time$', 'get_time_tracker_data', name='time'),
+    
     # Trash
     url(r'^trash$', 'trash', name='trash'),
     
