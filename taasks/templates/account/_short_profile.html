@@ -1,0 +1,18 @@
+<div id="profile-{{ profile.user.username }}" 
+  class="profile 
+    {% if profile.connection_complete %}connected-user-profile{% endif %}
+    {% if profile.connection_can_confirm %}connection-confirm-profile{% else %}
+    {% if profile.connection_waiting %}waiting-user-profile{% endif %}{% endif %}">
+
+  {% include "account/_connection_buttons.html" %}
+  
+  <div class="picture">
+    <img src="/static{{ profile.small_picture_url }}" alt="" />
+  </div>
+  <div class="info">
+    <h2><a href="/{{ profile.user.username }}">
+      {{ profile }}</a>
+    </h2>
+    <p>{{ profile.about }}</p>
+  </div>
+</div>

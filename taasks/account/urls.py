@@ -15,5 +15,10 @@ urlpatterns = patterns('account.views',
     url(r'^settings$', 'settings', name='settings'),
     url(r'^picture$', 'picture', name='picture'),
     
+    url(r'^connections$', 'connections', name='connections'),
     url(r'^connect/(?P<username>\w+)$', 'connect', name='connect'),
+    url(r'^cancel_connection/(?P<username>\w+)$', 'cancel_connection', 
+        name='cancel-connection'),
+    url(r'^confirm_connection/(?P<username>\w+)$', 'confirm_connection', 
+        name='confirm-connection'),
 )

@@ -18,36 +18,16 @@
 <form action="" method="get" accept-charset="utf-8">
   <p>Find people</p>
   {% csrf_token %}
-  <table>
   {{ form.q }}
-  </table>
-  <p><input type="submit" value="Search"></p>
+  <p><input type="submit" value="Search" class="button"></p>
 </form>
 
 {% if profiles %}
 <hr />
 
-<div id="search-people-container">
+<div id="profiles-container">
 {% for profile in profiles %}
-  <div class="profile">
-    <div class="controls">
-      {% if profile.user == user %}
-        It's you
-      {% else %}
-      <button class="connect" rel="{{ profile.user.username }}">Connect</button>
-      {% endif %}
-    </div>
-    <div class="picture">
-      <img src="/static{{ profile.small_picture_url }}" alt="" />
-    </div>
-    <div class="info">
-      <h2><a href="/{{ profile.user.username }}">
-        {{ profile.name }} ({{ profile.user.username }})</a>
-      </h2>
-      <p>{{ profile.about }}</p>
-    </div>
-  </div>
-  <hr />
+  {% include "account/_short_profile.html" %}
 {% endfor %}
 </div>
 

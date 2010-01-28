@@ -36,6 +36,10 @@ def thankyou(request):
 def profile(request, username):
     user = get_object_or_404(User, username=username)
     profile = user.get_profile()
+    connections = request.user.get_profile().get_connections()
+    for c in connections:
+        if c == profile:
+            profile = c
     return direct_to_template(request, 'account/profile.html', 
         dict(profile=profile))
 
@@ -76,7 +80,33 @@ def picture(request):
         dict(profile=profile, form=form))
         
         
+def connections(request):
+    profile = request.user.get_profile()
+    profiles = profile.get_connections()
+    unconfirmed = len([p for p in profiles \
+        if getattr(p, 'connection_can_confirm', None) \
+            and p.connection_can_confirm])
+    return direct_to_template(request, 'account/connections.html', 
+        dict(profiles=profiles, unconfirmed=unconfirmed))
+        
+        
 def connect(request, username):
     user = User.objects.get(username=username)
-    # print user.id
+    profile = request.user.get_profile()
+    profile.add_connection(user)
     return HttpResponse()
+    
+    
+def cancel_connection(request, username):
+    user = User.objects.get(username=username)
+    profile = request.user.get_profile()
+    profile.remove_connection(user)
+    return HttpResponse()
+    
+    
+def confirm_connection(request, username):
+    user = User.objects.get(username=username)
+    profile = request.user.get_profile()
+    profile.confirm_connection(user)
+    return HttpResponse()
+    

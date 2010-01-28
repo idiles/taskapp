@@ -11,6 +11,12 @@
 
 {% block content %}
 
+<div class="profile 
+  {% if profile.connection_complete %}connected-user-profile{% endif %}
+  {% if profile.connection_can_confirm %}connection-confirm-profile{% else %}
+  {% if profile.connection_waiting %}waiting-user-profile{% endif %}{% endif %}">
+{% include "account/_connection_buttons.html" %}
+  
 <h1>{{ profile.name }} ({{ profile.user.username }})</h1>
 
 <table>
@@ -51,5 +57,6 @@
   {{ profile.experience }}
 </div>
 {% endif %}
+</div>
 
 {% endblock %}

@@ -1,0 +1,17 @@
+<div class="controls">
+{% if profile.user == user %}
+  <!-- <span class="its-me">It's me!</span> -->
+{% else %}
+  <span class="connected-user-status">Connected</span>
+  
+  <button class="button connect" 
+    rel="{{ profile.user.username }}">Connect</button>
+    
+  <button class="button button-pos confirm-connection" 
+    rel="{{ profile.user.username }}">Confirm</button>
+
+  <span class="waiting-user-status">Waiting for confirmation</span>
+  <button class="button button-neg cancel-connection" 
+    rel="{{ profile.user.username }}">Cancel</button>
+{% endif %}
+</div>

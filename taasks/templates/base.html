@@ -52,12 +52,11 @@
           </div>
           {% endif %}
           
-          <ul>
-          <li><a href="{% url tasks:trash %}">Trash</a></li>
-          <hr />
-          <li><a href="{% url tasks:archive %}">Archive</a></li>
-          <hr />
-
+          <ul id="side-menu">
+            <li><a href="{% url account:connections %}">Connections
+              {% if unconfirmed %}({{ unconfirmed }}){% endif %}</a></li>
+            <li><a href="{% url tasks:trash %}">Trash</a></li>
+            <li><a href="{% url tasks:archive %}">Archive</a></li>
           </ul>
           
           <a href="/goodies/mac" id="ad">

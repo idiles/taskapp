@@ -40,7 +40,30 @@ var StatusMessage = {
            var username = $(this).attr('rel');
            $.post(url('{% url account:connect 0 %}', {0: username}), {},
                 function () {
-                    alert('done');
+                    $('#profile-' + username).addClass('waiting-user-profile');
+                    StatusMessage.show('Connection request sent to ' + username);
+                });
+        });
+        
+        $('button.cancel-connection').click(function () {
+           var username = $(this).attr('rel');
+           $.post(url('{% url account:cancel-connection 0 %}', {0: username}), {},
+                function () {
+                    $('#profile-' + username).removeClass(
+                        'connected-user-profile').removeClass(
+                        'waiting-user-profile').removeClass('connection-confirm-profile');
+                    StatusMessage.show('Connection with ' + username + ' canceled');
+                });
+        });
+        
+        $('button.confirm-connection').click(function () {
+           var username = $(this).attr('rel');
+           $.post(url('{% url account:confirm-connection 0 %}', {0: username}), {},
+                function () {
+                    $('#profile-' + username).removeClass(
+                        'connection-confirm-profile').removeClass(
+                        'waiting-user-profile').addClass('connected-user-profile');
+                    StatusMessage.show('You are now connected with ' + username);
                 });
         });
     });
