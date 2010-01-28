@@ -481,3 +481,27 @@ a.connection {
   height: 40px;
   cursor: pointer;
 }
+
+#search-people-container {
+  
+}
+
+#search-people-container .profile {
+  min-height: 110px; 
+  position: relative;
+}
+
+#search-people-container .picture {
+  position: absolute; 
+  top: 0px;
+}
+
+#search-people-container .info {
+  margin-left: 120px; 
+  padding-top: 2px;
+}
+
+#search-people-container .controls {
+  margin-top: 20px;
+  float: right;
+}

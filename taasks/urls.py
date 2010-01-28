@@ -25,6 +25,9 @@ urlpatterns = patterns('',
     # Include accounts app
     (r'^account/', include('account.urls', namespace='account')),
     
+    # Include people app
+    (r'^search/', include('search.urls', namespace='search')),
+    
     url(r'^(?P<username>\w+)$', 'account.views.profile', name='account:profile'),
 )
 

@@ -125,7 +125,7 @@ class ProfilePictureForm(forms.Form):
             image = Image.open(large_picture_path)
             min_size = min(image.size)
             image = image.crop((0, 0, min_size, min_size))
-            image.thumbnail((width, height))
+            image.thumbnail((width, height), Image.ANTIALIAS)
         
             full_path = os.path.join(settings.MEDIA_ROOT, small_picture_path)
             image.save(full_path, image.format)

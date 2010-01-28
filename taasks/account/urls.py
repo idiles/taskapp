@@ -14,4 +14,6 @@ urlpatterns = patterns('account.views',
     
     url(r'^settings$', 'settings', name='settings'),
     url(r'^picture$', 'picture', name='picture'),
+    
+    url(r'^connect/(?P<username>\w+)$', 'connect', name='connect'),
 )

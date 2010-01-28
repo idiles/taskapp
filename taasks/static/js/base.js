@@ -31,11 +31,17 @@ var StatusMessage = {
     }
     
     $(document).ready(function () {
-        // alert('esu');
         var messages = $('#notification-container').html();
-        // alert('"' + messages + '"');
         if (messages) {
             StatusMessage.show(messages);
         }
+        
+        $('button.connect').click(function () {
+           var username = $(this).attr('rel');
+           $.post(url('{% url account:connect 0 %}', {0: username}), {},
+                function () {
+                    alert('done');
+                });
+        });
     });
 })();

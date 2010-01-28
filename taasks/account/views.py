@@ -75,3 +75,8 @@ def picture(request):
     return direct_to_template(request, 'account/picture.html', 
         dict(profile=profile, form=form))
         
+        
+def connect(request, username):
+    user = User.objects.get(username=username)
+    # print user.id
+    return HttpResponse()

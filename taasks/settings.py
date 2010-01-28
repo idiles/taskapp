@@ -110,4 +110,5 @@ INSTALLED_APPS = (
     'account',
     'base',
     'tasks',
+    'search',
 )
