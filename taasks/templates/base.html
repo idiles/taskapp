@@ -8,71 +8,89 @@
 </head>
 <body>
 
-<div id="wrapper_column">
-  <div>&nbsp;</div>
-
-  <div id="header">
-    <ul id="menubar">
+<div id="header">
+  <div id="header-inner">
+    <div id="logo"></div>
+    
+    <div id="menubar">
+      <ul id="menubar-group-left">
       {% if user.is_authenticated %}
-      <!-- <li class="item">{{ user.get_profile.name }}</li> -->
       <li class="item"><a href="/">Home</a></li>
-      
+    
       <li class="item"><a href="/{{ user.username }}">Profile</a></li>
-      <li class="item"><a href="{% url search:people %}">Search</a></li>
-      <li class="item"><a href="{% url tasks:list %}">Projects</a></li>
-      <li class="item"><a href="{% url account:settings %}">Settings</a></li>
       
+      <li class="item"><a href="{% url tasks:list %}">Projects</a></li>
+      <li class="item"><a href="#">Chat</a></li>
+      
+      <li class="item"><a href="{% url search:people %}">Connect</a></li>
+      {% endif %}
+      </ul>
+      
+      <ul id="menubar-group-right">
+      {% if user.is_authenticated %}
+      <li class="item"><a href="/{{ user.username }}" 
+          class="name">{{ user.get_profile.name }}</a></li>
+      <li class="item"><a href="{% url account:settings %}">Settings</a></li>
+    
       <li class="item"><a href="{% url logout %}">Logout</a></li>
       {% else %}
       <li class="item"><a href="{% url account:create %}">Sign Up</a></li>
       <li class="item"><a href="{% url login %}">Login</a></li>
       {% endif %}
-    </ul>
+      </ul>
+    </div>
   
-    <div id="logo"></div>
   </div>
-  
-  <table id="columns" cellspacing="0" cellpadding="0">
-    <tbody>
-      <tr>
-        <td id="content">
+</div>
+
+<div id="content">
+        <div id="content">
           {% block content %}{% endblock %}
-        </td>
-        <td id="side-pane">
+        </div>
+        <!-- <td id="side-pane">
           {% if user.is_authenticated %}
-          
+        
           {% if timer %}
           <div id="timer">
-            <!-- <div class="title" style="margin-bottom: 5px">Hours today</div> -->
             <span class="time">{{ timer.hours_today }}</span>
             <span class="title">hours today 
               <span class="status">(running)</span>
             </span>
-            
+          
           </div>
           {% endif %}
-          
+        
           <ul id="side-menu">
             <li><a href="{% url account:connections %}">Connections
               {% if unconfirmed %}({{ unconfirmed }}){% endif %}</a></li>
             <li><a href="{% url tasks:trash %}">Trash</a></li>
             <li><a href="{% url tasks:archive %}">Archive</a></li>
           </ul>
-          
+        
           <a href="/goodies/mac" id="ad">
             <span href="#" class="title">Taasks for Mac</span>
             <span class="text">Try out Taasks widget and desktop app for your Mac.</span>
             <span class="link">view &rarr;</span>
           </a>
           {% endif %}
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        </td> -->
 </div>
 
-<div id="notification">
+<div id="footer">
+  <div id="footer-inner">
+    {% if timer %}
+    <div id="timer">
+      <span class="time">{{ timer.hours_today }}</span>
+        <span class="title">hours today 
+        <span class="status">(running)</span>
+      </span>
+    
+    </div>
+    {% endif %}
+  </div>
 </div>
+
+<div id="notification"></div>
 
 <div id="notification-container">{% if notifications %}{% for message in notifications %}<div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>{% endfor %}{% endif %}</div>
 

@@ -19,11 +19,15 @@
   
 <h1>{{ profile.name }} ({{ profile.user.username }})</h1>
 
-<table>
+<table id="public-profile">
 <tr>
-  <td><img src="/static{{ profile.small_picture_url }}" alt="" /></td>
   <td>
-    <table>
+    <div id="profile-picture">
+      <img src="/static{{ profile.medium_picture_url }}" alt="" />
+    </div>
+  </td>
+  <td>
+    <table id="profile-info" cellspacing="0" cellpadding="0">
       <tr>
         <th>Name</th>
         <td>{{ profile.name }}</td>
@@ -47,16 +51,16 @@
       </tr>
       {% endif %}
     </table>
+    
+    {% if profile.experience %}
+    <h2>Experience</h2>
+    <div id="profile-experience">
+      {{ profile.experience }}
+    </div>
+    {% endif %}
   </td>
 </tr>
 </table>
-
-{% if profile.experience %}
-<h2>Experience</h2>
-<div>
-  {{ profile.experience }}
-</div>
-{% endif %}
 </div>
 
 {% endblock %}

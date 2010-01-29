@@ -6,11 +6,49 @@ html {
 body {
     font-family: Arial, sans-serif;
     font-size: 12px;
-    /*position: relative;*/
     margin: 0px;
     padding: 0px;
     width: 100%;
     height: 100%;
+}
+
+#header-inner,
+#footer-inner {
+  position: relative;
+  width: 800px;
+  margin: 0 auto;
+  color: #fff;
+}
+
+#header {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 38px;
+/*  background-color: #5E2612;*/
+  background-color: #282828;
+}
+
+#header-inner {
+
+}
+
+#content {
+  width: 800px;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
+#footer {
+  background-color: #ddd;
+  color: #fff;
+  height: 28px;
+  width: 100%;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+/*  border-top: 1px solid #282828;*/
 }
 
 h1, h2, h3 {
@@ -29,11 +67,11 @@ h3 {
   font-size: 14px;
 }
 
-div#wrapper_column {
+/*div#wrapper_column {
     margin: 0 auto;
     z-index: 10;
     width: 860px;
-}
+}*/
 
 #notification {
     display: none;
@@ -50,13 +88,6 @@ div#wrapper_column {
 
 #notification-container {
   display: none;
-}
-
-#header {
-    margin-top: 50px;
-    margin-bottom: 30px;
-    height: 30px;
-    position: relative;
 }
 
 a,
@@ -79,25 +110,40 @@ p:first-child {
 }
 
 #menubar {
-  position: absolute;
-  top: 0px;
-  right: 0px;
   padding: 0px;
   margin: 0px;
 }
 
+#menubar-group-left {
+  position: absolute;
+  top: 1px;
+  left: 20px;
+}
+
+#menubar-group-right {
+  position: absolute;
+  top: 2px;
+  right: 0px;
+}
+
 #menubar li {
   display: inline;
-  margin-left: 5px;
+  margin-right: 15px;
 }
 
 #menubar a {
-  color: #999;
+  color: #fff;
   font-size: 12px;
+  font-weight: bold;
 }
 
 #menubar a:hover {
-  color: #000;
+  color: #ccc;
+  text-decoration: none;
+}
+
+#menubar a.name {
+  font-weight: normal;
 }
 
 #side-menu {
@@ -111,12 +157,40 @@ p:first-child {
 
 #logo {
   position: absolute;
-  top: 0px;
+  top: 12px;
   left: 0px;
   height: 25px;
   width: 150px;
-  background-image: url('{{ MEDIA_URL }}/img/taasks-logo.png');
+  background-image: url('{{ MEDIA_URL }}/img/taasks-fish.png');
   background-repeat: no-repeat;
+  font-size: 22px;
+}
+
+#public-profile td {
+  vertical-align: top;
+}
+
+#profile-picture {
+  margin: 6px 20px 20px 0px;
+}
+
+#profile-info {
+  font-size: 14px;
+}
+
+#profile-info th {
+  padding: 4px 0px;
+  text-align: left;
+  padding-right: 20px;
+  color: #444;
+}
+
+#profile-info td {
+  padding: 4px 0px;
+}
+
+#profile-experience {
+  line-height: 22px;
 }
 
 #templates {
@@ -151,7 +225,7 @@ p:first-child {
 }
 
 .task {
-  margin: 5px 0px 5px -15px;
+  margin: 8px 0px 8px -15px;
   line-height: 22px;
   position: relative;
   cursor: default;
@@ -171,9 +245,9 @@ p:first-child {
 
 .task .indicator {
   position: absolute;
-  top: -2px;
+  top: 0px;
   left: 10px;
-  font-size: 36px;
+  font-size: 54px;
   color: #ccc;
 }
 
@@ -198,8 +272,8 @@ p:first-child {
 }
 
 .task .text {
-  font-size: 14px;
-  margin-left: 35px;
+  font-size: 13px;
+  margin-left: 40px;
   margin-right: 10px;
   overflow: hidden;
 }
@@ -303,13 +377,15 @@ a.action:hover {
   color: #000;
   background-color: #FFEC8B;
   padding: 2px 5px;
-  font-size: 11px;
+  font-size: 13px;
   cursor: pointer;
 }
 
 .task span.estimate {
-  font-size: 11px;
-  color: orange;
+  font-size: 13px;
+  background-color: #333;
+  color: #fff;
+  padding: 2px 5px;
 }
 
 .task span.responsible-user {
@@ -317,7 +393,7 @@ a.action:hover {
   color: #fff;
   background-color: #33A1C9;
   padding: 2px 5px;
-  font-size: 11px;
+  font-size: 13px;
   cursor: pointer;
 }
 
@@ -329,7 +405,7 @@ a.action:hover {
 .task span.due-date {
   color: #000;
   background-color: #C1FFC1;
-  font-size: 11px;
+  font-size: 13px;
   padding: 2px 5px;
   cursor: pointer;
 }
@@ -379,11 +455,6 @@ div.task button.restore-button {
   width: 100%;
 }
 
-#content {
-  vertical-align: top;
-  font-size: 12px;
-}
-
 .empty-collection {
   font-style: italic;
   color: #444;
@@ -407,10 +478,11 @@ div.task button.restore-button {
 }
 
 #timer {
-  color: #aaa;
-  margin-top: 10px;
-  padding-bottom: 5px;
+  color: #888;
+  margin-top: 5px;
+/*  padding-bottom: 5px;*/
   position: relative;
+  float: right;
 }
 
 .timer-running .time {
@@ -419,22 +491,21 @@ div.task button.restore-button {
 }
 
 #timer .time {
-  font-size: 30px;
+  font-size: 16px;
 }
 
 #timer .buttons {
 }
 
 #timer .title {
-  position: absolute;
-  top: 14px;
+/*  position: absolute;*/
+/*  top: 14px;*/
   font-size: 14px;
   margin-left: 5px;
 }
 
 #timer .status {
   display: none;
-
 }
 
 .timer-running .status {
