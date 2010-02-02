@@ -42,7 +42,7 @@ Task.toggleTaskListEmpty = function (show) {
 };
 
 Task.prototype = {
-    create: function (text) {
+    create: function (text, create) {
         var that = this,
             template, args;
         this.node = $('#task-template').children().clone().hide();
@@ -50,12 +50,15 @@ Task.prototype = {
         args = {
             'title': text
         };
-        $.post(url('{% url tasks:create %}'), args, function (json) {
-            that.node.attr('id', 'task-' + json.id);
-            that.node.find('.text').html(json.html);
-            that.node.find('span.time').text(json.time);
-            that.id = json.id;
-        }, 'json');
+        
+        if (create === undefined || create === true) {
+            $.post(url('{% url tasks:create %}'), args, function (json) {
+                that.node.attr('id', 'task-' + json.id);
+                that.node.find('.text').html(json.html);
+                that.node.find('span.time').text(json.time);
+                that.id = json.id;
+            }, 'json');
+        }
 
         Task.toggleTaskListEmpty(false);
 
@@ -64,6 +67,10 @@ Task.prototype = {
     },
 
     save: function (text) {
+        if (text == '') {
+            text = 'Untitled';
+        }
+        
         that = this;
         $.post(url('{% url tasks:update 0 %}', {0: this.id}), {
             title: text
@@ -312,8 +319,16 @@ $(document).ready(function () {
     });
     
     $('#add-task-button').click(function () {
-        new Task(mainTaskInput.val());
-        mainTaskInput.val('');
+        // alert(':)');
+        // new Task(mainTaskInput.val());
+        // mainTaskInput.val('');
+        var task = new Task('');
+        // task.textNode.trigger('click');
+        var text = task.textNode;
+        // Hide the div
+        text.hide();
+        // Set the input value to text and show the input
+        task.inputNode.val(text.text()).show().focus();
     });
     
     $('#view-examples').click(function () {

@@ -6,7 +6,7 @@
   <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}/css/tasks.css" media="all" />
   {% block css_links %}{% endblock %}
 </head>
-<body>
+<body id="{% block view_id %}{% endblock %}">
 
 <div id="header">
   <div id="header-inner">
@@ -15,24 +15,39 @@
     <div id="menubar">
       <ul id="menubar-group-left">
       {% if user.is_authenticated %}
-      <li class="item"><a href="/">Home</a></li>
-    
-      <li class="item"><a href="/{{ user.username }}">Profile</a></li>
+      <li class="item"><a href="/">Tools</a></li>
       
+      <li class="menu-splitter"></li>
+      <li class="item"><a href="/">Project A</a></li>
+      <!-- <li class="item"><a href="/{{ user.username }}">Profile</a></li>
       <li class="item"><a href="{% url tasks:list %}">Projects</a></li>
-      <li class="item"><a href="#">Chat</a></li>
+      <li class="item"><a href="{% url search:people %}">People</a></li> -->
       
-      <li class="item"><a href="{% url search:people %}">Connect</a></li>
+      {% block context-menu %}{% endblock %}
       {% endif %}
       </ul>
       
       <ul id="menubar-group-right">
       {% if user.is_authenticated %}
+      
+      <li><a href="#">Chat</a></li>
+      
+      {% if timer %}
+      <li id="timer" class="rounded">
+        <span class="status">⌛</span>
+        <span class="time">{{ timer.hours_today }}</span>
+      </li>
+      {% endif %}
+      
+      <li><a href="#" class="icon">⚐</a></li>
+      
+      <li class="menu-splitter"></li>
+      
       <li class="item"><a href="/{{ user.username }}" 
           class="name">{{ user.get_profile.name }}</a></li>
-      <li class="item"><a href="{% url account:settings %}">Settings</a></li>
-    
-      <li class="item"><a href="{% url logout %}">Logout</a></li>
+      <li class="item"><a href="{% url account:settings %}">Account</a></li>
+      <!-- <li class="item"><a href="#">Help</a></li>
+      <li class="item"><a href="{% url logout %}">Logout</a></li> -->
       {% else %}
       <li class="item"><a href="{% url account:create %}">Sign Up</a></li>
       <li class="item"><a href="{% url login %}">Login</a></li>
@@ -41,6 +56,7 @@
     </div>
   
   </div>
+  
 </div>
 
 <div id="content">
@@ -78,24 +94,25 @@
 
 <div id="footer">
   <div id="footer-inner">
-    {% if timer %}
-    <div id="timer">
-      <span class="time">{{ timer.hours_today }}</span>
-        <span class="title">hours today 
-        <span class="status">(running)</span>
-      </span>
     
+    <!-- <div class="tool">
+      <span class="title"><a href="#">Capture</a></span>
+    </div> -->
+    <div class="tool">
+      <span class="title">Chat</span>
+      <span class="room"><span class="leave-room">x</span> Taasks dev</span>
+      <span class="room"><span class="leave-room">x</span> Design</span>
     </div>
-    {% endif %}
   </div>
 </div>
 
-<div id="notification"></div>
+<div id="notification"><div id="notification-inner"></div></div>
 
 <div id="notification-container">{% if notifications %}{% for message in notifications %}<div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>{% endfor %}{% endif %}</div>
 
 <script src="{{ MEDIA_URL }}/js/lib/jquery-1.3.2.min.js"></script>
 <script src="{{ MEDIA_URL }}/js/lib/jquery-ui-1.7.2.custom.min.js"></script>
+<script src="{{ MEDIA_URL }}/js/lib/jquery.corner.js"></script>
 <script src="{{ MEDIA_URL }}/js/lib/jquery.json-2.2.min.js"></script>
 <script src="{{ MEDIA_URL }}/js/base.js"></script>
 {% block js_links %}{% endblock %}

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
-{% block title %}Works{% endblock %}
+{% block title %}Current work{% endblock %}
+{% block view_id %}nav-tasks-index{% endblock %}
 
 {% block css_links %}
 {% endblock %}
@@ -9,15 +10,11 @@
 <script src="{{ MEDIA_URL }}/js/tasks.js"></script>
 {% endblock %}
 
+{% block context-menu %}
+  {% include "tasks/context_menu.html" %}
+{% endblock %}
+
 {% block content %}
-<div id="main-task-input-container">
-  <div class="title">
-    Enter your task here (example: #idea Write an essay ^tomorrow)
-  </div>
-  <input id="main-task-input" 
-    type="text" name="task" value="" />
-  <button id="add-task-button">Add</button>
-</div>
 
 {% if tasks_filter %}
   <div id="tasks_filter" class="task">
@@ -33,16 +30,17 @@
   {% endfor %}
 </div>
 
+<div id="empty-task-list" {% if tasks %}style="display:none"{% endif %}>
+  You have no items.
+</div>
+
 <form id="archive-form" action="" method="post" 
   accept-charset="utf-8" style="display: none">
   {% csrf_token %}
   <input type="submit" name="archive" value="Archive completed" />
 </form>
 
-
-<div id="empty-task-list" {% if tasks %}style="display:none"{% endif %}>
-  You have no items.
-</div>
+<button id="add-task-button" class="button button-dimm" accesskey="a">Add item</button>
 
 <div id="templates">
   <div id="task-template">{% include "tasks/task.html" %}</div>

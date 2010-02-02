@@ -1,6 +1,6 @@
 var StatusMessage = {
     show: function (html) {
-        var el = $('#notification');
+        var el = $('#notification-inner');
         if (html) {
             el.html(html);
         }
@@ -31,10 +31,19 @@ var StatusMessage = {
     }
     
     $(document).ready(function () {
+        $('.rounded').corner();
+        $('.button').corner('10px');
+        $('.control-button').corner('10px');
+        $('#header-inner').corner('bl br');
+        $('#menubar a').corner();
+        $('#notification-inner').corner('bl br');
+        
         var messages = $('#notification-container').html();
         if (messages) {
             StatusMessage.show(messages);
         }
+        
+        // $('#context-menu').fadeIn('slow');
         
         $('button.connect').click(function () {
            var username = $(this).attr('rel');
