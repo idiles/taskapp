@@ -7,8 +7,13 @@
     Search
   {% endif %}
 {% endblock %}
+{% block view_id %}nav-search-people{% endblock %}
 
 {% block css_links %}
+{% endblock %}
+
+{% block context-menu %}
+  {% include "search/context_menu.html" %}
 {% endblock %}
 
 {% block content %}

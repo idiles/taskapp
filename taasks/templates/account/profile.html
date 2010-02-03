@@ -63,4 +63,8 @@
 </table>
 </div>
 
+{% if user.is_authenticated and user == profile.user %}
+<a href="{% url account:settings %}">Edit profile</a>
+{% endif %}
+
 {% endblock %}
