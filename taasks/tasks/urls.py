@@ -40,5 +40,8 @@ urlpatterns = patterns('tasks.views',
     
     # Archive
     url(r'^archive$', 'archive', name='archive'),
+    
+    # Projects
+    url(r'^projects$', 'project_index', name='project-index'),
 
 )

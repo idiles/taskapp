@@ -5,8 +5,18 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Max, Sum
 
+
+class Project(models.Model):
+    creator = models.ForeignKey(User)
+    title = models.CharField(max_length=200)
+    goal = models.TextField()
+    archived = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=datetime.now)
+
+
 class Task(models.Model):
     creator = models.ForeignKey(User)
+    project = models.ForeignKey(Project)
     title = models.CharField(max_length=200)
     created = models.DateTimeField(default=datetime.now)
     position = models.IntegerField()

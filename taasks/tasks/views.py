@@ -10,7 +10,7 @@ from django.views.generic.simple import direct_to_template
 from django.db.models import Max, Sum
 from django.utils.translation import ugettext as _
 
-from forms import TaskForm
+from forms import TaskForm, ProjectForm
 from models import Task, TaskInterval, TaskRegexp
 
 def index(request):
@@ -179,4 +179,16 @@ def archive(request):
         
     return direct_to_template(request, 'tasks/archive.html', dict(
         tasks=tasks))
+        
+        
+def project_index(request):
+    form = ProjectForm()
+    
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            return redirect(reverse('tasks:list'))
+        
+    return direct_to_template(request, 'tasks/project_index.html', 
+        dict(form=form))
         

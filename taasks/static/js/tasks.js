@@ -319,16 +319,15 @@ $(document).ready(function () {
     });
     
     $('#add-task-button').click(function () {
-        // alert(':)');
-        // new Task(mainTaskInput.val());
-        // mainTaskInput.val('');
         var task = new Task('');
-        // task.textNode.trigger('click');
         var text = task.textNode;
-        // Hide the div
         text.hide();
-        // Set the input value to text and show the input
         task.inputNode.val(text.text()).show().focus();
+    });
+    
+    $('#create-project-button').click(function () {
+        $(this).hide(); 
+        $('#project-form').slideDown();
     });
     
     $('#view-examples').click(function () {
