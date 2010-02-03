@@ -226,14 +226,14 @@ Task.prototype = {
         this.node.find('span.tag').click(function (event) {
            var tag = $(this).text();
            tag = tag.substr(1, tag.length);
-           window.location = '{% url tasks:list %}?tag=' + tag;
+           window.location = '{% url tasks:tasks %}?tag=' + tag;
            event.stopPropagation();
         });
         
         this.node.find('span.due-date').click(function (event) {
            var due = $(this).text();
            due = due.substr(1, due.length);
-           window.location = '{% url tasks:list %}?due=' + due;
+           window.location = '{% url tasks:tasks %}?due=' + due;
            event.stopPropagation();
         });
 

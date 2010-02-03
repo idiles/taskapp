@@ -9,14 +9,19 @@ from django.db.models import Max, Sum
 class Project(models.Model):
     creator = models.ForeignKey(User)
     title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=40)
     goal = models.TextField()
     archived = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=datetime.now)
+    
+    @staticmethod
+    def get_by_slug(user, slug):
+        return Project.objects.get(creator=user, slug=slug)
 
 
 class Task(models.Model):
     creator = models.ForeignKey(User)
-    project = models.ForeignKey(Project)
+    project = models.ForeignKey(Project, null=True, blank=True)
     title = models.CharField(max_length=200)
     created = models.DateTimeField(default=datetime.now)
     position = models.IntegerField()

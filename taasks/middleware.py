@@ -47,3 +47,15 @@ class ForceDefaultLanguageMiddleware(object):
     def process_request(self, request):
         if request.META.has_key('HTTP_ACCEPT_LANGUAGE'):
             del request.META['HTTP_ACCEPT_LANGUAGE']
+            
+            
+class SelectedProjectMiddleware(object):
+    def process_request(self, request):
+        if request.path.startswith('/projects'):
+            path = request.path
+            slug = path.split('/')[1]
+            # request.project = Project.objects.get_by_slug(request.user,
+            #     slug)
+            request.project = slug
+        else:
+            request.project = ''

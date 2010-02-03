@@ -11,9 +11,15 @@ from django.db.models import Max, Sum
 from django.utils.translation import ugettext as _
 
 from forms import TaskForm, ProjectForm
-from models import Task, TaskInterval, TaskRegexp
+from models import Project, Task, TaskInterval, TaskRegexp
 
 def index(request):
+    return redirect(reverse('tasks:tasks'))
+
+
+def tasks(request):
+    # project = Project.get_by_slug(request.user, project_slug)
+    
     if request.method == 'POST' and 'archive' in request.POST:
         counter = 0
         for task in Task.objects.filter(creator=request.user, 
@@ -22,7 +28,7 @@ def index(request):
             task.save()
             counter += 1
         request.notifications.add(_(u'%d tasks has been archived') % counter)
-        return redirect(reverse('tasks:list'))
+        return redirect(reverse('tasks:tasks'))
         
     query_filter = dict(creator=request.user)
     tasks_filter = dict()
@@ -164,7 +170,7 @@ def trash(request):
         Task.objects.filter(creator=request.user, 
             removed=True).delete()
         request.notifications.add(_(u'Trash is now empty'))
-        return redirect(reverse('tasks:list'))
+        return redirect(reverse('tasks:tasks'))
     
     tasks = Task.objects.filter(creator=request.user,
         removed=True)
@@ -187,7 +193,7 @@ def project_index(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
-            return redirect(reverse('tasks:list'))
+            return redirect(reverse('tasks:tasks'))
         
     return direct_to_template(request, 'tasks/project_index.html', 
         dict(form=form))

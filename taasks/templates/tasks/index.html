@@ -20,7 +20,7 @@
   <div id="tasks_filter" class="task">
     Filter applied: <span class="{{ tasks_filter.class }}">
       {{ tasks_filter.value }}</span>
-    <a class="action" href="{% url tasks:list %}">remove filter</a>
+    <a class="action" href="{% url tasks:tasks 0 %}">remove filter</a>
   </div>
 {% endif %}
 

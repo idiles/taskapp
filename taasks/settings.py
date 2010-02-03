@@ -79,7 +79,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django_notify.middleware.NotificationsMiddleware',
-    'middleware.WsgiLogErrors'
+    'middleware.WsgiLogErrors',
+    'middleware.SelectedProjectMiddleware'
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

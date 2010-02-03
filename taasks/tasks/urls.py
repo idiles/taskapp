@@ -4,7 +4,9 @@ from django.contrib.auth.decorators import login_required, permission_required
 import views
 
 urlpatterns = patterns('tasks.views',
-    url(r'^$', login_required(views.index), name='list'),
+    url(r'^$', login_required(views.index), name='index'),
+    
+    url(r'^tasks$', login_required(views.tasks), name='tasks'),
 
     # Create task
     url(r'^create$', 'create', name='create'),
