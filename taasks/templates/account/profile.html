@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}{{ profile.name }} ({{ profile.user.username }}){% endblock %}
+{% block view_id %}{% if profile.user == user %}nav-my-profile{% else %}nav-user-profile{% endif %}{% endblock %}
 
 {% block css_links %}
 {% endblock %}

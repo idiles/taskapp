@@ -14,17 +14,27 @@
     
     <div id="menubar">
       <ul id="menubar-group-left">
-      {% if user.is_authenticated %}
-      <li class="item"><a href="/">Dashboard</a></li>
-      <!-- <li class="item"><a href="/">Dashboard</a></li> -->
+        <!-- <li class="item">
+          <ul id="tools">
+            <li>Dashboard</li>
+            <li>Projects</li>
+          </ul>
+        </li> -->
+        {% if user.is_authenticated %}
+        <li class="item"><a href="/" class="home-link">Home</a></li>
+        <li class="item"><a href="{% url search:people %}"
+            class="search-people-link">Search</a></li>
+        <li class="item"><a href="{% url account:settings %}">Account</a></li>
+            
+        <!-- <li class="item"><a href="/">Dashboard</a></li> -->
       
-      <!-- <li class="menu-splitter"></li> -->
-      <!-- <li class="item"><a href="/">Project A</a></li> -->
-      <!-- <li class="item"><a href="/{{ user.username }}">Profile</a></li>
-      <li class="item"><a href="{% url search:people %}">People</a></li> -->
+        <!-- <li class="menu-splitter"></li> -->
+        <!-- <li class="item"><a href="/">Project A</a></li> -->
+        <!-- <li class="item"><a href="/{{ user.username }}">Profile</a></li>
+        <li class="item"><a href="{% url search:people %}">People</a></li> -->
       
-      {% block context-menu %}{% endblock %}
-      {% endif %}
+        {% block context-menu %}{% endblock %}
+        {% endif %}
       </ul>
       
       <ul id="menubar-group-right">
@@ -32,23 +42,23 @@
       
       <li><a href="#">Chat</a></li>
       
+      <li><a href="#" class="icon">⚐</a></li>
+      
+      
       {% if timer %}
       <li id="timer" 
-        class="rounded {% if timer.running %}timer-running{% endif %}">
+        class="rounded5 {% if timer.running %}timer-running{% endif %}">
         <span class="status">⌛</span>
         <span class="time">{{ timer.hours_today }}</span>
       </li>
       {% endif %}
-      
-      <li><a href="#" class="icon">⚐</a></li>
-      
+            
       <li class="menu-splitter"></li>
       
       <li class="item"><a href="/{{ user.username }}" 
-          class="name">{{ user.get_profile.name }}</a></li>
-      <li class="item"><a href="{% url account:settings %}">Account</a></li>
-      <!-- <li class="item"><a href="#">Help</a></li>
-      <li class="item"><a href="{% url logout %}">Logout</a></li> -->
+          class="name profile-link">{{ user.get_profile.name }}</a></li>
+      <!-- <li class="item"><a href="#">Help</a></li> -->
+      <li class="item"><a href="{% url logout %}">→</a></li>
       {% else %}
       <li class="item"><a href="{% url account:create %}">Sign Up</a></li>
       <li class="item"><a href="{% url login %}">Login</a></li>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}Projects{% endblock %}
-{% block view_id %}nav-project-index{% endblock %}
+{% block view_id %}nav-home{% endblock %}
 
 {% block css_links %}
 {% endblock %}
@@ -16,17 +16,20 @@
 {% block content %}
 
 {% for project in projects %}
-<h1><a href="{% url tasks:tasks project.slug %}">{{ project.title }}</a></h1>
+<h2><a href="{% url tasks:tasks project.slug %}">{{ project.title }}</a></h2>
 {% endfor %}
 
 <div class="empty-list" {% if projects %}style="display:none"{% endif %}>
   You have no projects.
 </div>
 
+{% if not form.errors %}
 <button id="create-project-button" class="button" accesskey="a">Create project</button>
+{% endif %}
 
 <form id="project-form" action="" 
-  method="post" accept-charset="utf-8" style="display: none">
+  method="post" accept-charset="utf-8" 
+    {% if not form.errors %}style="display: none"{% endif %}>
   {% csrf_token %}
   
   <h1>New Project</h1>

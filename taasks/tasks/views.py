@@ -22,9 +22,8 @@ def index(request):
         project = Project(creator=request.user, slug='_')
         form = ProjectForm(request.POST, instance=project)
         if form.is_valid():
-            # form.user = request.user
             project = form.save()
-            # project.creator = request.user
+            request.notifications.add(_(u'Project successfully created'))
             return redirect(reverse('tasks:index'))
         
     return direct_to_template(request, 'tasks/project_index.html', 
@@ -68,7 +67,7 @@ def tasks(request, project_slug):
             duration=None).count() > 0
             
     return direct_to_template(request, 'tasks/index.html', dict(
-        project_slug=project_slug, tasks=tasks, 
+        project=project, project_slug=project_slug, tasks=tasks, 
         tasks_filter=tasks_filter))
 
 
@@ -180,6 +179,7 @@ def get_time_tracker_data(request):
     
     
 def trash(request, project_slug):
+    project = Project.get_by_slug(request.user, project_slug)
     if request.method == 'POST' and 'empty' in request.POST:
         Task.objects.filter(creator=request.user, 
             removed=True).delete()
@@ -190,15 +190,16 @@ def trash(request, project_slug):
         removed=True)
         
     return direct_to_template(request, 'tasks/trash.html', dict(
-        project_slug=project_slug, tasks=tasks))
+        project=project, project_slug=project_slug, tasks=tasks))
         
         
 def archive(request, project_slug):
+    project = Project.get_by_slug(request.user, project_slug)
     tasks = Task.objects.filter(creator=request.user,
         archived=True).exclude(removed=True)
         
     return direct_to_template(request, 'tasks/archive.html', dict(
-        project_slug=project_slug, tasks=tasks))
+        project=project, project_slug=project_slug, tasks=tasks))
 
 
 def manage(request, project_slug):

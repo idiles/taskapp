@@ -29,7 +29,7 @@ body {
   color: #fff;
 }
 
-#context-menu li {
+/*#context-menu li {
   display: inline;
   padding: 0px;
   margin: 0px;
@@ -44,11 +44,9 @@ body {
 
 #context-menu a:hover,
 #context-menu a.selected {
-/*  background-color: #666;*/
-/*  background-color: #5E2612;*/
   color: #fff;
   text-decoration: none;
-}
+}*/
 
 #content {
   width: 800px;
@@ -159,6 +157,8 @@ p:first-child {
   text-decoration: none;
 }
 
+#nav-home a.home-link,
+#nav-my-profile a.profile-link,
 #nav-tasks-index a.tasks-index-link,
 #nav-tasks-trash a.tasks-trash-link,
 #nav-tasks-archive a.tasks-archive-link,
@@ -174,13 +174,22 @@ p:first-child {
 
 #menubar a.name {
   font-weight: normal;
-  color: #aaa;
+  color: #fff;
 }
 
 #menubar a.icon {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: normal;
-  line-height: 12px;
+  line-height: 0px;
+}
+
+#menubar li.project-name {
+  font-size: 11px;
+  font-weight: bold;
+  color: #000;
+  background-color: #FCE6C9;
+  padding: 4px 6px;
+  margin-right: 5px;
 }
 
 #menubar-group-left {
@@ -198,6 +207,18 @@ p:first-child {
   border-right: 1px solid #5E2612;
   margin-left: 2px;
   margin-right: 5px;
+}
+
+#menu {
+  
+}
+
+#menu li.item {
+  
+}
+
+#menu li.subitem {
+  
 }
 
 #side-menu {
@@ -528,11 +549,12 @@ div.task button.restore-button {
 }
 
 #timer {
-  color: #aaa;
+  color: #888;
   background-color: #333;
   padding: 5px 6px 3px 8px;
   line-height: 0px;
   cursor: pointer;
+  margin: 0px 5px;
 }
 
 #timer:hover {

@@ -32,6 +32,7 @@ var StatusMessage = {
     
     $(document).ready(function () {
         $('.rounded').corner();
+        $('.rounded5').corner('5px');
         $('.button').corner('10px');
         $('.control-button').corner('10px');
         $('#header-inner').corner('bl br');
