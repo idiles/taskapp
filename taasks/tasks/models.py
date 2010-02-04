@@ -235,3 +235,11 @@ class TaskInterval(models.Model):
         
         return duration
         
+    @staticmethod
+    def is_running(user):
+        """Return True if there are active tasks on any project."""
+        if TaskInterval.objects.filter(doer=user, duration=None).count() > 0:
+            return True
+        else:
+            return False
+        

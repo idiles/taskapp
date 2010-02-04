@@ -33,7 +33,8 @@
       <li><a href="#">Chat</a></li>
       
       {% if timer %}
-      <li id="timer" class="rounded">
+      <li id="timer" 
+        class="rounded {% if timer.running %}timer-running{% endif %}">
         <span class="status">⌛</span>
         <span class="time">{{ timer.hours_today }}</span>
       </li>

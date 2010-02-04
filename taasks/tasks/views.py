@@ -67,16 +67,9 @@ def tasks(request, project_slug):
         task.started = TaskInterval.objects.filter(task=task, doer=request.user,
             duration=None).count() > 0
             
-    timer = {}
-    now = datetime.now()
-    today = now.date()
-    
-    duration = TaskInterval.get_hours(request.user, today)
-    timer['hours_today'] = '%.2f' % duration
-            
     return direct_to_template(request, 'tasks/index.html', dict(
         project_slug=project_slug, tasks=tasks, 
-        tasks_filter=tasks_filter, timer=timer))
+        tasks_filter=tasks_filter))
 
 
 def create(request, project_slug):

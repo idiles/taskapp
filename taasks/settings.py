@@ -89,6 +89,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.core.context_processors.media',
     'django_notify.context_processors.notifications',
+    'tasks.context_processors.timer'
 )
 
 ROOT_URLCONF = 'taasks.urls'

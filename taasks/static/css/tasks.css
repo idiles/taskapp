@@ -23,7 +23,9 @@ body {
   max-width: 820px;
   height: 30px;
   margin: 0 auto;
-  background-color: rgba(40, 40, 40, 0.8);
+/*  background-color: rgba(40, 40, 40, 0.8);*/
+/*  background-color: rgba(139, 69, 19, 0.8);*/
+  background-color: rgba(94, 38, 18, 0.8);
   color: #fff;
 }
 
@@ -42,7 +44,8 @@ body {
 
 #context-menu a:hover,
 #context-menu a.selected {
-  background-color: #666;
+/*  background-color: #666;*/
+/*  background-color: #5E2612;*/
   color: #fff;
   text-decoration: none;
 }
@@ -151,7 +154,8 @@ p:first-child {
 #menubar a:hover,
 #menubar a.selected {
   color: #ccc;
-  background-color: #000;
+/*  background-color: #000;*/
+  background-color: #5E2612;
   text-decoration: none;
 }
 
@@ -163,7 +167,8 @@ p:first-child {
 #nav-account-settings a.account-settings-link,
 #nav-project-manage a.project-manage-link {
   color: #ccc;
-  background-color: #333;
+/*  background-color: #333;*/
+  background-color: #5E2612;
   text-decoration: none;
 }
 
@@ -189,7 +194,8 @@ p:first-child {
 }
 
 #menubar .menu-splitter {
-  border-right: 1px solid #777;
+/*  border-right: 1px solid #777;*/
+  border-right: 1px solid #5E2612;
   margin-left: 2px;
   margin-right: 5px;
 }
@@ -622,6 +628,17 @@ div.clear {
 form {
   background-color: #eee;
   padding: 10px;
+}
+
+form table {
+  
+}
+
+form table th {
+  vertical-align: top;
+  text-align: right;
+  padding-right: 10px;
+  padding-top: 4px;
 }
 
 a.connection {
