@@ -20,8 +20,9 @@
             <li>Projects</li>
           </ul>
         </li> -->
-        {% if user.is_authenticated %}
         <li class="item"><a href="/" class="home-link">Home</a></li>
+        
+        {% if user.is_authenticated %}
         <li class="item"><a href="{% url search:people %}"
             class="search-people-link">Search</a></li>
         <li class="item"><a href="{% url account:settings %}">Account</a></li>
@@ -34,6 +35,10 @@
         <li class="item"><a href="{% url search:people %}">People</a></li> -->
       
         {% block context-menu %}{% endblock %}
+        
+        {% else %}
+          <li class="item"><a href="/" class="features-link">Features</a></li>
+          <li class="item"><a href="{% url search:people %}" class="features-link">Find People</a></li>
         {% endif %}
       </ul>
       

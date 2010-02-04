@@ -111,6 +111,7 @@ INSTALLED_APPS = (
     'south',
     'account',
     'base',
+    'public',
     'tasks',
     'search',
 )

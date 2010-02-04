@@ -33,10 +33,11 @@ def people(request):
         if form.is_valid():
             text = form.cleaned_data['q']
             profiles = list(search_people(text))
-            connections = request.user.get_profile().get_connections()
-            for c in connections:
-                if c in profiles:
-                    profiles[profiles.index(c)] = c
+            if request.user.is_authenticated():
+                connections = request.user.get_profile().get_connections()
+                for c in connections:
+                    if c in profiles:
+                        profiles[profiles.index(c)] = c
     
     return direct_to_template(request, 'search/people.html', 
         dict(form=form, text=text, profiles=profiles))
