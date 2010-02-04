@@ -21,7 +21,6 @@
       <!-- <li class="menu-splitter"></li> -->
       <!-- <li class="item"><a href="/">Project A</a></li> -->
       <!-- <li class="item"><a href="/{{ user.username }}">Profile</a></li>
-      <li class="item"><a href="{% url tasks:tasks %}">Projects</a></li>
       <li class="item"><a href="{% url search:people %}">People</a></li> -->
       
       {% block context-menu %}{% endblock %}
@@ -61,36 +60,9 @@
 </div>
 
 <div id="content">
-        <div id="content">
-          {% block content %}{% endblock %}
-        </div>
-        <!-- <td id="side-pane">
-          {% if user.is_authenticated %}
-        
-          {% if timer %}
-          <div id="timer">
-            <span class="time">{{ timer.hours_today }}</span>
-            <span class="title">hours today 
-              <span class="status">(running)</span>
-            </span>
-          
-          </div>
-          {% endif %}
-        
-          <ul id="side-menu">
-            <li><a href="{% url account:connections %}">Connections
-              {% if unconfirmed %}({{ unconfirmed }}){% endif %}</a></li>
-            <li><a href="{% url tasks:trash %}">Trash</a></li>
-            <li><a href="{% url tasks:archive %}">Archive</a></li>
-          </ul>
-        
-          <a href="/goodies/mac" id="ad">
-            <span href="#" class="title">Taasks for Mac</span>
-            <span class="text">Try out Taasks widget and desktop app for your Mac.</span>
-            <span class="link">view &rarr;</span>
-          </a>
-          {% endif %}
-        </td> -->
+    <div id="content">
+      {% block content %}{% endblock %}
+    </div>
 </div>
 
 <div id="footer">
@@ -110,6 +82,9 @@
 <div id="notification"><div id="notification-inner"></div></div>
 
 <div id="notification-container">{% if notifications %}{% for message in notifications %}<div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>{% endfor %}{% endif %}</div>
+
+<input id="project-slug" type="hidden" name="project-slug" 
+  value="{{ project_slug }}" >
 
 <script src="{{ MEDIA_URL }}/js/lib/jquery-1.3.2.min.js"></script>
 <script src="{{ MEDIA_URL }}/js/lib/jquery-ui-1.7.2.custom.min.js"></script>

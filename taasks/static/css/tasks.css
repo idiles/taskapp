@@ -90,7 +90,7 @@ h3 {
 #notification {
   width: 100%;
   position: fixed;
-  top: 35px;
+  top: 30px;
   left: 0px;
 }
 
@@ -160,7 +160,8 @@ p:first-child {
 #nav-tasks-archive a.tasks-archive-link,
 #nav-search-people a.search-people-link,
 #nav-account-picture a.account-picture-link,
-#nav-account-settings a.account-settings-link {
+#nav-account-settings a.account-settings-link,
+#nav-project-manage a.project-manage-link {
   color: #ccc;
   background-color: #333;
   text-decoration: none;

@@ -1,5 +1,12 @@
 // Protect the global namespace
 (function ($) {
+    
+var Project = function () {
+};
+
+Project.get_slug = function () {
+    return $('#project-slug').val(); 
+}
 
 // Create a new task object assigning the given text to it
 var Task = function (src) {
@@ -52,7 +59,8 @@ Task.prototype = {
         };
         
         if (create === undefined || create === true) {
-            $.post(url('{% url tasks:create %}'), args, function (json) {
+            $.post(url('{% url tasks:create 0 %}', {0: Project.get_slug()}), 
+                    args, function (json) {
                 that.node.attr('id', 'task-' + json.id);
                 that.node.find('.text').html(json.html);
                 that.node.find('span.time').text(json.time);
@@ -72,9 +80,9 @@ Task.prototype = {
         }
         
         that = this;
-        $.post(url('{% url tasks:update 0 %}', {0: this.id}), {
-            title: text
-        }, function (json) {
+        $.post(url('{% url tasks:update 0 1 %}', 
+            {0: Project.get_slug(), 1: this.id}), 
+                {title: text}, function (json) {
             that.textNode.html(json.html)
         }, 'json');
     },
@@ -90,7 +98,8 @@ Task.prototype = {
 
         this.indicatorNode.click();
         if (notify) {
-            $.post(url('{% url tasks:start 0 %}', {0: this.id}));
+            $.post(url('{% url tasks:start 0 1 %}', 
+                {0: Project.get_slug(), 1: this.id}));
             TimeTracker.start();
             StatusMessage.show('Time tracker is now running');
         }
@@ -102,7 +111,8 @@ Task.prototype = {
 
         this.indicatorNode.click();
         if (notify) {
-            $.post(url('{% url tasks:stop 0 %}', {0: this.id}));
+            $.post(url('{% url tasks:stop 0 1 %}', 
+                {0: Project.get_slug(), 1: this.id}));
             TimeTracker.stop();
             StatusMessage.show('Time tracker has been stopped');
         }
@@ -112,7 +122,8 @@ Task.prototype = {
         this.node.addClass('task-done');
         // this.indicatorNode.click();
         if (notify) {
-            $.post(url('{% url tasks:done 0 %}', {0: this.id}));
+            $.post(url('{% url tasks:done 0 1 %}', 
+                {0: Project.get_slug(), 1: this.id}));
             $('#archive-form').fadeIn();
         }
     },
@@ -122,7 +133,8 @@ Task.prototype = {
         var task = this.node;
         // this.indicatorNode.click();
         if (notify) {
-            $.post(url('{% url tasks:undone 0 %}', {0: this.id}), {},
+            $.post(url('{% url tasks:undone 0 1 %}', 
+                    {0: Project.get_slug(), 1: this.id}), {},
                 function () {
                     if (task.hasClass('task-archived')) {
                         window.location.reload(true);
@@ -140,18 +152,21 @@ Task.prototype = {
         });
         
         if (notify) {
-            $.post(url('{% url tasks:remove 0 %}', {0: this.id}), {});
+            $.post(url('{% url tasks:remove 0 1 %}', 
+                {0: Project.get_slug(), 1: this.id}), {});
             StatusMessage.show('Task has been moved to Trash');
         } 
     },
     
     restore: function () {
+        // alert(Project.get_slug());
         var node = this.node;
         node.fadeOut('', function () {
             node.remove();
             Task.toggleTaskListEmpty();
         });
-        $.post(url('{% url tasks:restore 0 %}', {0: this.id}), {},
+        $.post(url('{% url tasks:restore 0 1 %}', 
+                {0: Project.get_slug(), 1: this.id}), {},
             function () {
                 StatusMessage.show('Task has been restored');
             });
@@ -226,14 +241,14 @@ Task.prototype = {
         this.node.find('span.tag').click(function (event) {
            var tag = $(this).text();
            tag = tag.substr(1, tag.length);
-           window.location = '{% url tasks:tasks %}?tag=' + tag;
+           window.location = url('{% url tasks:tasks 0 %}?tag=' + tag);
            event.stopPropagation();
         });
         
         this.node.find('span.due-date').click(function (event) {
            var due = $(this).text();
            due = due.substr(1, due.length);
-           window.location = '{% url tasks:tasks %}?due=' + due;
+           window.location = url('{% url tasks:tasks 0 %}?due=' + due);
            event.stopPropagation();
         });
 

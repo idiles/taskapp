@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Project{% endblock %}
+{% block view_id %}nav-project-manage{% endblock %}
+
+{% block css_links %}
+{% endblock %}
+
+{% block js_links %}
+<script src="{{ MEDIA_URL }}/js/tasks.js"></script>
+{% endblock %}
+
+{% block context-menu %}
+  {% include "tasks/context_menu.html" %}
+{% endblock %}
+
+{% block content %}
+
+<h1>{{ project.title }}</h1>
+
+<form id="project-form" action="" 
+  method="post" accept-charset="utf-8">
+  {% csrf_token %}
+  
+  <table>
+    {{ form }}
+    <tr>
+      <th></th>
+      <td><input type="submit" class="button" name="create" 
+          value="Save" /></td>
+    </tr>
+  </table>
+</form>
+
+<form action="" method="post" accept-charset="utf-8">
+  {% csrf_token %}
+  <h2>Permanently delete this project</h2>
+  
+  <input type="submit" name="delete" value="Delete project"
+    class="button button-neg" />
+</form>
+
+{% endblock %}

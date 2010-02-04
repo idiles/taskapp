@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}Projects{% endblock %}
-{% block view_id %}nav-projects-index{% endblock %}
+{% block view_id %}nav-project-index{% endblock %}
 
 {% block css_links %}
 {% endblock %}
@@ -14,6 +14,10 @@
 {% endblock %}
 
 {% block content %}
+
+{% for project in projects %}
+<h1><a href="{% url tasks:tasks project.slug %}">{{ project.title }}</a></h1>
+{% endfor %}
 
 <div class="empty-list" {% if projects %}style="display:none"{% endif %}>
   You have no projects.

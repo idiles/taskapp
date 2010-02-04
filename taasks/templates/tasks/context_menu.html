@@ -1,5 +1,8 @@
 <li class="menu-splitter"></li>
-<li><a href="{% url tasks:tasks %}" class="tasks-index-link">Tasks</a></li>
-<li><a href="{% url tasks:trash %}" class="tasks-trash-link">Trash</a></li>
-<li><a href="{% url tasks:archive %}" 
+<li><a href="{% url tasks:tasks project_slug %}" 
+  class="tasks-index-link">Tasks</a></li>
+<li><a href="{% url tasks:trash project_slug %}" class="tasks-trash-link">Trash</a></li>
+<li><a href="{% url tasks:archive project_slug %}" 
   class="tasks-archive-link">Archive</a></li>
+<li><a href="{% url tasks:manage project_slug %}" 
+  class="project-manage-link">Manage</a></li>

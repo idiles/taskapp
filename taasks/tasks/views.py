@@ -14,11 +14,25 @@ from forms import TaskForm, ProjectForm
 from models import Project, Task, TaskInterval, TaskRegexp
 
 def index(request):
-    return redirect(reverse('tasks:tasks'))
+    projects = Project.objects.filter(creator=request.user).all()
+    
+    form = ProjectForm()
+    
+    if request.method == 'POST':
+        project = Project(creator=request.user, slug='_')
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            # form.user = request.user
+            project = form.save()
+            # project.creator = request.user
+            return redirect(reverse('tasks:index'))
+        
+    return direct_to_template(request, 'tasks/project_index.html', 
+        dict(projects=projects, form=form))
+    
 
-
-def tasks(request):
-    # project = Project.get_by_slug(request.user, project_slug)
+def tasks(request, project_slug):
+    project = Project.get_by_slug(request.user, project_slug)
     
     if request.method == 'POST' and 'archive' in request.POST:
         counter = 0
@@ -28,7 +42,7 @@ def tasks(request):
             task.save()
             counter += 1
         request.notifications.add(_(u'%d tasks has been archived') % counter)
-        return redirect(reverse('tasks:tasks'))
+        return redirect(reverse('tasks:tasks', args=(project_slug, )))
         
     query_filter = dict(creator=request.user)
     tasks_filter = dict()
@@ -44,7 +58,7 @@ def tasks(request):
         tasks_filter['class'] = 'due-date'
         tasks_filter['value'] = '#%s' % due
     
-    tasks = Task.objects.filter(**query_filter).exclude(
+    tasks = project.task_set.filter(**query_filter).exclude(
         removed=True).exclude(archived=True)
         
     # We can't call a methods with parameters (request.user) in django templates
@@ -61,28 +75,28 @@ def tasks(request):
     timer['hours_today'] = '%.2f' % duration
             
     return direct_to_template(request, 'tasks/index.html', dict(
-        tasks=tasks, tasks_filter=tasks_filter, timer=timer))
+        project_slug=project_slug, tasks=tasks, 
+        tasks_filter=tasks_filter, timer=timer))
 
 
-def create(request, format=None):
-    if format is None:
-        format = 'json'
-    
+def create(request, project_slug):
     if request.method == 'POST':
         title = request.POST['title']
+        project = Project.get_by_slug(request.user, project_slug)
         
         tre = TaskRegexp()
         due_date = tre.get_date(title)
         
         position = (Task.objects.aggregate(Max('position'))['position__max'] \
             or 0) + 1
-        task = Task(creator=request.user,
+        task = Task(project=project,
+            creator=request.user,
             title=title,
             position=position,
             due_date=due_date)
         task.save()
         
-        resp = dict(format=format, id=task.id, time='0.00', html=task.html)
+        resp = dict(id=task.id, time='0.00', html=task.html)
         resp_json = dumps(resp)
     
         return HttpResponse(resp_json)
@@ -90,8 +104,9 @@ def create(request, format=None):
     return HttpResponse('', status=204)     # No content
     
 
-def update(request, task_id):
-    task = get_object_or_404(Task, pk=task_id)
+def update(request, project_slug, task_id):
+    project = Project.get_by_slug(request.user, project_slug)
+    task = get_object_or_404(Task, pk=task_id, project=project)
     form = TaskForm(request.POST, instance=task)
     if form.is_valid():
         task = form.save()
@@ -102,8 +117,9 @@ def update(request, task_id):
         return HttpResponse(dumps(dict(html=task.html)))
 
 
-def remove(request, task_id):
-    task = get_object_or_404(Task, pk=task_id)
+def remove(request, project_slug, task_id):
+    project = Project.get_by_slug(request.user, project_slug)
+    task = get_object_or_404(Task, pk=task_id, project=project)
     task.removed = True
     task.save()
     for item in TaskInterval.objects.filter(doer=request.user,
@@ -113,22 +129,25 @@ def remove(request, task_id):
     return HttpResponse('', status=204)     # No content
     
     
-def restore(request, task_id):
-    task = get_object_or_404(Task, pk=task_id)
+def restore(request, project_slug, task_id):
+    project = Project.get_by_slug(request.user, project_slug)
+    task = get_object_or_404(Task, pk=task_id, project=project)
     task.removed = False
     task.save()
     return HttpResponse('', status=204)     # No content
     
     
-def mark_done(request, task_id):
+def mark_done(request, project_slug, task_id):
+    project = Project.get_by_slug(request.user, project_slug)
     task = get_object_or_404(Task, pk=task_id)
     task.completed = True
     task.save()
     return HttpResponse('', status=204)     # No content
     
     
-def mark_undone(request, task_id):
-    task = get_object_or_404(Task, pk=task_id)
+def mark_undone(request, project_slug, task_id):
+    project = Project.get_by_slug(request.user, project_slug)
+    task = get_object_or_404(Task, pk=task_id, project=project)
     task.completed = False
     if task.archived:
         task.archived = False
@@ -137,14 +156,16 @@ def mark_undone(request, task_id):
     return HttpResponse('', status=204)     # No content
 
 
-def start(request, task_id):
-    task = get_object_or_404(Task, pk=task_id)
+def start(request, project_slug, task_id):
+    project = Project.get_by_slug(request.user, project_slug)
+    task = get_object_or_404(Task, pk=task_id, project=project)
     task.start(doer=request.user)
     return HttpResponse('', status=204)     # No content
     
     
-def stop(request, task_id):
-    task = get_object_or_404(Task, pk=task_id)
+def stop(request, project_slug, task_id):
+    project = Project.get_by_slug(request.user, project_slug)
+    task = get_object_or_404(Task, pk=task_id, project=project)
     task.stop(doer=request.user)
     return HttpResponse('', status=204)     # No content
     
@@ -165,36 +186,48 @@ def get_time_tracker_data(request):
     return HttpResponse(dumps(response))
     
     
-def trash(request):
+def trash(request, project_slug):
     if request.method == 'POST' and 'empty' in request.POST:
         Task.objects.filter(creator=request.user, 
             removed=True).delete()
         request.notifications.add(_(u'Trash is now empty'))
-        return redirect(reverse('tasks:tasks'))
+        return redirect(reverse('tasks:tasks', args=(project_slug, )))
     
     tasks = Task.objects.filter(creator=request.user,
         removed=True)
         
     return direct_to_template(request, 'tasks/trash.html', dict(
-        tasks=tasks))
+        project_slug=project_slug, tasks=tasks))
         
         
-def archive(request):
+def archive(request, project_slug):
     tasks = Task.objects.filter(creator=request.user,
         archived=True).exclude(removed=True)
         
     return direct_to_template(request, 'tasks/archive.html', dict(
-        tasks=tasks))
-        
-        
-def project_index(request):
-    form = ProjectForm()
+        project_slug=project_slug, tasks=tasks))
+
+
+def manage(request, project_slug):
+    project = Project.get_by_slug(request.user, project_slug)
     
     if request.method == 'POST':
-        form = ProjectForm(request.POST)
-        if form.is_valid():
-            return redirect(reverse('tasks:tasks'))
+        if 'save' in request.POST:
+            form = ProjectForm(request.POST, instance=project)
+            if form.is_valid():
+                form.user = request.user
+                project = form.save()
+                request.notifications.add(_(u'Project information updated'))
+                return redirect(reverse('tasks:manage', args=(project.slug,)))
+        elif 'delete' in request.POST:
+            project_title = project.title
+            project.task_set.all().delete()
+            project.delete()
+            request.notifications.add(_(u'Project "%s" has been deleted') \
+                % project_title)
+            return redirect(reverse('tasks:index'))
         
-    return direct_to_template(request, 'tasks/project_index.html', 
-        dict(form=form))
-        
+    form = ProjectForm(instance=project)
+
+    return direct_to_template(request, 'tasks/manage_project.html', dict(
+        project_slug=project_slug, project=project, form=form))
