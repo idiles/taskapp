@@ -23,30 +23,11 @@ body {
   max-width: 820px;
   height: 30px;
   margin: 0 auto;
-/*  background-color: rgba(40, 40, 40, 0.8);*/
+  background-color: rgba(40, 40, 40, 0.8);
 /*  background-color: rgba(139, 69, 19, 0.8);*/
-  background-color: rgba(94, 38, 18, 0.8);
+/*  background-color: rgba(94, 38, 18, 0.8);*/
   color: #fff;
 }
-
-/*#context-menu li {
-  display: inline;
-  padding: 0px;
-  margin: 0px;
-}
-
-#context-menu a {
-  color: #222;
-  font-size: 11px;
-  font-weight: bold;
-  padding: 2px 8px;
-}
-
-#context-menu a:hover,
-#context-menu a.selected {
-  color: #fff;
-  text-decoration: none;
-}*/
 
 #content {
   width: 800px;
@@ -54,22 +35,6 @@ body {
   margin: 0 auto;
   padding-top: 20px;
   padding-bottom: 20px;
-}
-
-#footer {
-  display: none;
-  background-color: #ddd;
-  color: #fff;
-  height: 28px;
-  width: 100%;
-  position: fixed;
-  left: 0px;
-  bottom: 0px;
-/*  border-top: 1px solid #282828;*/
-}
-
-#footer-inner {
-  color: #000;
 }
 
 h1, h2, h3 {
@@ -153,7 +118,8 @@ p:first-child {
 #menubar a.selected {
   color: #ccc;
 /*  background-color: #000;*/
-  background-color: #5E2612;
+  background-color: #333;
+/*  background-color: #5E2612;*/
   text-decoration: none;
 }
 
@@ -168,7 +134,8 @@ p:first-child {
 #nav-project-manage a.project-manage-link {
   color: #ccc;
 /*  background-color: #333;*/
-  background-color: #5E2612;
+  background-color: #333;
+/*  background-color: #5E2612;*/
   text-decoration: none;
 }
 
@@ -271,29 +238,6 @@ p:first-child {
 #templates {
   display: none;
 }
-
-/*#main-task-input-container {
-  margin-right: 15px;
-}
-
-#main-task-input-container .title {
-  color: #888;
-  font-size: 13px;
-  padding: 0px 0px 5px 0px;
-}
-
-#main-task-input-container a {
-  color: #98bce2;
-}
-
-#main-task-input {
-    width: 450px;
-    font-size: 16px;
-    padding: 6px;
-    font-weight: bold;
-    border: 2px solid #aaa;
-    background-color: #f5f5f5;
-}*/
 
 .task {
   margin: 8px 0px 8px -15px;
