@@ -28,6 +28,9 @@ urlpatterns = patterns('tasks.views',
     # Restore task (move back from trash)
     url(r'^([\w-]+)/tasks/(\d+)/restore$', 'restore', name='restore'),
     
+    # Indent task
+    url(r'^([\w-]+)/tasks/(\d+)/indent/(\w+)$', 'indent', name='indent'),
+    
     # Start time tracker
     url(r'^([\w-]+)/tasks/(\d+)/start$', 'start', name='start'),
     

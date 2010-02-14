@@ -25,6 +25,7 @@ class Task(models.Model):
     title = models.CharField(max_length=200)
     created = models.DateTimeField(default=datetime.now)
     position = models.IntegerField()
+    indent = models.IntegerField(null=True, default=0)
     completed = models.BooleanField(default=False)
     archived = models.BooleanField(default=False)
     removed = models.BooleanField(default=False)

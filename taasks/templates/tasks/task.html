@@ -1,5 +1,7 @@
 {% load tasks %}
-<div class="task rounded{% if task.started %} task-active{% endif %}{% if task.completed %} task-done{% endif %}{% if task.archived %} task-archived{% endif %}{% if task.removed %} task-removed{% endif %}" {% if task %}id="task-{{ task.id }}"{% endif %}>
+<div class="task rounded task-indent-{{ task.indent }}{% if task.started %} task-active{% endif %}{% if task.completed %} task-done{% endif %}{% if task.archived %} task-archived{% endif %}{% if task.removed %} task-removed{% endif %}" {% if task %}id="task-{{ task.id }}"{% endif %}>
+  <input class="indent" type="hidden" name="indent"
+    value="{{ task.indent }}" />
   {% if not task.removed %}
   <div class="indicator">•</div>
   {% else %}
@@ -16,14 +18,17 @@
         <b><span class="time">{% task_duration %}</span> hr</b> 
           spent on this task
       </div>
-      
+    
       <span class="control-button start-button">start</span>
       <span class="control-button stop-button">stop</span>
-      
+    
       <!-- What does it mean that the task is done? What happens to the others currently working on it? -->
       <span class="control-button done-button">done</span>
       <span class="control-button undone-button">undone</span>
       
+      <span class="control-button indent-left">&larr;</span>
+      <span class="control-button indent-right">&rarr;</span>
+    
       <span class="control-button remove-button">remove</span>
     </div>
   </div>

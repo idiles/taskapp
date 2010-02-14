@@ -79,7 +79,8 @@ def create(request, project_slug):
         tre = TaskRegexp()
         due_date = tre.get_date(title)
         
-        position = (Task.objects.aggregate(Max('position'))['position__max'] \
+        position = (Task.objects.filter(
+            project=project).aggregate(Max('position'))['position__max'] \
             or 0) + 1
         task = Task(project=project,
             creator=request.user,
@@ -107,6 +108,20 @@ def update(request, project_slug, task_id):
         task.due_date = due_date
         task.save()
         return HttpResponse(dumps(dict(html=task.html)))
+        
+        
+def indent(request, project_slug, task_id, direction):
+    project = Project.get_by_slug(request.user, project_slug)
+    task = get_object_or_404(Task, pk=task_id, project=project)
+    
+    if direction == 'left' and task.indent > 0:
+        task.indent -= 1
+    elif direction == 'right':
+        task.indent += 1
+        
+    task.save()
+    
+    return HttpResponse('', status=204)
 
 
 def remove(request, project_slug, task_id):

@@ -241,6 +241,18 @@ p:first-child {
   display: none;
 }
 
+.task-list {
+  clear: left;
+}
+
+.task-list-controls {
+  clear: left;
+}
+
+.task-container {
+  clear: left;
+}
+
 .task {
   margin: 8px 0px 8px -15px;
   line-height: 22px;
@@ -258,6 +270,22 @@ p:first-child {
   padding: 10px 0px;
   line-height: 20px;
   margin: 10px 0px 10px -15px;
+}
+
+.task-indent-0 {
+  margin-left: -15px !important;
+}
+
+.task-indent-1 {
+  margin-left: 25px !important;
+}
+
+.task-indent-2 {
+  margin-left: 65px !important;
+}
+
+.task-indent-3 {
+  margin-left: 105px !important;
 }
 
 .task .indicator {

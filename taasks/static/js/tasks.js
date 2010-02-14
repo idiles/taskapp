@@ -25,6 +25,7 @@ var Task = function (src) {
     // Is it safe to assume this?
     this.inputNode = this.textNode.next();
     this.indicatorNode = this.node.find('div.indicator');
+    this.indent_value = parseInt(this.node.find('input.indent').val());
     this.addCallbacks();
 };
 
@@ -171,6 +172,30 @@ Task.prototype = {
                 StatusMessage.show('Task has been restored');
             });
     },
+    
+    indent: function (direction) {
+        var old_indent = this.indent_value;
+        
+        if (direction == 'left') {
+            if (this.indent_value > 0) {
+                this.indent_value -= 1;
+            }
+        } else if (direction == 'right') {
+            this.indent_value += 1;
+        }
+        
+        this.node.removeClass('task-indent-' + old_indent);
+        this.node.addClass('task-indent-' + this.indent_value);
+        
+        $.post(url('{% url tasks:indent 0 1 2 %}', 
+            {'0': Project.get_slug(), '1': this.id, '2': direction}));
+        
+        if (this.indent_value == 0) {
+            this.node.find('span.indent-left').hide();
+        } else {
+            this.node.find('span.indent-left').show();
+        }
+    },
 
     addCallbacks: function () {
         var that = this,
@@ -269,6 +294,14 @@ Task.prototype = {
 
         this.node.find('span.remove-button').click(function (event) {
             that.remove(true);
+        });
+        
+        this.node.find('span.indent-left').click(function (event) {
+            that.indent('left');
+        });
+        
+        this.node.find('span.indent-right').click(function (event) {
+            that.indent('right');
         });
         
         this.node.find('button.restore-button').click(function (event) {
