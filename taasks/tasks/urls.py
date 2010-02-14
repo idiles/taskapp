@@ -31,6 +31,9 @@ urlpatterns = patterns('tasks.views',
     # Indent task
     url(r'^([\w-]+)/tasks/(\d+)/indent/(\w+)$', 'indent', name='indent'),
     
+    # Sort tasks
+    url(r'^([\w-]+)/tasks/sort$', 'sort', name='sort'),
+    
     # Start time tracker
     url(r'^([\w-]+)/tasks/(\d+)/start$', 'start', name='start'),
     

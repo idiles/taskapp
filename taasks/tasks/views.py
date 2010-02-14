@@ -4,7 +4,7 @@ from datetime import datetime
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
-from django.utils.simplejson import dumps
+from django.utils.simplejson import dumps, loads
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.views.generic.simple import direct_to_template
 from django.db.models import Max, Sum
@@ -121,6 +121,21 @@ def indent(request, project_slug, task_id, direction):
         
     task.save()
     
+    return HttpResponse('', status=204)
+    
+def sort(request, project_slug):
+    if request.method == 'POST':
+        project = Project.get_by_slug(request.user, project_slug)
+        ids = loads(request.POST['ids'])
+        ids = [int(i.replace('task-', '')) for i in ids]
+        # print ids
+        
+        for pos, task_id in enumerate(ids):
+            # print pos, task_id
+            task = get_object_or_404(Task, pk=task_id, project=project)
+            task.position = pos
+            task.save()
+        
     return HttpResponse('', status=204)
 
 

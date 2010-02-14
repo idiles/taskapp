@@ -66,6 +66,7 @@ Task.prototype = {
                 that.node.find('.text').html(json.html);
                 that.node.find('span.time').text(json.time);
                 that.id = json.id;
+                that.indent_value = 0;
             }, 'json');
         }
 
@@ -393,42 +394,43 @@ $(document).ready(function () {
         }
     });
     
-    // $('#tasks:not(.archive)').sortable({
-    //     placeholder: 'drop-highlight',
-    //     axis: 'y',
-    //     update: function (event, ui) {
-    //         var ids = $('#tasks').sortable('toArray');
-    //         var data = { ids: $.json.encode(ids) };
-    //         $.post('/tasks/sort', data);
-    //     },
-    //     // After a drag the click event is initiated. In order to prevent it we
-    //     // substitute the jQuery click handlers with our own click handler.
-    //     stop: function (event, ui) {
-    //         var events = $(event.originalTarget).data('events'),
-    //             clickEvents, e, origHandler;
-    //         if (events && events.hasOwnProperty('click')) {
-    //             clickEvents = events.click;
-    //             for (e in clickEvents) {
-    //                 if (clickEvents.hasOwnProperty(e)) {
-    //                     origHandler = clickEvents[e];
-    //                     // All our function does is puts the original event
-    //                     // handler back so that it would fire normally next time
-    //                     clickEvents[e] = function () {
-    //                         clickEvents[e] = origHandler;
-    //                     };
-    //                 }
-    //             }
-    //         }
-    //         
-    //         // Fix the broken position
-    //         ui.item.css({
-    //             position: '',
-    //             left: '',
-    //             top: '',
-    //             display: ''
-    //         });
-    //     }
-    // });
+    $('#tasks:not(.archive)').sortable({
+        placeholder: 'drop-highlight',
+        axis: 'y',
+        update: function (event, ui) {
+            var ids = $('#tasks').sortable('toArray');
+            var data = { ids: $.toJSON(ids) };
+            $.post(url('{% url tasks:sort 0 %}', {0: Project.get_slug()}), 
+                data);
+        },
+        // After a drag the click event is initiated. In order to prevent it we
+        // substitute the jQuery click handlers with our own click handler.
+        stop: function (event, ui) {
+            var events = $(event.originalTarget).data('events'),
+                clickEvents, e, origHandler;
+            if (events && events.hasOwnProperty('click')) {
+                clickEvents = events.click;
+                for (e in clickEvents) {
+                    if (clickEvents.hasOwnProperty(e)) {
+                        origHandler = clickEvents[e];
+                        // All our function does is puts the original event
+                        // handler back so that it would fire normally next time
+                        clickEvents[e] = function () {
+                            clickEvents[e] = origHandler;
+                        };
+                    }
+                }
+            }
+            
+            // Fix the broken position
+            ui.item.css({
+                position: '',
+                left: '',
+                top: '',
+                display: ''
+            });
+        }
+    });
 });
 
 })(jQuery);

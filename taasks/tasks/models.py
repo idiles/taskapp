@@ -32,6 +32,9 @@ class Task(models.Model):
     due_date = models.DateField(blank=True, null=True)
     
     DATE_FORMAT = '%Y-%m-%d'
+    
+    class Meta:
+        ordering = ('position',)
 
     def __unicode__(self):
         return self.title
