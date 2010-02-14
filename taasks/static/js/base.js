@@ -44,8 +44,6 @@ var StatusMessage = {
             StatusMessage.show(messages);
         }
         
-        // $('#context-menu').fadeIn('slow');
-        
         $('button.connect').click(function () {
            var username = $(this).attr('rel');
            $.post(url('{% url account:connect 0 %}', {0: username}), {},

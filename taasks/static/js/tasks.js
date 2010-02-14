@@ -321,17 +321,19 @@ var TimeTracker = {
 
 
 $(document).ready(function () {
-    var addTaskButton = $('#add-task-button'),
-        mainTaskInput = $('#main-task-input'),
-        tasks;
+    // var addTaskButton = $('#add-task-button'),
+    //     mainTaskInput = $('#main-task-input'),
+    //     tasks;
 
-    $('#main-task-input').focus().keyup(function (event) {
-        if (event.keyCode == 13) {
-            if ($(this).val()) {
-                addTaskButton.click();
-            }
-        }
-    });
+    // $('#main-task-input').focus().keyup(function (event) {
+    //     if (event.keyCode == 13) {
+    //         if ($(this).val()) {
+    //             addTaskButton.click();
+    //         }
+    //     }
+    // });
+    
+    // $('#tasks').tree({ui: {theme: 'apple'}});
     
     $('#add-task-button').click(function () {
         var task = new Task('');
@@ -358,42 +360,42 @@ $(document).ready(function () {
         }
     });
     
-    $('#tasks:not(.archive)').sortable({
-        placeholder: 'drop-highlight',
-        axis: 'y',
-        update: function (event, ui) {
-            var ids = $('#tasks').sortable('toArray');
-            var data = { ids: $.json.encode(ids) };
-            $.post('/tasks/sort', data);
-        },
-        // After a drag the click event is initiated. In order to prevent it we
-        // substitute the jQuery click handlers with our own click handler.
-        stop: function (event, ui) {
-            var events = $(event.originalTarget).data('events'),
-                clickEvents, e, origHandler;
-            if (events && events.hasOwnProperty('click')) {
-                clickEvents = events.click;
-                for (e in clickEvents) {
-                    if (clickEvents.hasOwnProperty(e)) {
-                        origHandler = clickEvents[e];
-                        // All our function does is puts the original event
-                        // handler back so that it would fire normally next time
-                        clickEvents[e] = function () {
-                            clickEvents[e] = origHandler;
-                        };
-                    }
-                }
-            }
-            
-            // Fix the broken position
-            ui.item.css({
-                position: '',
-                left: '',
-                top: '',
-                display: ''
-            });
-        }
-    });
+    // $('#tasks:not(.archive)').sortable({
+    //     placeholder: 'drop-highlight',
+    //     axis: 'y',
+    //     update: function (event, ui) {
+    //         var ids = $('#tasks').sortable('toArray');
+    //         var data = { ids: $.json.encode(ids) };
+    //         $.post('/tasks/sort', data);
+    //     },
+    //     // After a drag the click event is initiated. In order to prevent it we
+    //     // substitute the jQuery click handlers with our own click handler.
+    //     stop: function (event, ui) {
+    //         var events = $(event.originalTarget).data('events'),
+    //             clickEvents, e, origHandler;
+    //         if (events && events.hasOwnProperty('click')) {
+    //             clickEvents = events.click;
+    //             for (e in clickEvents) {
+    //                 if (clickEvents.hasOwnProperty(e)) {
+    //                     origHandler = clickEvents[e];
+    //                     // All our function does is puts the original event
+    //                     // handler back so that it would fire normally next time
+    //                     clickEvents[e] = function () {
+    //                         clickEvents[e] = origHandler;
+    //                     };
+    //                 }
+    //             }
+    //         }
+    //         
+    //         // Fix the broken position
+    //         ui.item.css({
+    //             position: '',
+    //             left: '',
+    //             top: '',
+    //             display: ''
+    //         });
+    //     }
+    // });
 });
 
 })(jQuery);
