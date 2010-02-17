@@ -32,16 +32,6 @@ def index(request):
 
 def tasks(request, project_slug):
     project = Project.get_by_slug(request.user, project_slug)
-    
-    if request.method == 'POST' and 'archive' in request.POST:
-        counter = 0
-        for task in Task.objects.filter(creator=request.user, 
-            completed=True).exclude(archived=True):
-            task.archived = True
-            task.save()
-            counter += 1
-        request.notifications.add(_(u'%d tasks has been archived') % counter)
-        return redirect(reverse('tasks:tasks', args=(project_slug, )))
         
     query_filter = dict(creator=request.user)
     tasks_filter = dict()
@@ -69,7 +59,18 @@ def tasks(request, project_slug):
     return direct_to_template(request, 'tasks/index.html', dict(
         project=project, project_slug=project_slug, tasks=tasks, 
         tasks_filter=tasks_filter))
-
+        
+        
+def archive_completed(request, project_slug):
+    project = Project.get_by_slug(request.user, project_slug)
+    counter = 0
+    for task in Task.objects.filter(project=project, creator=request.user, 
+        completed=True).exclude(archived=True):
+        task.archived = True
+        task.save()
+        counter += 1
+    return HttpResponse(dumps(dict(archived=counter)))
+    
 
 def create(request, project_slug):
     if request.method == 'POST':

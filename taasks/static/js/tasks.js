@@ -126,7 +126,7 @@ Task.prototype = {
         if (notify) {
             $.post(url('{% url tasks:done 0 1 %}', 
                 {0: Project.get_slug(), 1: this.id}));
-            $('#archive-form').fadeIn();
+            $('#archive-completed-action').fadeIn();
         }
     },
 
@@ -386,12 +386,32 @@ $(document).ready(function () {
         return false;
     });
     
-    tasks = $('#tasks > div.task');
+    var tasks = $('#tasks > div.task');
     tasks.each(function () {
         Task.init(this);
         if ($(this).hasClass('task-done')) {
-            $('#archive-form').show();
+            $('#archive-completed-action').show();
         }
+    });
+    
+    $('#archive-completed-action').click(function () {
+        $.post(url('{% url tasks:archive_completed 0 %}', 
+            {'0': Project.get_slug()}), null, 
+            function (response_data) {
+                var response = $.evalJSON(response_data);
+                
+                var tasks = $('#tasks > div.task');
+                tasks.each(function () {
+                    if ($(this).hasClass('task-done')) {
+                        $(this).fadeOut();
+                    }
+                });
+                
+                StatusMessage.show(response.archived + ' tasks moved to archive');
+            }
+        );
+        
+        return false;
     });
     
     $('#tasks:not(.archive)').sortable({

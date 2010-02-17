@@ -21,6 +21,10 @@ urlpatterns = patterns('tasks.views',
     # Mark task as not done
     url(r'^([\w-]+)/tasks/(\d+)/status/undone$', 'mark_undone', 
         name='undone'),
+        
+    # Archive completed
+    url(r'^([\w-]+)/tasks/archive-completed$', 'archive_completed', 
+        name='archive_completed'),
     
     # Remove task (move to trash)
     url(r'^([\w-]+)/tasks/(\d+)/remove$', 'remove', name='remove'),
