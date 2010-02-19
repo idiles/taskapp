@@ -136,6 +136,36 @@ class Task(models.Model):
             estimate = int(matches[0][1:])
             return estimate
             
+    def mark_completed(self, value=True):
+        self.completed = value
+        for child in self.children:
+            child.mark_completed(value)
+        self.save()
+        
+    def mark_archived(self, value=True):
+        self.archived = value
+        for child in self.children:
+            child.mark_archived(value)
+        self.save()
+            
+    @property
+    def children(self):
+        """Return list of task children ordered by position."""
+        query_filter = dict(project=self.project, position__gt=self.position)
+        
+        try:
+            next_position = Task.objects.filter(indent=self.indent,
+                **query_filter)[0].position
+        except IndexError:
+            next_position = None
+        
+        if next_position is not None:
+            query_filter['position__lt'] = next_position
+            
+        query_filter['indent'] = (self.indent or 0) + 1
+            
+        return Task.objects.filter(**query_filter).all()
+            
             
 class TaskRegexp(object):
     """Helper class to extract date from task text."""

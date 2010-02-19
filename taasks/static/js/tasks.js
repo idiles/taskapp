@@ -188,8 +188,8 @@ Task.prototype = {
         this.node.removeClass('task-indent-' + old_indent);
         this.node.addClass('task-indent-' + this.indent_value);
         
-        $.post(url('{% url tasks:indent 0 1 2 %}', 
-            {'0': Project.get_slug(), '1': this.id, '2': direction}));
+        $.post(url('{% url tasks:indent 2 1 0 %}', 
+            {'2': Project.get_slug(), '1': this.id, '0': direction}));
         
         if (this.indent_value == 0) {
             this.node.find('span.indent-left').hide();

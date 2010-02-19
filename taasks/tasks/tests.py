@@ -8,6 +8,7 @@ Replace these with more appropriate tests for your application.
 from datetime import datetime, timedelta
 
 from django.test import TestCase
+from django.contrib.auth.models import User
 
 from tasks.models import Task, TaskRegexp
 
@@ -30,6 +31,48 @@ class TaskTest(TestCase):
     def test_estimation(self):
         task = Task(title='Write functional tests ~3')
         self.failUnlessEqual(task.estimate, 3)
+        
+    def test_children(self):
+        """
+        o Create an iPhone app
+            o Download SDK
+            o Create UI
+                o Make sketches
+                o Write UI code
+            o Write logic code
+        """
+        user = User(username='test')
+        user.save()
+        
+        task = Task(title='Create an iPhone app', position=1, indent=0,
+            creator=user)
+        task.save()
+        task_child1 = Task(title='Download SDK', position=2, indent=1,
+            creator=user)
+        task_child1.save()
+        task_child2 = Task(title='Create UI', position=3, indent=1,
+            creator=user)
+        task_child2.save()
+        task_child21 = Task(title='Make sketches', position=4, indent=2,
+            creator=user)
+        task_child21.save()
+        task_child22 = Task(title='Write UI code', position=5, indent=2,
+            creator=user)
+        task_child22.save()
+        task_child3 = Task(title='Write logic code', position=6, indent=1,
+            creator=user)
+        task_child3.save()
+        
+        self.failUnlessEqual(Task.objects.count(), 6)
+        
+        self.failUnlessEqual(len(task.children), 3)
+        self.failUnlessEqual(task.children[0], task_child1)
+        self.failUnlessEqual(task.children[1], task_child2)
+        self.failUnlessEqual(task.children[2], task_child3)
+        
+        self.failUnlessEqual(len(task_child2.children), 2)
+        self.failUnlessEqual(task_child2.children[0], task_child21)
+        self.failUnlessEqual(task_child2.children[1], task_child22)
 
 
 class TaskRegexpTest(TestCase):

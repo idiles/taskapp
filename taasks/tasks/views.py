@@ -123,7 +123,8 @@ def indent(request, project_slug, task_id, direction):
     task.save()
     
     return HttpResponse('', status=204)
-    
+
+
 def sort(request, project_slug):
     if request.method == 'POST':
         project = Project.get_by_slug(request.user, project_slug)
@@ -163,19 +164,18 @@ def restore(request, project_slug, task_id):
 def mark_done(request, project_slug, task_id):
     project = Project.get_by_slug(request.user, project_slug)
     task = get_object_or_404(Task, pk=task_id)
-    task.completed = True
-    task.save()
+    task.mark_completed(True)
     return HttpResponse('', status=204)     # No content
     
     
 def mark_undone(request, project_slug, task_id):
     project = Project.get_by_slug(request.user, project_slug)
     task = get_object_or_404(Task, pk=task_id, project=project)
-    task.completed = False
+    task.mark_completed(False)
     if task.archived:
-        task.archived = False
+        task.mark_archived(False)
         request.notifications.add(_(u'Task has been moved back to list'))
-    task.save()
+    # task.save()
     return HttpResponse('', status=204)     # No content
 
 
