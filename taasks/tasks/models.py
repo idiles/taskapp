@@ -147,6 +147,12 @@ class Task(models.Model):
         for child in self.children:
             child.mark_archived(value)
         self.save()
+        
+    def mark_removed(self, value=True):
+        self.removed = value
+        for child in self.children:
+            child.mark_removed(value)
+        self.save()
             
     @property
     def children(self):

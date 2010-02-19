@@ -130,10 +130,8 @@ def sort(request, project_slug):
         project = Project.get_by_slug(request.user, project_slug)
         ids = loads(request.POST['ids'])
         ids = [int(i.replace('task-', '')) for i in ids]
-        # print ids
         
         for pos, task_id in enumerate(ids):
-            # print pos, task_id
             task = get_object_or_404(Task, pk=task_id, project=project)
             task.position = pos
             task.save()
@@ -144,8 +142,7 @@ def sort(request, project_slug):
 def remove(request, project_slug, task_id):
     project = Project.get_by_slug(request.user, project_slug)
     task = get_object_or_404(Task, pk=task_id, project=project)
-    task.removed = True
-    task.save()
+    task.mark_removed(True)
     for item in TaskInterval.objects.filter(doer=request.user,
         duration=None):
         item.stop()
@@ -156,8 +153,7 @@ def remove(request, project_slug, task_id):
 def restore(request, project_slug, task_id):
     project = Project.get_by_slug(request.user, project_slug)
     task = get_object_or_404(Task, pk=task_id, project=project)
-    task.removed = False
-    task.save()
+    task.mark_removed(False)
     return HttpResponse('', status=204)     # No content
     
     
@@ -175,7 +171,6 @@ def mark_undone(request, project_slug, task_id):
     if task.archived:
         task.mark_archived(False)
         request.notifications.add(_(u'Task has been moved back to list'))
-    # task.save()
     return HttpResponse('', status=204)     # No content
 
 
