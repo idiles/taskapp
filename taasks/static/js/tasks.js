@@ -8,6 +8,8 @@ Project.get_slug = function () {
     return $('#project-slug').val(); 
 }
 
+var task_children = {};
+
 // Create a new task object assigning the given text to it
 var Task = function (src) {
     if (typeof src === 'string') {
@@ -17,6 +19,7 @@ var Task = function (src) {
         // Just init the existing node (most probably page load)
         this.node = $(src);
         this.id = this.node.attr('id').substring('task-'.length);
+        this.children = task_children[this.id];
     }
     // Let the task node remember the object
     this.node.data('T.task', this);
@@ -27,6 +30,8 @@ var Task = function (src) {
     this.indicatorNode = this.node.find('div.indicator');
     this.indent_value = parseInt(this.node.find('input.indent').val());
     this.addCallbacks();
+    
+    this.updateControls();
 };
 
 // Init an existing task object given the node
@@ -66,6 +71,7 @@ Task.prototype = {
                 that.node.find('.text').html(json.html);
                 that.node.find('span.time').text(json.time);
                 that.id = json.id;
+                this.children = task_children[that.id];
                 that.indent_value = 0;
             }, 'json');
         }
@@ -120,32 +126,45 @@ Task.prototype = {
         }
     },
 
-    done: function (notify) {
+    done: function (notify, no_commit) {
         this.node.addClass('task-done');
         // this.indicatorNode.click();
         if (notify) {
-            $.post(url('{% url tasks:done 0 1 %}', 
-                {0: Project.get_slug(), 1: this.id}));
-            $('#archive-completed-action').fadeIn();
+            if (no_commit === undefined) {
+                $.post(url('{% url tasks:done 0 1 %}', 
+                    {0: Project.get_slug(), 1: this.id}));
+                $('#archive-completed-action').fadeIn();
+            }
+        }
+        
+        for (var i = 0; i < this.children.length; i++) {
+            this.getTaskById(this.children[i]).done(true, true);
         }
     },
 
-    undone: function (notify) {
+    undone: function (notify, no_commit) {
         this.node.removeClass('task-done');
         var task = this.node;
         // this.indicatorNode.click();
         if (notify) {
-            $.post(url('{% url tasks:undone 0 1 %}', 
-                    {0: Project.get_slug(), 1: this.id}), {},
-                function () {
-                    if (task.hasClass('task-archived')) {
-                        window.location.reload(true);
+            if (no_commit === undefined) {
+                $.post(url('{% url tasks:undone 0 1 %}', 
+                        {0: Project.get_slug(), 1: this.id}), {},
+                    function () {
+                        if (task.hasClass('task-archived')) {
+                            window.location.reload(true);
+                        }
                     }
-                });
+                );
+            }
+        }
+        
+        for (var i = 0; i < this.children.length; i++) {
+            this.getTaskById(this.children[i]).undone(true, true);
         }
     },
 
-    remove: function (notify) {
+    remove: function (notify, no_commit) {
         var node = this.node;
         
         node.fadeOut('', function () {
@@ -154,27 +173,39 @@ Task.prototype = {
         });
         
         if (notify) {
-            $.post(url('{% url tasks:remove 0 1 %}', 
-                {0: Project.get_slug(), 1: this.id}), {});
-            StatusMessage.show('Task has been moved to Trash');
-        } 
+            if (no_commit === undefined) {
+                $.post(url('{% url tasks:remove 0 1 %}', 
+                    {0: Project.get_slug(), 1: this.id}), {});
+                StatusMessage.show('Task moved to Trash');
+            }
+        }
+        
+        for (var i = 0; i < this.children.length; i++) {
+            this.getTaskById(this.children[i]).remove(true, true);
+        }
     },
     
-    restore: function () {
-        // alert(Project.get_slug());
+    restore: function (no_commit) {
         var node = this.node;
         node.fadeOut('', function () {
             node.remove();
             Task.toggleTaskListEmpty();
         });
-        $.post(url('{% url tasks:restore 0 1 %}', 
-                {0: Project.get_slug(), 1: this.id}), {},
-            function () {
-                StatusMessage.show('Task has been restored');
-            });
+        
+        if (no_commit === undefined) {
+            $.post(url('{% url tasks:restore 0 1 %}', 
+                    {0: Project.get_slug(), 1: this.id}), {},
+                function () {
+                    StatusMessage.show('Task has been restored');
+                });
+        }
+        
+        for (var i = 0; i < this.children.length; i++) {
+            this.getTaskById(this.children[i]).restore(true);
+        }
     },
     
-    indent: function (direction) {
+    indent: function (direction, no_commit) {
         var old_indent = this.indent_value;
         
         if (direction == 'left') {
@@ -188,13 +219,29 @@ Task.prototype = {
         this.node.removeClass('task-indent-' + old_indent);
         this.node.addClass('task-indent-' + this.indent_value);
         
-        $.post(url('{% url tasks:indent 2 1 0 %}', 
-            {'2': Project.get_slug(), '1': this.id, '0': direction}));
+        if (no_commit === undefined) {
+            $.post(url('{% url tasks:indent 2 1 0 %}', 
+                {'2': Project.get_slug(), '1': this.id, '0': direction}));
+        }
         
+        this.updateControls();
+        
+        for (var i = 0; i < this.children.length; i++) {
+            this.getTaskById(this.children[i]).indent(direction, true);
+        }
+    },
+    
+    updateControls: function () {
         if (this.indent_value == 0) {
             this.node.find('span.indent-left').hide();
         } else {
             this.node.find('span.indent-left').show();
+        }
+        
+        if (this.indent_value == 3) {
+            this.node.find('span.indent-right').hide();
+        } else {
+            this.node.find('span.indent-right').show();
         }
     },
 
@@ -317,6 +364,11 @@ Task.prototype = {
                 TimeTracker.start();
             }
         }
+    },
+    
+    getTaskById: function (id) {
+        return new Task($('#task-' + id));
+        
     }
 };
 
@@ -355,20 +407,6 @@ var TimeTracker = {
 
 
 $(document).ready(function () {
-    // var addTaskButton = $('#add-task-button'),
-    //     mainTaskInput = $('#main-task-input'),
-    //     tasks;
-
-    // $('#main-task-input').focus().keyup(function (event) {
-    //     if (event.keyCode == 13) {
-    //         if ($(this).val()) {
-    //             addTaskButton.click();
-    //         }
-    //     }
-    // });
-    
-    // $('#tasks').tree({ui: {theme: 'apple'}});
-    
     $('#add-task-button').click(function () {
         var task = new Task('');
         var text = task.textNode;
@@ -385,6 +423,8 @@ $(document).ready(function () {
         alert('TODO');
         return false;
     });
+    
+    task_children = $.evalJSON($('#task-children').val());
     
     var tasks = $('#tasks > div.task');
     tasks.each(function () {

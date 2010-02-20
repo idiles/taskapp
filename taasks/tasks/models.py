@@ -136,6 +136,13 @@ class Task(models.Model):
             estimate = int(matches[0][1:])
             return estimate
             
+    def increase_indent(self, delta):
+        for child in self.children:
+            child.increase_indent(delta)
+            
+        self.indent += delta
+        self.save()
+            
     def mark_completed(self, value=True):
         self.completed = value
         for child in self.children:

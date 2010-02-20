@@ -30,6 +30,9 @@
       {% include "tasks/task.html" %}
     {% endfor %}
   </div>
+  
+  <input id="task-children" type="hidden" name="task-children" 
+    value="{{ children }}">
 
   <div class="empty-list" {% if tasks %}style="display:none"{% endif %}>
     You have no items.

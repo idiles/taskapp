@@ -50,6 +50,11 @@ def tasks(request, project_slug):
     tasks = project.task_set.filter(**query_filter).exclude(
         removed=True).exclude(archived=True)
         
+    children = {}
+    for t in tasks:
+        children[t.id] = [c.id for c in t.children]
+    children_json = dumps(children)
+        
     # We can't call a methods with parameters (request.user) in django templates
     # so do the counts here
     for task in tasks:
@@ -57,8 +62,8 @@ def tasks(request, project_slug):
             duration=None).count() > 0
             
     return direct_to_template(request, 'tasks/index.html', dict(
-        project=project, project_slug=project_slug, tasks=tasks, 
-        tasks_filter=tasks_filter))
+        project=project, project_slug=project_slug, tasks=tasks,
+        children=children_json, tasks_filter=tasks_filter))
         
         
 def archive_completed(request, project_slug):
@@ -116,12 +121,10 @@ def indent(request, project_slug, task_id, direction):
     task = get_object_or_404(Task, pk=task_id, project=project)
     
     if direction == 'left' and task.indent > 0:
-        task.indent -= 1
+        task.increase_indent(-1)
     elif direction == 'right':
-        task.indent += 1
+        task.increase_indent(1)
         
-    task.save()
-    
     return HttpResponse('', status=204)
 
 
@@ -215,8 +218,14 @@ def trash(request, project_slug):
     tasks = Task.objects.filter(creator=request.user,
         removed=True)
         
+    children = {}
+    for t in tasks:
+        children[t.id] = [c.id for c in t.children]
+    children_json = dumps(children)
+        
     return direct_to_template(request, 'tasks/trash.html', dict(
-        project=project, project_slug=project_slug, tasks=tasks))
+        project=project, project_slug=project_slug, tasks=tasks,
+        children=children_json))
         
         
 def archive(request, project_slug):
@@ -224,8 +233,14 @@ def archive(request, project_slug):
     tasks = Task.objects.filter(creator=request.user,
         archived=True).exclude(removed=True)
         
+    children = {}
+    for t in tasks:
+        children[t.id] = [c.id for c in t.children]
+    children_json = dumps(children)
+        
     return direct_to_template(request, 'tasks/archive.html', dict(
-        project=project, project_slug=project_slug, tasks=tasks))
+        project=project, project_slug=project_slug, tasks=tasks,
+        children=children_json))
 
 
 def manage(request, project_slug):

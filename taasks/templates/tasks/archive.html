@@ -23,6 +23,9 @@
   {% endfor %}
 </div>
 
+<input id="task-children" type="hidden" name="task-children" 
+  value="{{ children }}">
+
 <div id="empty-task-list" {% if tasks %}style="display:none"{% endif %}>
   You have no items in your Archive.
 </div>

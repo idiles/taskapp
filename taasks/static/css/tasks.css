@@ -277,14 +277,18 @@ p:first-child {
 }
 
 .task-indent-1 {
-  margin-left: 25px !important;
+  margin-left: 15px !important;
 }
 
 .task-indent-2 {
-  margin-left: 65px !important;
+  margin-left: 45px !important;
 }
 
 .task-indent-3 {
+  margin-left: 80px !important;
+}
+
+.task-indent-4 {
   margin-left: 105px !important;
 }
 
