@@ -25,6 +25,7 @@
         {% if user.is_authenticated %}
         <li class="item"><a href="{% url search:people %}"
             class="search-people-link">Search</a></li>
+        <li class="item"><a href="{% url account:connections %}">Connections</a></li>
         <li class="item"><a href="{% url account:settings %}">Account</a></li>
             
         <!-- <li class="item"><a href="/">Dashboard</a></li> -->
