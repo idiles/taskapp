@@ -314,14 +314,17 @@ Task.prototype = {
         this.node.find('span.tag').click(function (event) {
            var tag = $(this).text();
            tag = tag.substr(1, tag.length);
-           window.location = url('{% url tasks:tasks 0 %}?tag=' + tag);
+           
+           window.location = url('{% url tasks:tasks 0 %}?tag=' + tag,
+               {'0': Project.get_slug()});
            event.stopPropagation();
         });
         
         this.node.find('span.due-date').click(function (event) {
            var due = $(this).text();
            due = due.substr(1, due.length);
-           window.location = url('{% url tasks:tasks 0 %}?due=' + due);
+           window.location = url('{% url tasks:tasks 0 %}?due=' + due,
+               {'0': Project.get_slug()});
            event.stopPropagation();
         });
 
